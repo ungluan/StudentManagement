@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        tools:context=".feature.ClassScreen.view.GradeScreenFragment">
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:src="@drawable/ic_students_learning"
+            android:scaleType="centerCrop"
+            android:layout_width="match_parent"
+            android:layout_height="256dp"
+            android:layout_marginBottom="16dp"/>
+
+        <TextView
+            android:text="Danh sách lớp học"
+            android:textSize="36sp"
+            android:textStyle="bold"
+            android:textColor="@color/secondary_orange"
+            android:layout_marginStart="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            app:dividerColor="@android:color/black"
+            android:layout_margin="24dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            android:id="@+id/recycler_view_grade"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:listitem="@layout/grade_item"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:orientation="vertical" />
+
+    </LinearLayout>
+</layout>
