@@ -47,7 +47,6 @@ public class GradeListAdapter extends ListAdapter<Grade, GradeListAdapter.GradeV
         private TextView txtDel;
         private TextView txtGradeName;
         private TextView txtTeacherName;
-        private TextView txtNumbers;
 
         public GradeViewHolder(
                 ViewGroup parent,
@@ -70,7 +69,6 @@ public class GradeListAdapter extends ListAdapter<Grade, GradeListAdapter.GradeV
 
         public void bind(Grade grade) {
 
-            txtNumbers.setText(getString(R.string.numbers_of_the_grade,32));
             txtTeacherName.setText(getString(R.string.teacher_of_the_grade,grade.getTeacherName()));
             txtGradeName.setText(getString(R.string.name_of_the_grade,grade.getGradeId()));
 
