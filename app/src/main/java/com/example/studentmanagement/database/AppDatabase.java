@@ -37,8 +37,8 @@ public abstract class AppDatabase extends RoomDatabase {
                 INSTANCES = Room.databaseBuilder(
                         context,
                         AppDatabase.class,
-                        "word_database"
-                ).build();
+                        "app_database"
+                ).createFromAsset("database/app_database.db").build();
             }
         }
         return INSTANCES;
