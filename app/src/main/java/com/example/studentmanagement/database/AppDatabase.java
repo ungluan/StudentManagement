@@ -10,20 +10,26 @@ import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.example.studentmanagement.database.dao.GradeDao;
+import com.example.studentmanagement.database.dao.StudentDao;
 import com.example.studentmanagement.database.dao.SubjectDao;
+import com.example.studentmanagement.database.entity.Mark;
+import com.example.studentmanagement.database.entity.Student;
 import com.example.studentmanagement.database.entity.Subject;
 import com.example.studentmanagement.database.entity.Grade;
+import com.example.studentmanagement.database.entity.SubjectWithMarks;
 
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 
-@Database(entities = {Grade.class, Subject.class}, version = 2)
+@Database(entities = {Grade.class, Subject.class, Student.class, Mark.class}, version = 1, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract GradeDao classDao();
 
     public abstract SubjectDao subjectDao();
+
+    public abstract StudentDao studentDao();
 
     private static volatile AppDatabase INSTANCES;
     private static final int NUM_OF_THREADS = 4;
@@ -38,7 +44,7 @@ public abstract class AppDatabase extends RoomDatabase {
                         context,
                         AppDatabase.class,
                         "app_database"
-                ).createFromAsset("database/app_database.db").build();
+                ).allowMainThreadQueries().build();
             }
         }
         return INSTANCES;

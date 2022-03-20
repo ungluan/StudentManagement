@@ -1,4 +1,4 @@
-package com.example.studentmanagement.feature.ClassScreen.view;
+package com.example.studentmanagement.feature.GradeScreen;
 
 import android.os.Bundle;
 
@@ -13,8 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.studentmanagement.databinding.FragmentGradeScreenBinding;
-import com.example.studentmanagement.feature.ClassScreen.adapter.GradeListAdapter;
-import com.example.studentmanagement.feature.ClassScreen.viewmodel.GradeViewModel;
 import com.example.studentmanagement.utils.ItemMargin;
 import com.omega_r.libs.omegarecyclerview.OmegaRecyclerView;
 

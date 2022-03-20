@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/gradeScreenFragment"
-        android:name="com.example.studentmanagement.feature.ClassScreen.view.GradeScreenFragment"
+        android:name="com.example.studentmanagement.feature.GradeScreen.GradeScreenFragment"
         android:label="GradeScreenFragment" />
     <fragment
         android:id="@+id/homeFragment"

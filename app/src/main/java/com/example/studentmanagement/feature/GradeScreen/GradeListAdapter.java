@@ -1,6 +1,5 @@
-package com.example.studentmanagement.feature.ClassScreen.adapter;
+package com.example.studentmanagement.feature.GradeScreen;
 
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,10 +7,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.studentmanagement.R;
 import com.example.studentmanagement.database.entity.Grade;
