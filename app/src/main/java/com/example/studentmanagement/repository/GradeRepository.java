@@ -1,6 +1,8 @@
 package com.example.studentmanagement.repository;
 
 import android.app.Application;
+import android.content.Context;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
@@ -16,6 +18,7 @@ public class GradeRepository {
     public GradeRepository(Application application) {
         AppDatabase db = AppDatabase.getDatabase(application);
         this.gradeDao = db.classDao();
+        Log.i("loca", application.getDatabasePath("app_word").toString());
     }
 
     // Thực hiện Async tại viewModel

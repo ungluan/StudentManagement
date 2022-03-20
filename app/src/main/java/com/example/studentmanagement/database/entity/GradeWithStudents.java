@@ -8,7 +8,7 @@ import java.util.List;
 public class GradeWithStudents {
     @Embedded public Grade grade;
     @Relation(
-            parentColumn = "ID",
+            parentColumn = "LOP",
             entityColumn = "LOP"
     )
     public List<Student> students;

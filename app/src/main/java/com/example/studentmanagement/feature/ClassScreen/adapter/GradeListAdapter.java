@@ -2,7 +2,6 @@ package com.example.studentmanagement.feature.ClassScreen.adapter;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
@@ -35,7 +34,6 @@ public class GradeListAdapter extends ListAdapter<Grade, GradeListAdapter.GradeV
     }
 
      static class GradeViewHolder extends RecyclerView.ViewHolder {
-//        private final TextView textView;
         private GradeItemBinding binding;
         public GradeViewHolder(GradeItemBinding binding) {
             super(binding.getRoot());
@@ -54,7 +52,7 @@ public class GradeListAdapter extends ListAdapter<Grade, GradeListAdapter.GradeV
 
         @Override
         public boolean areItemsTheSame(@NonNull Grade oldItem, @NonNull Grade newItem) {
-            return oldItem.getId() == newItem.getId();
+            return oldItem.getGradeId().equals(newItem.getGradeId());
         }
 
         @Override

@@ -10,6 +10,7 @@ import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.example.studentmanagement.database.dao.GradeDao;
+import com.example.studentmanagement.database.dao.StudentDao;
 import com.example.studentmanagement.database.dao.SubjectDao;
 import com.example.studentmanagement.database.entity.GradeWithStudents;
 import com.example.studentmanagement.database.entity.Mark;
@@ -22,11 +23,13 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 
-@Database(entities = {Grade.class, Subject.class, Student.class, Mark.class}, version = 4, exportSchema = false)
+@Database(entities = {Grade.class, Subject.class, Student.class, Mark.class}, version = 3, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract GradeDao classDao();
 
     public abstract SubjectDao subjectDao();
+
+    public abstract StudentDao studentDao();
 
     private static volatile AppDatabase INSTANCES;
     private static final int NUM_OF_THREADS = 4;
@@ -41,7 +44,7 @@ public abstract class AppDatabase extends RoomDatabase {
                         context,
                         AppDatabase.class,
                         "app_database"
-                ).fallbackToDestructiveMigration().build();
+                ).createFromAsset("database/app_database.db").fallbackToDestructiveMigration().build();
             }
         }
         return INSTANCES;
@@ -53,9 +56,9 @@ public abstract class AppDatabase extends RoomDatabase {
             super.onCreate(db);
             GradeDao dao = INSTANCES.classDao();
 
-            dao.insert(new Grade(1, "12A1", "Nguyễn Bích Thủy"));
-            dao.insert(new Grade(1, "12A2", "Lê Văn Hiền"));
-            dao.insert(new Grade(1, "12A3", "Trần Huy Hoàng"));
+            dao.insert(new Grade("12A1", "Nguyễn Bích Thủy"));
+            dao.insert(new Grade("12A2", "Lê Văn Hiền"));
+            dao.insert(new Grade("12A3", "Trần Huy Hoàng"));
         }
     };
 }

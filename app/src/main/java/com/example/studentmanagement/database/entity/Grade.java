@@ -1,5 +1,6 @@
 package com.example.studentmanagement.database.entity;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
@@ -7,30 +8,20 @@ import androidx.room.PrimaryKey;
 
 @Entity(tableName = "LOP")
 public class Grade {
-    @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "ID")
-    final int id;
+    @PrimaryKey
     @ColumnInfo(name = "LOP")
-    String gradeName;
+    @NonNull
+    String gradeId;
     @ColumnInfo(name = "CHUNHIEM")
     String teacherName;
 
-    public Grade(int id, String gradeName, String teacherName) {
-        this.id = id;
-        this.gradeName = gradeName;
+    public Grade(String gradeId, String teacherName) {
+        this.gradeId = gradeId;
         this.teacherName = teacherName;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public String getGradeName() {
-        return gradeName;
-    }
-
-    public void setGradeName(String gradeName) {
-        this.gradeName = gradeName;
+    public String getGradeId() {
+        return gradeId;
     }
 
     public String getTeacherName() {
@@ -41,10 +32,11 @@ public class Grade {
         this.teacherName = teacherName;
     }
 
+    // Vẫn chưa sữa funtion bên gradeAdapter
     @Override
     public boolean equals(@Nullable Object obj) {
         if(obj==null || obj.getClass() != Grade.class) return false;
-        return ((Grade) obj).gradeName.equals(this.gradeName)
+        return ((Grade) obj).gradeId.equals(this.gradeId)
                 && ((Grade) obj).teacherName.equals(this.teacherName);
     }
 }
