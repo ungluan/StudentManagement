@@ -12,7 +12,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import com.example.studentmanagement.database.dao.GradeDao;
 import com.example.studentmanagement.database.dao.StudentDao;
 import com.example.studentmanagement.database.dao.SubjectDao;
-import com.example.studentmanagement.database.entity.GradeWithStudents;
+
 import com.example.studentmanagement.database.entity.Mark;
 import com.example.studentmanagement.database.entity.Student;
 import com.example.studentmanagement.database.entity.Subject;
@@ -23,7 +23,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 
-@Database(entities = {Grade.class, Subject.class, Student.class, Mark.class}, version = 3, exportSchema = false)
+@Database(entities = {Grade.class, Subject.class, Student.class, Mark.class}, version = 1, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract GradeDao classDao();
 
@@ -44,7 +44,8 @@ public abstract class AppDatabase extends RoomDatabase {
                         context,
                         AppDatabase.class,
                         "app_database"
-                ).createFromAsset("database/app_database.db").fallbackToDestructiveMigration().build();
+                ).createFromAsset("database/app_database.db")
+                        .fallbackToDestructiveMigration().build();
             }
         }
         return INSTANCES;

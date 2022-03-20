@@ -12,6 +12,12 @@ import com.example.studentmanagement.database.entity.Grade;
 
 import java.util.List;
 
+// Repository Có thể Singleton?
+// Nó có ảnh hưởng gì không?
+
+// Implement SingleTon
+// 1 static gradeRepository
+// Constructor gradeRepository!=null ? return : new GradeRepository()
 public class GradeRepository {
     private GradeDao gradeDao;
 

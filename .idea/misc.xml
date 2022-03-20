@@ -3,6 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/TruongLuan/AndroidStudioProjects/AndroidJava/StudentManagement/app/src/main/res/drawable/corner_divier.xml" value="0.112" />
+        <entry key="..\:/Users/TruongLuan/AndroidStudioProjects/AndroidJava/StudentManagement/app/src/main/res/drawable/custom_divier.xml" value="0.112" />
+        <entry key="..\:/Users/TruongLuan/AndroidStudioProjects/AndroidJava/StudentManagement/app/src/main/res/drawable/ic_baseline_add_24.xml" value="0.112" />
+        <entry key="..\:/Users/TruongLuan/AndroidStudioProjects/AndroidJava/StudentManagement/app/src/main/res/drawable/ic_icon_grade_room.xml" value="0.112" />
         <entry key="..\:/Users/TruongLuan/AndroidStudioProjects/AndroidJava/StudentManagement/app/src/main/res/drawable/ic_student_mail_2.xml" value="0.112" />
         <entry key="..\:/Users/TruongLuan/AndroidStudioProjects/AndroidJava/StudentManagement/app/src/main/res/drawable/ic_studying.xml" value="0.112" />
         <entry key="..\:/Users/TruongLuan/AndroidStudioProjects/AndroidJava/StudentManagement/app/src/main/res/drawable/splash_background.xml" value="0.112" />
@@ -11,7 +15,9 @@
         <entry key="..\:/Users/TruongLuan/AndroidStudioProjects/AndroidJava/StudentManagement/app/src/main/res/layout/class_item.xml" value="0.184375" />
         <entry key="..\:/Users/TruongLuan/AndroidStudioProjects/AndroidJava/StudentManagement/app/src/main/res/layout/fragment_class_screen.xml" value="0.184375" />
         <entry key="..\:/Users/TruongLuan/AndroidStudioProjects/AndroidJava/StudentManagement/app/src/main/res/layout/fragment_grade_screen.xml" value="0.14666666666666667" />
+        <entry key="..\:/Users/TruongLuan/AndroidStudioProjects/AndroidJava/StudentManagement/app/src/main/res/layout/fragment_home.xml" value="0.16666666666666666" />
         <entry key="..\:/Users/TruongLuan/AndroidStudioProjects/AndroidJava/StudentManagement/app/src/main/res/layout/grade_item.xml" value="0.16666666666666666" />
+        <entry key="..\:/Users/TruongLuan/AndroidStudioProjects/AndroidJava/StudentManagement/app/src/main/res/layout/item_swipe_left_menu.xml" value="0.184375" />
         <entry key="..\:/Users/TruongLuan/AndroidStudioProjects/AndroidJava/StudentManagement/app/src/main/res/layout/subject_item.xml" value="0.184375" />
       </map>
     </option>

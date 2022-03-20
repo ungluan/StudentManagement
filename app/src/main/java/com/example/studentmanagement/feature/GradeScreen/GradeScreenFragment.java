@@ -1,4 +1,4 @@
-package com.example.studentmanagement.feature.ClassScreen.view;
+package com.example.studentmanagement.feature.GradeScreen;
 
 import android.os.Bundle;
 
@@ -7,21 +7,19 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.studentmanagement.databinding.FragmentGradeScreenBinding;
-import com.example.studentmanagement.feature.ClassScreen.adapter.GradeListAdapter;
-import com.example.studentmanagement.feature.ClassScreen.viewmodel.GradeViewModel;
 import com.example.studentmanagement.utils.ItemMargin;
+import com.omega_r.libs.omegarecyclerview.OmegaRecyclerView;
 
 
 public class GradeScreenFragment extends Fragment {
     private FragmentGradeScreenBinding binding;
-    private RecyclerView recyclerView;
+    private OmegaRecyclerView recyclerView;
     private GradeViewModel gradeViewModel;
 
 
@@ -42,11 +40,16 @@ public class GradeScreenFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         gradeViewModel = new
-                ViewModelProvider(getActivity()).get(GradeViewModel.class);
+                ViewModelProvider(requireActivity()).get(GradeViewModel.class);
 
         recyclerView = binding.recyclerViewGrade;
+
+        // Set data to recycler view
         GradeListAdapter adapter = new GradeListAdapter(new GradeListAdapter.GradeDiff());
         recyclerView.setAdapter(adapter);
+
+
+        // Add margin to recycler view item
         recyclerView.addItemDecoration(
                 new ItemMargin(16, 0, 0, 16));
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));

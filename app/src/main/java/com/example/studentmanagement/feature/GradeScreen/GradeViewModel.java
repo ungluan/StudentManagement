@@ -1,11 +1,10 @@
-package com.example.studentmanagement.feature.ClassScreen.viewmodel;
+package com.example.studentmanagement.feature.GradeScreen;
 
 import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.example.studentmanagement.database.entity.Grade;
 import com.example.studentmanagement.repository.GradeRepository;

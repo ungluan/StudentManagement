@@ -7,42 +7,107 @@
 
     </data>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        tools:context=".feature.ClassScreen.view.GradeScreenFragment">
+        android:layout_height="wrap_content">
 
-        <com.makeramen.roundedimageview.RoundedImageView
-            android:src="@drawable/ic_students_learning"
-            android:scaleType="centerCrop"
-            android:layout_width="match_parent"
-            android:layout_height="256dp"
-            android:layout_marginBottom="16dp"/>
-
-        <TextView
-            android:text="Danh sách lớp học"
-            android:textSize="36sp"
-            android:textStyle="bold"
-            android:textColor="@color/secondary_orange"
-            android:layout_marginStart="16dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-        <com.google.android.material.divider.MaterialDivider
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            app:dividerColor="@android:color/black"
-            android:layout_margin="24dp"/>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:layout_marginLeft="12dp"
-            android:layout_marginRight="12dp"
-            android:id="@+id/recycler_view_grade"
+        <LinearLayout
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:listitem="@layout/grade_item"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            android:orientation="vertical" />
+            android:orientation="vertical"
+            tools:context=".feature.GradeScreen.GradeScreenFragment">
 
-    </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_marginTop="16dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="31dp"
+                    android:orientation="horizontal"
+                    android:gravity="center">
+
+                    <ImageButton
+                        android:layout_marginStart="16dp"
+                        android:src="@drawable/ic_baseline_arrow_back_ios_24"
+                        android:background="@android:color/transparent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="Danh sách lớp học"
+                        android:textColor="@android:color/black"
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_gravity="top"
+                android:elevation="12dp"
+                android:outlineSpotShadowColor="@color/color_secondary_blue_variant_lighter"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/custom_divier"/>
+
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="192dp"
+                android:layout_margin="16dp"
+                app:cardElevation="2dp"
+                android:outlineSpotShadowColor="@color/secondary_blue"
+                app:cardCornerRadius="16dp"
+                app:strokeColor="@color/secondary_orange"
+                app:strokeWidth="1dp">
+
+                <ImageView
+                    android:src="@drawable/ic_students_learning"
+                    android:scaleType="fitXY"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="8dp"/>
+
+            </com.google.android.material.card.MaterialCardView>
+
+
+            <com.omega_r.libs.omegarecyclerview.OmegaRecyclerView
+                android:id="@+id/recycler_view_grade"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="12dp"
+                android:divider="@color/secondary_blue"
+                android:orientation="vertical"
+                app:dividerHeight="2dp"
+                tools:listitem="@layout/grade_item"
+                app:itemSpace="4dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+        </LinearLayout>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:layout_margin="24dp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            app:fabCustomSize="64dp"
+            app:backgroundTint="@color/primary_color"
+            android:foregroundGravity="center"
+            android:outlineSpotShadowColor="@color/color_primary_variant_darker"
+            app:srcCompat="@drawable/ic_baseline_add_24"
+            app:tint="@color/white"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

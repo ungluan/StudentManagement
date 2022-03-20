@@ -1,6 +1,7 @@
 package com.example.studentmanagement.database.entity;
 
 import androidx.room.Embedded;
+
 import androidx.room.Relation;
 
 import java.util.List;

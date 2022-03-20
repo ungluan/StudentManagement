@@ -44,7 +44,6 @@ public class Mark {
         return subjectId;
     }
 
-
     public double getMark() {
         return mark;
     }
