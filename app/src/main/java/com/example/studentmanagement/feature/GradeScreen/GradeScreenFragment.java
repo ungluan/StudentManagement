@@ -27,16 +27,9 @@ import com.example.studentmanagement.utils.AppUtils;
 import com.example.studentmanagement.utils.ItemMargin;
 import com.omega_r.libs.omegarecyclerview.OmegaRecyclerView;
 
-import java.util.Objects;
-import java.util.function.Function;
 
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.core.CompletableObserver;
-import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.core.Scheduler;
 import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.functions.Consumer;
-import io.reactivex.rxjava3.schedulers.Schedulers;
+
 
 
 public class GradeScreenFragment extends Fragment {
@@ -67,7 +60,7 @@ public class GradeScreenFragment extends Fragment {
         recyclerView = binding.recyclerViewGrade;
 
         // Set data to recycler view
-        GradeListAdapter adapter = new GradeListAdapter(new GradeListAdapter.GradeDiff());
+        GradeListAdapter adapter = new GradeListAdapter(gradeViewModel, new GradeListAdapter.GradeDiff());
         recyclerView.setAdapter(adapter);
 
 
@@ -80,26 +73,7 @@ public class GradeScreenFragment extends Fragment {
             adapter.submitList(grades);
             recyclerView.setAdapter(adapter);
         });
-        binding.fab.setOnClickListener(fab -> {
-            showAddGradeDialog(requireContext());
-//            AppUtils.showNotificationDialog(requireContext(), "", "");
-//            Toast.makeText(requireContext(), "Pressed", Toast.LENGTH_SHORT).show();
-            /*disposable = gradeViewModel.insertGrade(new Grade("12A3", "Trần Huy Hoàng"))
-                    .subscribe(
-                            () -> *//*Observable.just("Successfull").
-                                    observeOn(AndroidSchedulers.mainThread()).subscribe(
-                                            s -> new AlertDialog.Builder(requireContext())
-                                                    .setTitle(s).show()*//*
-                                Log.d("Update","Successful")
-                            *//*)*//*,
-                            throwable -> {
-                                Observable.just(throwable.getMessage()).
-                                        observeOn(AndroidSchedulers.mainThread()).subscribe(
-                                        s -> new AlertDialog.Builder(requireContext())
-                                                .setTitle(s).show());
-                            }
-                    );*/
-        });
+        binding.fab.setOnClickListener(fab -> showAddGradeDialog(requireContext()));
     }
 
     @Override
@@ -116,9 +90,12 @@ public class GradeScreenFragment extends Fragment {
         );
         dialog.setContentView(binding.getRoot());
         binding.btnCancel.setOnClickListener(v -> dialog.dismiss());
+        dialog.getWindow().setBackgroundDrawableResource(R.drawable.bg_white_color);
+
         binding.btnAdd.setOnClickListener(v -> {
             String gradeId = String.valueOf(binding.editTextGradeName.getText());
             String teacherName = String.valueOf(binding.editTextTeacherName.getText());
+
             if (gradeId.equals("") || teacherName.equals("")) {
                 if (gradeId.equals(""))
                     binding.textInputLayoutGradeName.setError("Tên lớp không được trống.");
@@ -126,34 +103,34 @@ public class GradeScreenFragment extends Fragment {
                     binding.textInputLayoutTeacherName.setError("Tên GVCN không được trống.");
                 return;
             }
+
             gradeViewModel.getGradeById(gradeId).subscribe(
                     grade -> binding.textInputLayoutGradeName.setError("Mã lớp đã tồn tại."),
+
                     throwable -> AppUtils.showNotificationDialog(
-                            requireContext(),
+                            context,
                             "Thêm lớp thất bại",
                             throwable.getLocalizedMessage()
                     ),
-                    () -> {
-                        gradeViewModel.insertGrade(new Grade(gradeId,teacherName))
-                                .subscribe(
-                                        () -> {
-                                            Toast.makeText(
-                                                    requireContext() ,"Thêm lớp thành công!",
-                                                    Toast.LENGTH_SHORT).show();
-                                            dialog.dismiss();
-                                        },
-                                        throwable -> AppUtils.showNotificationDialog(
-                                                requireContext(),
-                                                "Thêm lớp thất bại",
-                                                throwable.getLocalizedMessage()
-                                        )
-                                );
-                    }
+
+                    () -> gradeViewModel.insertGrade(new Grade(gradeId, teacherName))
+                            .subscribe(
+                                    () -> {
+                                        Toast.makeText(
+                                                context, "Thêm lớp thành công!",
+                                                Toast.LENGTH_SHORT).show();
+                                        dialog.dismiss();
+                                    },
+
+                                    throwable -> AppUtils.showNotificationDialog(
+                                            context,
+                                            "Thêm lớp thất bại",
+                                            throwable.getLocalizedMessage()
+                                    )
+                            )
 
             );
         });
-
-        dialog.getWindow().setBackgroundDrawableResource(R.drawable.bg_white_color);
         dialog.show();
     }
 }

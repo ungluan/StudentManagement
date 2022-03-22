@@ -38,6 +38,6 @@ public class AppUtils {
 
         btnConfirm.setOnClickListener(v -> dialog.dismiss());
     }
-
-
+    //TODO 1: Add FormatPersonName
+    //TODO 2: Add FormatGradeName
 }

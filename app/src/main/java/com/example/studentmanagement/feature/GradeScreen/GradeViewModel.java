@@ -45,7 +45,7 @@ public class GradeViewModel extends AndroidViewModel {
 
     public Completable insertGrade(Grade grade){
         return gradeRepository.insertGrade(grade)
-                .subscribeOn(Schedulers.newThread())
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread());
     }
 

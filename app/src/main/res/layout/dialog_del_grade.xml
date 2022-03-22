@@ -33,14 +33,32 @@
             android:text="Someone wrote this song Before and I could tell you where it's from."
             android:textColor="@android:color/black" />
 
-        <Button
-            android:id="@+id/btn_confirm"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="24dp"
-            android:text="Confirm"
-            android:textStyle="bold" />
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_cancel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="24dp"
+                android:layout_weight="1"
+                android:text="Hủy"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btn_del"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="24dp"
+                android:layout_weight="1"
+                android:text="Xóa"
+                android:textStyle="bold" />
+        </LinearLayout>
 
     </LinearLayout>
 </layout>
