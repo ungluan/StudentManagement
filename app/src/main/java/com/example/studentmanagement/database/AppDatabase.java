@@ -57,9 +57,9 @@ public abstract class AppDatabase extends RoomDatabase {
             super.onCreate(db);
             GradeDao dao = INSTANCES.classDao();
 
-            dao.insert(new Grade("12A1", "Nguyễn Bích Thủy"));
-            dao.insert(new Grade("12A2", "Lê Văn Hiền"));
-            dao.insert(new Grade("12A3", "Trần Huy Hoàng"));
+            dao.insertGrade(new Grade("12A1", "Nguyễn Bích Thủy"));
+            dao.insertGrade(new Grade("12A2", "Lê Văn Hiền"));
+            dao.insertGrade(new Grade("12A3", "Trần Huy Hoàng"));
         }
     };
 }

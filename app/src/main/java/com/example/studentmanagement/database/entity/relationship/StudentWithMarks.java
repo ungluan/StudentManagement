@@ -1,8 +1,11 @@
-package com.example.studentmanagement.database.entity;
+package com.example.studentmanagement.database.entity.relationship;
 
 
 import androidx.room.Embedded;
 import androidx.room.Relation;
+
+import com.example.studentmanagement.database.entity.Mark;
+import com.example.studentmanagement.database.entity.Student;
 
 import java.util.List;
 

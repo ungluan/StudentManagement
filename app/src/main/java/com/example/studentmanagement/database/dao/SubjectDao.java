@@ -6,7 +6,7 @@ import androidx.room.Query;
 import androidx.room.Transaction;
 
 import com.example.studentmanagement.database.entity.Subject;
-import com.example.studentmanagement.database.entity.SubjectWithMarks;
+import com.example.studentmanagement.database.entity.relationship.SubjectWithMarks;
 
 import java.util.List;
 

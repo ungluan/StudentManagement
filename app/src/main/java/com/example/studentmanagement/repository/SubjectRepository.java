@@ -7,7 +7,7 @@ import androidx.lifecycle.LiveData;
 import com.example.studentmanagement.database.AppDatabase;
 import com.example.studentmanagement.database.dao.SubjectDao;
 import com.example.studentmanagement.database.entity.Subject;
-import com.example.studentmanagement.database.entity.SubjectWithMarks;
+import com.example.studentmanagement.database.entity.relationship.SubjectWithMarks;
 
 import java.util.List;
 

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp">
+
+        <TextView
+            android:id="@+id/txt_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="24dp"
+            android:gravity="center"
+            android:text="Title"
+            android:textColor="@color/secondary_blue"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txt_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Someone wrote this song Before and I could tell you where it's from."
+            android:textColor="@android:color/black" />
+
+        <Button
+            android:id="@+id/btn_confirm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="24dp"
+            android:text="Confirm"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+</layout><!--<LinearLayout
+               android:layout_marginTop="24dp"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:orientation="horizontal"
+               android:layout_marginBottom="16dp">
+
+
+               <Button
+                   android:id="@+id/btn_cancel"
+                   android:layout_width="0dp"
+                   android:layout_height="wrap_content"
+                   android:layout_weight="1"
+                   android:layout_marginEnd="16dp"
+                   android:text="Cancel"
+                   android:textColor="@color/purple_500"
+                   android:textStyle="bold"
+                   android:background="@drawable/outline_button" />
+
+               <Button
+                   android:id="@+id/btn_ok"
+                   android:layout_width="0dp"
+                   android:layout_height="wrap_content"
+                   android:layout_weight="1"
+                   android:text="Ok"
+                   android:textStyle="bold"
+                   android:background="@drawable/custom_button" />
+
+           </LinearLayout>-->

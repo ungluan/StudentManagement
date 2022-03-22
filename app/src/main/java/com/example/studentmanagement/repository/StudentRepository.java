@@ -4,7 +4,7 @@ import android.app.Application;
 
 import com.example.studentmanagement.database.AppDatabase;
 import com.example.studentmanagement.database.dao.StudentDao;
-import com.example.studentmanagement.database.entity.StudentWithMarks;
+import com.example.studentmanagement.database.entity.relationship.StudentWithMarks;
 
 import java.util.List;
 
