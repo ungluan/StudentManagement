@@ -1,7 +1,5 @@
 package com.example.studentmanagement.feature.SubjectScreen;
 
-import android.text.Layout;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -13,12 +11,8 @@ import androidx.recyclerview.widget.ListAdapter;
 
 import com.example.studentmanagement.R;
 import com.example.studentmanagement.database.entity.Subject;
-import com.example.studentmanagement.databinding.GradeItemBinding;
-import com.example.studentmanagement.databinding.ItemSwipeLeftMenuBinding;
-import com.example.studentmanagement.databinding.SubjectItemBinding;
-import com.omega_r.libs.omegarecyclerview.swipe_menu.SwipeViewHolder;
 
-import org.w3c.dom.Text;
+import com.omega_r.libs.omegarecyclerview.swipe_menu.SwipeViewHolder;
 
 public class SubjectListAdapter extends ListAdapter<Subject, SubjectListAdapter.SubjectViewHolder> {
     protected SubjectListAdapter(@NonNull DiffUtil.ItemCallback<Subject> diffCallback) {
@@ -31,13 +25,7 @@ public class SubjectListAdapter extends ListAdapter<Subject, SubjectListAdapter.
 
 
         return new SubjectViewHolder(
-                parent,
-                SubjectItemBinding.inflate(
-                        LayoutInflater.from(parent.getContext())
-                ),
-                ItemSwipeLeftMenuBinding.inflate(
-                        LayoutInflater.from(parent.getContext())
-                )
+                parent
         );
     }
 
@@ -54,10 +42,7 @@ public class SubjectListAdapter extends ListAdapter<Subject, SubjectListAdapter.
         private TextView txtSubjectName;
         private TextView txtCoefficient;
 
-        public SubjectViewHolder(
-                ViewGroup parent,
-                SubjectItemBinding subjectItemBinding,
-                ItemSwipeLeftMenuBinding itemSwipeLeftMenuBinding) {
+        public SubjectViewHolder(ViewGroup parent) {
             super(parent, R.layout.subject_item, R.layout.item_swipe_left_menu);
 
             txtSubjectId = findViewById(R.id.txt_subject_id);
@@ -98,7 +83,7 @@ public class SubjectListAdapter extends ListAdapter<Subject, SubjectListAdapter.
 
         @Override
         public boolean areItemsTheSame(@NonNull Subject oldItem, @NonNull Subject newItem) {
-            return oldItem.getId() == newItem.getId();
+            return oldItem.getId().equals(newItem.getId());
         }
 
         @Override
