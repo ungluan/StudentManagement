@@ -24,7 +24,7 @@
         <TextView
             android:id="@+id/txtDel"
             android:layout_width="72dp"
-            android:text="Delete"
+            android:text="Xóa"
             android:gravity="center"
             android:textSize="16sp"
             android:textColor="@color/white"

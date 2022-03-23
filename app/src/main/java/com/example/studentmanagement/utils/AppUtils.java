@@ -1,21 +1,18 @@
 package com.example.studentmanagement.utils;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 
-import androidx.core.util.Consumer;
-import androidx.databinding.DataBindingUtil;
+
 
 import com.example.studentmanagement.R;
-import com.example.studentmanagement.databinding.DialogAddGradeBinding;
 
-import java.util.function.BiFunction;
-import java.util.function.Function;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class AppUtils {
     public static void showNotificationDialog(
@@ -40,6 +37,7 @@ public class AppUtils {
     }
     //TODO 1: Add FormatPersonName
     public static String formatPersonName(String name){
+        if(name.length()==0) return "";
         name = name.trim();
         name = name.replaceAll("\\s+"," ");
         String[] s = name.split(" ");
@@ -54,5 +52,10 @@ public class AppUtils {
     //TODO 2: Add FormatGradeName
     public static String formatGradeName(String name){
         return name.trim().toUpperCase();
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    public static String formatTimeStampToDate(Long timeStamp){
+        return new SimpleDateFormat("dd/MM/yyyy").format(new Date(timeStamp));
     }
 }

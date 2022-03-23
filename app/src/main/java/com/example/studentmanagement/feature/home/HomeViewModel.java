@@ -11,6 +11,7 @@ import com.example.studentmanagement.database.AppDatabase;
 import com.example.studentmanagement.database.entity.Grade;
 import com.example.studentmanagement.database.entity.Student;
 import com.example.studentmanagement.database.entity.Subject;
+import com.example.studentmanagement.database.entity.relationship.GradeWithStudents;
 import com.example.studentmanagement.repository.GradeRepository;
 import com.example.studentmanagement.repository.StudentRepository;
 import com.example.studentmanagement.repository.SubjectRepository;
@@ -46,6 +47,12 @@ public class HomeViewModel extends AndroidViewModel {
     public Flowable<Integer> getNumberOfStudents(){
         return studentRepository.getNumberOfStudents()
                 .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public Flowable<List<GradeWithStudents>> getGradesWithStudents(){
+        return gradeRepository.getGradesWithStudents()
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
 }

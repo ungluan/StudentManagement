@@ -8,6 +8,7 @@ import androidx.lifecycle.LiveData;
 import com.example.studentmanagement.database.AppDatabase;
 import com.example.studentmanagement.database.dao.GradeDao;
 import com.example.studentmanagement.database.entity.Grade;
+import com.example.studentmanagement.database.entity.relationship.GradeWithStudents;
 
 import java.util.List;
 
@@ -52,4 +53,9 @@ public class GradeRepository {
     public Flowable<Integer> getNumberOfGrades(){
         return gradeDao.getNumberOfGrades();
     }
+
+    public Flowable<List<GradeWithStudents>> getGradesWithStudents(){
+        return gradeDao.getGradesWithStudents();
+    }
+    public Flowable<List<Grade>> getListGrade(){return gradeDao.getListGrade();}
 }
