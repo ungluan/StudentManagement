@@ -16,9 +16,7 @@ import android.view.ViewGroup;
 
 import com.example.studentmanagement.R;
 import com.example.studentmanagement.databinding.FragmentHomeBinding;
-import com.example.studentmanagement.feature.GradeScreen.GradeViewModel;
 
-import java.util.Objects;
 
 public class HomeFragment extends Fragment {
     // HomeViewModel initial in onCreateView
@@ -39,27 +37,27 @@ public class HomeFragment extends Fragment {
         // Hiện tại đang phải call tuần tự
         homeViewModel.getNumberOfGrades().subscribe(
                 number -> binding.txtNumberOfGrades.setText(
-                        getString(R.string.number_and_noun,number,"Lớp")),
-                throwable -> Log.d("HomeFragment",throwable.getMessage()),
-                () -> Log.d("HomeFragment","onCompleted")
+                        getString(R.string.number_and_noun, number, "Lớp")),
+                throwable -> Log.d("HomeFragment", throwable.getMessage()),
+                () -> Log.d("HomeFragment", "onCompleted")
         );
         homeViewModel.getNumberOfSubjects().subscribe(
                 number -> binding.txtNumberOfSubjects.setText(
-                        getString(R.string.number_and_noun,number,"Môn")),
-                throwable -> Log.d("HomeFragment",throwable.getMessage()),
-                () -> Log.d("HomeFragment","onCompleted")
+                        getString(R.string.number_and_noun, number, "Môn")),
+                throwable -> Log.d("HomeFragment", throwable.getMessage()),
+                () -> Log.d("HomeFragment", "onCompleted")
         );
         homeViewModel.getNumberOfStudents().subscribe(
                 number -> binding.txtNumberOfStudents.setText(
-                        getString(R.string.number_and_noun,number,"Học sinh")),
-                throwable -> Log.d("HomeFragment",throwable.getMessage()),
-                () -> Log.d("HomeFragment","onCompleted")
+                        getString(R.string.number_and_noun, number, "Học sinh")),
+                throwable -> Log.d("HomeFragment", throwable.getMessage()),
+                () -> Log.d("HomeFragment", "onCompleted")
         );
         binding.cardViewGrade.setOnClickListener(
-                v-> {
+                v -> {
                     NavDirections action = HomeFragmentDirections.actionHomeFragmentToGradeScreenFragment();
                     Navigation.findNavController(v).navigate(action);
                 }
-                );
+        );
     }
 }

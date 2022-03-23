@@ -32,7 +32,6 @@ public class GradeScreenFragment extends Fragment {
     private FragmentGradeScreenBinding binding;
     private OmegaRecyclerView recyclerView;
     private GradeViewModel gradeViewModel;
-    private Disposable disposable;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -68,11 +67,6 @@ public class GradeScreenFragment extends Fragment {
         binding.fab.setOnClickListener(fab -> showAddGradeDialog(requireContext()));
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        disposable.dispose();
-    }
 
     private void showAddGradeDialog(Context context) {
         Dialog dialog = new Dialog(context, R.style.DialogStyle);
