@@ -10,6 +10,8 @@ import com.example.studentmanagement.database.entity.relationship.SubjectWithMar
 
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Flowable;
+
 @Dao
 public interface SubjectDao {
     // get all subject@
@@ -19,4 +21,7 @@ public interface SubjectDao {
     @Transaction
     @Query("SELECT * FROM MONHOC")
     List<SubjectWithMarks> getSubjectsWithMarks();
+
+    @Query("SELECT COUNT(*) FROM MONHOC")
+    Flowable<Integer> getNumberOfSubjects();
 }

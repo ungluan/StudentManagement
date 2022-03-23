@@ -8,6 +8,8 @@ import com.example.studentmanagement.database.entity.relationship.StudentWithMar
 
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Flowable;
+
 public class StudentRepository {
     private final StudentDao studentDao;
     public StudentRepository(Application application) {
@@ -19,7 +21,7 @@ public class StudentRepository {
         return studentDao.getStudentsWithMarks();
     }
 
-//    public int getNumberOfStudents(){
-//        return studentDao.getNumberOfStudent();
-//    }
+    public Flowable<Integer> getNumberOfStudents(){
+        return studentDao.getNumberOfStudents();
+    }
 }

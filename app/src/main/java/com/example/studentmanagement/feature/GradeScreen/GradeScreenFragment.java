@@ -1,18 +1,15 @@
 package com.example.studentmanagement.feature.GradeScreen;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,16 +28,11 @@ import com.omega_r.libs.omegarecyclerview.OmegaRecyclerView;
 import io.reactivex.rxjava3.disposables.Disposable;
 
 
-
 public class GradeScreenFragment extends Fragment {
     private FragmentGradeScreenBinding binding;
     private OmegaRecyclerView recyclerView;
     private GradeViewModel gradeViewModel;
     private Disposable disposable;
-
-    public GradeScreenFragment() {
-        // Required empty public constructor
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -93,8 +85,8 @@ public class GradeScreenFragment extends Fragment {
         dialog.getWindow().setBackgroundDrawableResource(R.drawable.bg_white_color);
 
         binding.btnAdd.setOnClickListener(v -> {
-            String gradeId = String.valueOf(binding.editTextGradeName.getText());
-            String teacherName = String.valueOf(binding.editTextTeacherName.getText());
+            String gradeId = AppUtils.formatGradeName(String.valueOf(binding.editTextGradeName.getText()));
+            String teacherName = AppUtils.formatPersonName(String.valueOf(binding.editTextTeacherName.getText()));
 
             if (gradeId.equals("") || teacherName.equals("")) {
                 if (gradeId.equals(""))

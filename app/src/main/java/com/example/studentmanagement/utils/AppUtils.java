@@ -39,5 +39,20 @@ public class AppUtils {
         btnConfirm.setOnClickListener(v -> dialog.dismiss());
     }
     //TODO 1: Add FormatPersonName
+    public static String formatPersonName(String name){
+        name = name.trim();
+        name = name.replaceAll("\\s+"," ");
+        String[] s = name.split(" ");
+        name = "";
+        for (String s1 : s) {
+            name += s1.toUpperCase().charAt(0);
+            if(s1.length()>1) name += s1.toLowerCase().substring(1);
+            name += " ";
+        }
+        return name.trim();
+    }
     //TODO 2: Add FormatGradeName
+    public static String formatGradeName(String name){
+        return name.trim().toUpperCase();
+    }
 }

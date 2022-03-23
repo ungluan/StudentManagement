@@ -11,6 +11,8 @@ import com.example.studentmanagement.database.entity.relationship.SubjectWithMar
 
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Flowable;
+
 public class SubjectRepository {
     private final SubjectDao subjectDao;
 
@@ -25,5 +27,9 @@ public class SubjectRepository {
 
     public List<SubjectWithMarks> getSubjectsWithMarks() {
         return subjectDao.getSubjectsWithMarks();
+    }
+
+    public Flowable<Integer> getNumberOfSubjects(){
+        return subjectDao.getNumberOfSubjects();
     }
 }

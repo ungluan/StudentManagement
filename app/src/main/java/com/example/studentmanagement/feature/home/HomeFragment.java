@@ -2,9 +2,14 @@ package com.example.studentmanagement.feature.home;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,23 +21,45 @@ import com.example.studentmanagement.feature.GradeScreen.GradeViewModel;
 import java.util.Objects;
 
 public class HomeFragment extends Fragment {
-
+    // HomeViewModel initial in onCreateView
     private FragmentHomeBinding binding;
     private HomeViewModel homeViewModel;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // Trước khi tạo view
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        binding = FragmentHomeBinding.inflate(inflater);
+        return binding.getRoot();
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragmente
-        binding = FragmentHomeBinding.inflate(inflater);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         homeViewModel = new ViewModelProvider(requireActivity()).get(HomeViewModel.class);
-
-        return binding.getRoot();
+        // Hiện tại đang phải call tuần tự
+        homeViewModel.getNumberOfGrades().subscribe(
+                number -> binding.txtNumberOfGrades.setText(
+                        getString(R.string.number_and_noun,number,"Lớp")),
+                throwable -> Log.d("HomeFragment",throwable.getMessage()),
+                () -> Log.d("HomeFragment","onCompleted")
+        );
+        homeViewModel.getNumberOfSubjects().subscribe(
+                number -> binding.txtNumberOfSubjects.setText(
+                        getString(R.string.number_and_noun,number,"Môn")),
+                throwable -> Log.d("HomeFragment",throwable.getMessage()),
+                () -> Log.d("HomeFragment","onCompleted")
+        );
+        homeViewModel.getNumberOfStudents().subscribe(
+                number -> binding.txtNumberOfStudents.setText(
+                        getString(R.string.number_and_noun,number,"Học sinh")),
+                throwable -> Log.d("HomeFragment",throwable.getMessage()),
+                () -> Log.d("HomeFragment","onCompleted")
+        );
+        binding.cardViewGrade.setOnClickListener(
+                v-> {
+                    NavDirections action = HomeFragmentDirections.actionHomeFragmentToGradeScreenFragment();
+                    Navigation.findNavController(v).navigate(action);
+                }
+                );
     }
 }

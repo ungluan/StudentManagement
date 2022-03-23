@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/gradeScreenFragment">
+    app:startDestination="@id/homeFragment">
 
     <fragment
         android:id="@+id/gradeScreenFragment"
@@ -13,5 +13,9 @@
         android:id="@+id/homeFragment"
         android:name="com.example.studentmanagement.feature.home.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_gradeScreenFragment"
+            app:destination="@id/gradeScreenFragment" />
+    </fragment>
 </navigation>

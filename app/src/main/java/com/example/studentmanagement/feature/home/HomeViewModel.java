@@ -17,20 +17,35 @@ import com.example.studentmanagement.repository.SubjectRepository;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+import kotlinx.coroutines.flow.Flow;
+
 public class HomeViewModel extends AndroidViewModel {
+    private GradeRepository gradeRepository;
+    private SubjectRepository subjectRepository;
+    private StudentRepository studentRepository;
     public HomeViewModel(@NonNull Application application) {
         super(application);
         this.gradeRepository = new GradeRepository(application);
-//        this.studentRepository = new StudentRepository(application);
-//        this.subjectRepository = new SubjectRepository(application);
-//        grades = gradeRepository.getAllGrade();
-//        subjects = subjectRepository.getAllSubject();
-//        students = studentRepository.getNumberOfStudents();
+        this.subjectRepository = new SubjectRepository(application);
+        this.studentRepository = new StudentRepository(application);
     }
-    private GradeRepository gradeRepository;
-    private StudentRepository studentRepository;
-    private SubjectRepository subjectRepository;
-    private LiveData<List<Grade>> grades;
-    private LiveData<List<Subject> > subjects;
-    private int students;
+
+    public Flowable<Integer> getNumberOfGrades(){
+        return gradeRepository.getNumberOfGrades()
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+    public Flowable<Integer> getNumberOfSubjects(){
+        return subjectRepository.getNumberOfSubjects()
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+    public Flowable<Integer> getNumberOfStudents(){
+        return studentRepository.getNumberOfStudents()
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
 }

@@ -41,12 +41,6 @@ public class GradeListAdapter extends ListAdapter<Grade, GradeListAdapter.GradeV
     public GradeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new GradeViewHolder(
                 parent,
-                GradeItemBinding.inflate(
-                        LayoutInflater.from(parent.getContext())
-                ),
-                ItemSwipeLeftMenuBinding.inflate(
-                        LayoutInflater.from(parent.getContext())
-                ),
                 gradeViewModel
         );
     }
@@ -66,11 +60,11 @@ public class GradeListAdapter extends ListAdapter<Grade, GradeListAdapter.GradeV
 
         public GradeViewHolder(
                 ViewGroup parent,
-                GradeItemBinding gradeItemBinding,
-                ItemSwipeLeftMenuBinding itemSwipeLeftMenuBinding,
                 GradeViewModel gradeViewModel) {
             super(parent, R.layout.grade_item, R.layout.item_swipe_left_menu);
+//            this.setRightSwipeEnable(false);
             this.gradeViewModel = gradeViewModel;
+
             txtGradeName = findViewById(R.id.txt_grade_name);
             txtTeacherName = findViewById(R.id.txt_teacher_name);
             txtEdit = findViewById(R.id.txtEdit);
@@ -78,11 +72,6 @@ public class GradeListAdapter extends ListAdapter<Grade, GradeListAdapter.GradeV
             txtEdit.setOnClickListener(this);
             txtDel.setOnClickListener(this);
         }
-
-//         public GradeViewHolder(View contentView, @Nullable View swipeLeftMenuView) {
-//             super(contentView, R.layout.item_swipe_left_menu);
-//         }
-
 
         public void bind(Grade grade) {
 
@@ -111,12 +100,13 @@ public class GradeListAdapter extends ListAdapter<Grade, GradeListAdapter.GradeV
             binding.editTextGradeName.setText(String.valueOf(txtGradeName.getText()).split(":")[1].trim());
             binding.editTextGradeName.setEnabled(false);
             binding.editTextTeacherName.setText(String.valueOf(txtTeacherName.getText()).split(":")[1].trim());
+            binding.btnAdd.setText("Sửa");
+            binding.txtTitle.setText("Sửa lớp học");
 
             binding.btnCancel.setOnClickListener(v -> dialog.dismiss());
-            binding.btnAdd.setText("Sửa");
             binding.btnAdd.setOnClickListener(v -> {
                 String gradeId = String.valueOf(binding.editTextGradeName.getText());
-                String teacherName = String.valueOf(binding.editTextTeacherName.getText());
+                String teacherName = AppUtils.formatGradeName(String.valueOf(binding.editTextTeacherName.getText()));
 
                 gradeViewModel.updateGrade(new Grade(gradeId, teacherName))
                         .subscribe(
@@ -130,7 +120,7 @@ public class GradeListAdapter extends ListAdapter<Grade, GradeListAdapter.GradeV
                                 ),
                                 throwable -> AppUtils.showNotificationDialog(
                                         context,
-                                        "Sửa lớp thất bại",
+                                        "Sửa lớp thất bại!",
                                         throwable.getLocalizedMessage()
                                 )
                         );
@@ -147,12 +137,13 @@ public class GradeListAdapter extends ListAdapter<Grade, GradeListAdapter.GradeV
             );
             dialog.setContentView(binding.getRoot());
             dialog.getWindow().setBackgroundDrawableResource(R.drawable.bg_white_color);
-            binding.btnCancel.setOnClickListener(v -> dialog.dismiss());
             binding.txtTitle.setText("Thông báo");
             binding.txtContent.setText("Bạn có chắc chắn muốn xóa " + txtGradeName.getText() + " không?");
+
+            binding.btnCancel.setOnClickListener(v -> dialog.dismiss());
             binding.btnDel.setOnClickListener(v -> {
                 String gradeId = String.valueOf(txtGradeName.getText()).split(":")[1].trim();
-                String teacherName = String.valueOf(txtTeacherName.getText()).split(":")[1].trim();
+                String teacherName = AppUtils.formatPersonName(String.valueOf(txtTeacherName.getText()).split(":")[1].trim());
                 gradeViewModel.deleteGrade(new Grade(gradeId, teacherName))
                         .subscribe(
                                 () -> {

@@ -14,6 +14,7 @@ import com.example.studentmanagement.database.entity.relationship.GradeWithStude
 import java.util.List;
 
 import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Maybe;
 
 /***
@@ -61,4 +62,6 @@ public interface GradeDao {
     @Query("SELECT * FROM LOP WHERE LOP=:gradeId")
     Maybe<Grade> getGradeById(String gradeId);
 
+    @Query("SELECT COUNT(*) FROM LOP")
+    Flowable<Integer> getNumberOfGrades();
 }

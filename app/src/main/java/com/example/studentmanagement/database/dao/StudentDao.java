@@ -8,9 +8,14 @@ import com.example.studentmanagement.database.entity.relationship.StudentWithMar
 
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Flowable;
+
 @Dao
 public interface StudentDao {
     @Transaction
     @Query("SELECT * FROM HOCSINH")
     List<StudentWithMarks> getStudentsWithMarks();
+
+    @Query("SELECT COUNT(*) FROM HOCSINH")
+    Flowable<Integer> getNumberOfStudents();
 }

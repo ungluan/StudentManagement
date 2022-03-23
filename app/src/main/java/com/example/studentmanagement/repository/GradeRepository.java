@@ -12,6 +12,7 @@ import com.example.studentmanagement.database.entity.Grade;
 import java.util.List;
 
 import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Maybe;
 
 // Repository Có thể Singleton?
@@ -28,17 +29,10 @@ public class GradeRepository {
         this.gradeDao = db.classDao();
     }
 
-    // Thực hiện Async tại viewModel hay Repository
     public LiveData<List<Grade>> getAllGrade() {
         return gradeDao.getAllGrade();
     }
 
-    //    void insert(Grade grade){
-//        AppDatabase.databaseWriteExecutor.execute(()->{
-//                    gradeDao.insert(grade);
-//                }
-//            );
-//    }
     public Completable insertGrade(Grade grade) {
         return gradeDao.insertGrade(grade);
     }
@@ -53,5 +47,9 @@ public class GradeRepository {
 
     public Maybe<Grade> getGradeById(String gradeId){
         return gradeDao.getGradeById(gradeId);
+    }
+
+    public Flowable<Integer> getNumberOfGrades(){
+        return gradeDao.getNumberOfGrades();
     }
 }
