@@ -8,6 +8,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.view.LayoutInflater;
@@ -64,7 +66,15 @@ public class GradeScreenFragment extends Fragment {
             adapter.submitList(grades);
             recyclerView.setAdapter(adapter);
         });
+
         binding.fab.setOnClickListener(fab -> showAddGradeDialog(requireContext()));
+
+        binding.btnBack.setOnClickListener(
+                v -> {
+                    NavDirections action = GradeScreenFragmentDirections.actionGradeScreenFragmentToHomeFragment();
+                    Navigation.findNavController(v).navigate(action);
+                }
+            );
     }
 
 

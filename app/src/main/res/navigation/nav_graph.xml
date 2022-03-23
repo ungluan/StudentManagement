@@ -8,7 +8,13 @@
     <fragment
         android:id="@+id/gradeScreenFragment"
         android:name="com.example.studentmanagement.feature.GradeScreen.GradeScreenFragment"
-        android:label="GradeScreenFragment" />
+        android:label="GradeScreenFragment" >
+        <action
+            android:id="@+id/action_gradeScreenFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.example.studentmanagement.feature.home.HomeFragment"
