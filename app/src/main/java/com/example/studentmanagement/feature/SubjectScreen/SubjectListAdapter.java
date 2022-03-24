@@ -1,6 +1,5 @@
 package com.example.studentmanagement.feature.SubjectScreen;
 
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,12 +12,9 @@ import androidx.recyclerview.widget.ListAdapter;
 
 import com.example.studentmanagement.R;
 import com.example.studentmanagement.database.entity.Subject;
-import com.example.studentmanagement.databinding.GradeItemBinding;
 import com.example.studentmanagement.databinding.ItemSwipeLeftMenuBinding;
 import com.example.studentmanagement.databinding.SubjectItemBinding;
 import com.omega_r.libs.omegarecyclerview.swipe_menu.SwipeViewHolder;
-
-import org.w3c.dom.Text;
 
 public class SubjectListAdapter extends ListAdapter<Subject, SubjectListAdapter.SubjectViewHolder> {
     protected SubjectListAdapter(@NonNull DiffUtil.ItemCallback<Subject> diffCallback) {
@@ -73,9 +69,9 @@ public class SubjectListAdapter extends ListAdapter<Subject, SubjectListAdapter.
 
         @Override
         public void onClick(View view) {
-            if(view.getId()==R.id.txtEdit){
+            if(view.getId()== R.id.txtEdit){
                 txtEdit.setText("edit subject");
-            }else if(view.getId()==R.id.txtDel){
+            }else if(view.getId()== R.id.txtDel){
                 showToast("Delete subject clicked ");
             }
 
@@ -88,7 +84,7 @@ public class SubjectListAdapter extends ListAdapter<Subject, SubjectListAdapter.
 
 
         public void bind(Subject item) {
-            txtSubjectId.setText(getString(R.string.id_of_the_subject, item.getId()));
+            txtSubjectId.setText(getString(R.string.id_of_the_subject, item.getSubjectId()));
             txtSubjectName.setText(getString(R.string.name_of_the_subject, item.getSubjectName()));
             txtCoefficient.setText(getString(R.string.coefficient_of_the_subject, item.getCoefficient()));
         }
@@ -98,7 +94,7 @@ public class SubjectListAdapter extends ListAdapter<Subject, SubjectListAdapter.
 
         @Override
         public boolean areItemsTheSame(@NonNull Subject oldItem, @NonNull Subject newItem) {
-            return oldItem.getId() == newItem.getId();
+            return oldItem.getSubjectId() == newItem.getSubjectId();
         }
 
         @Override

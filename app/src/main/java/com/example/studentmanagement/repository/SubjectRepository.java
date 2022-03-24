@@ -11,7 +11,9 @@ import com.example.studentmanagement.database.entity.relationship.SubjectWithMar
 
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.core.Maybe;
 
 public class SubjectRepository {
     private final SubjectDao subjectDao;
@@ -25,6 +27,7 @@ public class SubjectRepository {
         return subjectDao.getAllSubject();
     }
 
+
     public List<SubjectWithMarks> getSubjectsWithMarks() {
         return subjectDao.getSubjectsWithMarks();
     }
@@ -32,4 +35,11 @@ public class SubjectRepository {
     public Flowable<Integer> getNumberOfSubjects(){
         return subjectDao.getNumberOfSubjects();
     }
+
+    public Completable insertSubject(Subject subject) {return subjectDao.insertSubject(subject);}
+    public Completable updateSubject(Subject subject) {return subjectDao.updateSubject(subject);}
+    public Completable deleteSubject(Subject subject) {return subjectDao.deleteSubject(subject);}
+    public Maybe<Subject> getSubjectById(String id) {return subjectDao.getSubjectById(id);}
+
+
 }

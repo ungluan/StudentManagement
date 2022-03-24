@@ -59,5 +59,12 @@ public class HomeFragment extends Fragment {
                     Navigation.findNavController(v).navigate(action);
                 }
         );
+
+        binding.cardViewSubject.setOnClickListener(
+                v -> {
+                    NavDirections action = HomeFragmentDirections.actionHomeFragmentToSubjectScreenFragment();
+                    Navigation.findNavController(v).navigate(action);
+                }
+        );
     }
 }

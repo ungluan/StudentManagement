@@ -22,8 +22,13 @@ public class Subject {
         this.coefficient = coefficient;
     }
 
-    public String getId() {
+    @NonNull
+    public String getSubjectId() {
         return subjectId;
+    }
+
+    public void setSubjectId(@NonNull String subjectId) {
+        this.subjectId = subjectId;
     }
 
     public String getSubjectName() {

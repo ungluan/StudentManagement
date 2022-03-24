@@ -23,5 +23,16 @@
         <action
             android:id="@+id/action_homeFragment_to_gradeScreenFragment"
             app:destination="@id/gradeScreenFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_subjectScreenFragment"
+            app:destination="@id/subjectScreenFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/subjectScreenFragment"
+        android:name="com.example.studentmanagement.feature.SubjectScreen.SubjectScreenFragment"
+        android:label="SubjectScreenFragment" >
+        <action
+            android:id="@+id/action_subjectScreenFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
     </fragment>
 </navigation>
