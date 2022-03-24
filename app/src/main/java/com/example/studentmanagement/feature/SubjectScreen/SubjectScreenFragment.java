@@ -49,7 +49,7 @@ public class SubjectScreenFragment extends Fragment {
 
         //set data to recycler view
         SubjectListAdapter adapter = new
-                SubjectListAdapter(new SubjectListAdapter.SubjectDiff());
+                SubjectListAdapter(subjectViewModel, new SubjectListAdapter.SubjectDiff());
         recyclerView.setAdapter(adapter);
 
         // add margin to recyccler view item
