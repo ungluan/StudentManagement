@@ -6,6 +6,7 @@ import androidx.annotation.Nullable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Ignore;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
@@ -30,6 +31,15 @@ public class Student {
     String gradeId;
 
     public Student(int id, String firstName, String lastName, String gender, String birthday, String gradeId) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.gender = gender;
+        this.birthday = birthday;
+        this.gradeId = gradeId;
+    }
+    @Ignore
+    public Student(String firstName, String lastName, String gender, String birthday, String gradeId) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.gender = gender;
