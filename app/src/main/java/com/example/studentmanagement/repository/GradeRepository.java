@@ -54,8 +54,9 @@ public class GradeRepository {
         return gradeDao.getNumberOfGrades();
     }
 
-    public Flowable<List<GradeWithStudents>> getGradesWithStudents(){
-        return gradeDao.getGradesWithStudents();
-    }
-    public Flowable<List<Grade>> getListGrade(){return gradeDao.getListGrade();}
+//    public Flowable<List<GradeWithStudents>> getGradesWithStudents(){
+//        return gradeDao.getGradesWithStudents();
+//    }
+
+    public Maybe<List<Grade>> getListGrade(){return gradeDao.getListGrade();}
 }

@@ -16,12 +16,13 @@ import java.util.List;
 
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.core.Maybe;
 
 @Dao
 public interface StudentDao {
-    @Transaction
-    @Query("SELECT * FROM HOCSINH")
-    List<StudentWithMarks> getStudentsWithMarks();
+//    @Transaction
+//    @Query("SELECT * FROM HOCSINH")
+//    List<StudentWithMarks> getStudentsWithMarks();
 
     @Query("SELECT COUNT(*) FROM HOCSINH")
     Flowable<Integer> getNumberOfStudents();

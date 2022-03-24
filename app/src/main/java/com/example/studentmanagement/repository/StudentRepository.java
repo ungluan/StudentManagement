@@ -11,6 +11,7 @@ import java.util.List;
 
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.core.Maybe;
 
 public class StudentRepository {
     private final StudentDao studentDao;
@@ -20,9 +21,9 @@ public class StudentRepository {
         this.studentDao = db.studentDao();
     }
 
-    public List<StudentWithMarks> getStudentsWithMarks() {
+    /*public List<StudentWithMarks> getStudentsWithMarks() {
         return studentDao.getStudentsWithMarks();
-    }
+    }*/
 
     public Flowable<Integer> getNumberOfStudents() {
         return studentDao.getNumberOfStudents();

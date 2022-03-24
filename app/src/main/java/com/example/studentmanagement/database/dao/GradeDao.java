@@ -46,9 +46,9 @@ public interface GradeDao {
     @Query("SELECT * FROM LOP")
     LiveData<List<Grade>> getAllGrade();
 
-    @Transaction
-    @Query("SELECT * FROM LOP")
-    Flowable<List<GradeWithStudents>> getGradesWithStudents();
+//    @Transaction
+//    @Query("SELECT * FROM LOP")
+//    Flowable<List<GradeWithStudents>> getGradesWithStudents();
 
     @Insert
     Completable insertGrade(Grade grade);
@@ -66,5 +66,5 @@ public interface GradeDao {
     Flowable<Integer> getNumberOfGrades();
 
     @Query("SELECT * FROM LOP")
-    Flowable<List<Grade>> getListGrade();
+    Maybe<List<Grade>> getListGrade();
 }

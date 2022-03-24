@@ -39,6 +39,7 @@ import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 
 public class StudentScreenFragment extends Fragment {
@@ -67,14 +68,13 @@ public class StudentScreenFragment extends Fragment {
         studentViewModel = new ViewModelProvider(requireActivity()).get(StudentViewModel.class);
         editTextGradeName = binding.editTextGradeName;
         // setup Recycler View
-        studentListAdapter = new StudentListAdapter(studentViewModel ,new StudentListAdapter.StudentDiff());
+        studentListAdapter = new StudentListAdapter(studentViewModel, new StudentListAdapter.StudentDiff());
         recyclerView = binding.recyclerViewStudent;
         recyclerView.setAdapter(studentListAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
 
         txtListEmpty = binding.txtListEmpty;
 
-        initialStudentScreen();
         editTextGradeName.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -89,6 +89,9 @@ public class StudentScreenFragment extends Fragment {
             NavDirections action = StudentScreenFragmentDirections.actionStudentScreenFragmentToHomeFragment();
             Navigation.findNavController(v).navigate(action);
         });
+
+        initialStudentScreen();
+
     }
 
     private void loadRecyclerViewStudent(String gradeId) {
@@ -113,10 +116,10 @@ public class StudentScreenFragment extends Fragment {
     private void initialStudentScreen() {
         studentViewModel.getListGrade().subscribe(
                 strings -> Observable.fromIterable(strings)
-                        .map(grade -> grade.getGradeId()).toList().subscribe(
-                                gradeNames -> {
-                                    initialDropdown(gradeNames);
-                                },
+                        .map(grade -> grade.getGradeId()).toList()
+                        .subscribeOn(Schedulers.computation())
+                        .observeOn(AndroidSchedulers.mainThread()).subscribe(
+                                gradeNames -> initialDropdown(gradeNames),
                                 throwable -> Log.d("StudentFragment", "Error: " + throwable.getMessage())
                         ),
                 throwable -> {
