@@ -1,6 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+    <data>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </data>
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp"
+        >
+
+        <TextView
+            android:id="@+id/dialog_title_add_subject"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:textColor="@color/color_secondary_blue_variant_darker"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Thêm môn học"
+            android:layout_marginTop="18dp"
+            android:layout_marginBottom="18dp"
+            >
+
+        </TextView>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/text_input_subject_id"
+            android:layout_width="match_parent"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:hint="Mã môn học"
+            android:nextFocusDown="@id/edit_text_subject_name"
+            app:boxStrokeWidth="1dp"
+            app:hintEnabled="true"
+            android:layout_marginTop="16dp"
+            app:startIconCheckable="true"
+            android:layout_height="wrap_content">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_text_subject_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress">
+
+            </com.google.android.material.textfield.TextInputEditText>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_marginTop="10dp"
+            android:hint="Tên môn học"
+            app:boxStrokeWidth="1dp"
+            app:hintEnabled="true"
+            app:startIconCheckable="true"
+            android:layout_height="wrap_content">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_text_subject_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress">
+
+            </com.google.android.material.textfield.TextInputEditText>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_marginTop="10dp"
+            android:hint="Hệ số"
+            app:boxStrokeWidth="1dp"
+            app:hintEnabled="true"
+            app:startIconCheckable="true"
+            android:layout_height="wrap_content">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_text_subject_coefficient"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number">
+
+            </com.google.android.material.textfield.TextInputEditText>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <LinearLayout
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/btn_cancel_add_subject"
+                android:text="HỦY"
+                android:layout_weight="1"
+                android:layout_marginRight="16dp"
+                android:textStyle="bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </Button>
+
+            <Button
+                android:textStyle="bold"
+                android:layout_marginLeft="16dp"
+                android:id="@+id/btn_confirm_add_subject"
+                android:text="THÊM"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </Button>
+        </LinearLayout>
+    </LinearLayout>
+</layout>

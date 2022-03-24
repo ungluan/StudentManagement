@@ -59,6 +59,10 @@ public class HomeFragment extends Fragment {
                     Navigation.findNavController(v).navigate(action);
                 }
         );
+
+
+
+
         binding.cardViewStudent.setOnClickListener(
                 v -> {
                     NavDirections action = HomeFragmentDirections.actionHomeFragmentToStudentScreenFragment();
@@ -79,5 +83,6 @@ public class HomeFragment extends Fragment {
                     );
                 }
         );*/
+
     }
 }
