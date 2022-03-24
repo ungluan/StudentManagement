@@ -15,6 +15,7 @@ import java.util.List;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.core.Maybe;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class StudentViewModel extends AndroidViewModel {
@@ -28,20 +29,32 @@ public class StudentViewModel extends AndroidViewModel {
         this.gradeRepository = new GradeRepository(application);
     }
 
-    public Flowable<List<Grade>> getListGrade() {
+    public Maybe<List<Grade>> getListGrade() {
         return gradeRepository.getListGrade()
-                .subscribeOn(Schedulers.computation())
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
     public Flowable<List<Student>> getStudentsByGradeId(String gradeId) {
         return studentRepository.getStudentsByGradeId(gradeId)
-                .subscribeOn(Schedulers.computation())
+                .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.newThread());
     }
 
     public Completable insertStudent(Student student) {
         return studentRepository.insertStudent(student)
+                .subscribeOn(Schedulers.computation())
+                .observeOn(Schedulers.newThread());
+    }
+
+    public Completable updateStudent(Student student) {
+        return studentRepository.updateStudent(student)
+                .subscribeOn(Schedulers.computation())
+                .observeOn(Schedulers.newThread());
+    }
+
+    public Completable deleteStudent(Student student) {
+        return studentRepository.deleteStudent(student)
                 .subscribeOn(Schedulers.computation())
                 .observeOn(Schedulers.newThread());
     }

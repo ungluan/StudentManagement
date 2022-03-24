@@ -121,7 +121,6 @@ public class GradeScreenFragment extends Fragment {
                                             throwable.getLocalizedMessage()
                                     )
                             )
-
             );
         });
         dialog.show();
