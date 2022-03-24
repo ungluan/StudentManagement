@@ -26,9 +26,12 @@ import android.widget.Toast;
 
 import com.example.studentmanagement.R;
 import com.example.studentmanagement.database.entity.Student;
+import com.example.studentmanagement.database.entity.Subject;
 import com.example.studentmanagement.databinding.DialogAddStudentBinding;
 import com.example.studentmanagement.databinding.FragmentStudentScreenBinding;
 import com.example.studentmanagement.utils.AppUtils;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.omega_r.libs.omegarecyclerview.OmegaRecyclerView;
 
@@ -51,7 +54,7 @@ public class StudentScreenFragment extends Fragment {
     private OmegaRecyclerView recyclerView;
     private StudentListAdapter studentListAdapter;
     private TextView txtListEmpty;
-
+    private ChipGroup chipGroupSubject;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -140,6 +143,10 @@ public class StudentScreenFragment extends Fragment {
         // Set Date
         @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
         binding.editTextBirthday.setText(simpleDateFormat.format(new Date()));
+        // Set ChipGroup
+        chipGroupSubject = binding.chipGroupSubject;
+
+
         // Set Action
         binding.btnCancel.setOnClickListener(v -> dialog.dismiss());
         binding.textInputLayoutBirthday.setEndIconOnClickListener(v -> {
@@ -193,5 +200,10 @@ public class StudentScreenFragment extends Fragment {
             );
         });
         dialog.show();
+    }
+    private void addChips(Subject subject){
+        Chip chip = (Chip) this.getLayoutInflater().inflate(R.layout.item_chip_subject,null,false);
+        chip.setText(subject.getSubjectName());
+        chipGroupSubject.addView(chip);
     }
 }
