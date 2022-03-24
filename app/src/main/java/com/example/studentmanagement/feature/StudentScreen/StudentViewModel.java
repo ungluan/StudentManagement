@@ -45,4 +45,16 @@ public class StudentViewModel extends AndroidViewModel {
                 .subscribeOn(Schedulers.computation())
                 .observeOn(Schedulers.newThread());
     }
+
+    public Completable updateStudent(Student student) {
+        return studentRepository.updateStudent(student)
+                .subscribeOn(Schedulers.computation())
+                .observeOn(Schedulers.newThread());
+    }
+
+    public Completable deleteStudent(Student student) {
+        return studentRepository.deleteStudent(student)
+                .subscribeOn(Schedulers.computation())
+                .observeOn(Schedulers.newThread());
+    }
 }

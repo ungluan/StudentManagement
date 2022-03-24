@@ -12,14 +12,12 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -27,9 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.studentmanagement.R;
-import com.example.studentmanagement.database.entity.Grade;
 import com.example.studentmanagement.database.entity.Student;
-import com.example.studentmanagement.databinding.DialogAddGradeBinding;
 import com.example.studentmanagement.databinding.DialogAddStudentBinding;
 import com.example.studentmanagement.databinding.FragmentStudentScreenBinding;
 import com.example.studentmanagement.utils.AppUtils;
@@ -37,15 +33,9 @@ import com.google.android.material.datepicker.MaterialDatePicker;
 import com.omega_r.libs.omegarecyclerview.OmegaRecyclerView;
 
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
@@ -55,7 +45,7 @@ public class StudentScreenFragment extends Fragment {
     private FragmentStudentScreenBinding binding;
     private StudentViewModel studentViewModel;
     private AutoCompleteTextView editTextGradeName;
-    private ArrayAdapter arrayAdapter;
+    private ArrayAdapter<String> arrayAdapter;
     private List<String> dropdownItems = new ArrayList<>();
     private OmegaRecyclerView recyclerView;
     private StudentListAdapter studentListAdapter;
@@ -77,7 +67,7 @@ public class StudentScreenFragment extends Fragment {
         studentViewModel = new ViewModelProvider(requireActivity()).get(StudentViewModel.class);
         editTextGradeName = binding.editTextGradeName;
         // setup Recycler View
-        studentListAdapter = new StudentListAdapter(new StudentListAdapter.StudentDiff());
+        studentListAdapter = new StudentListAdapter(studentViewModel ,new StudentListAdapter.StudentDiff());
         recyclerView = binding.recyclerViewStudent;
         recyclerView.setAdapter(studentListAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
@@ -102,7 +92,7 @@ public class StudentScreenFragment extends Fragment {
     }
 
     private void loadRecyclerViewStudent(String gradeId) {
-        studentViewModel.getStudentsByGradeId(gradeId).subscribe(
+        studentViewModel.getStudentsByGradeId(gradeId).observeOn(AndroidSchedulers.mainThread()).subscribe(
                 students -> {
                     studentListAdapter.submitList(students);
                     if (students.size() != 0) txtListEmpty.setVisibility(View.INVISIBLE);
@@ -114,9 +104,10 @@ public class StudentScreenFragment extends Fragment {
 
     private void initialDropdown(List<String> gradeNames) {
         dropdownItems.addAll(gradeNames);
-        arrayAdapter = new ArrayAdapter(requireContext(), R.layout.dropdown_item, dropdownItems);
+        arrayAdapter = new ArrayAdapter<>(requireContext(), R.layout.dropdown_item, dropdownItems);
         editTextGradeName.setText(dropdownItems.get(0));
         editTextGradeName.setAdapter(arrayAdapter);
+        loadRecyclerViewStudent(dropdownItems.get(0));
     }
 
     private void initialStudentScreen() {
@@ -125,7 +116,6 @@ public class StudentScreenFragment extends Fragment {
                         .map(grade -> grade.getGradeId()).toList().subscribe(
                                 gradeNames -> {
                                     initialDropdown(gradeNames);
-                                    loadRecyclerViewStudent(dropdownItems.get(0));
                                 },
                                 throwable -> Log.d("StudentFragment", "Error: " + throwable.getMessage())
                         ),
@@ -177,7 +167,7 @@ public class StudentScreenFragment extends Fragment {
             }
 
             studentViewModel.insertStudent(
-                    new Student(1, firstName, lastName, gender, birthday, gradeId)).subscribe(
+                    new Student(firstName, lastName, gender, birthday, gradeId)).subscribe(
                     () -> {
                         Observable.just("").observeOn(AndroidSchedulers.mainThread()).subscribe(
                                 s -> Toast.makeText(
@@ -201,5 +191,4 @@ public class StudentScreenFragment extends Fragment {
         });
         dialog.show();
     }
-
 }
