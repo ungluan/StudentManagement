@@ -34,7 +34,7 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         homeViewModel = new ViewModelProvider(requireActivity()).get(HomeViewModel.class);
-        // Hiện tại đang phải call tuần tự
+        // Hiện tại đang phải call tuần tự hay bất đồng bộ?
         homeViewModel.getNumberOfGrades().subscribe(
                 number -> binding.txtNumberOfGrades.setText(
                         getString(R.string.number_and_noun, number, "Lớp")),
@@ -60,11 +60,29 @@ public class HomeFragment extends Fragment {
                 }
         );
 
-        binding.cardViewSubject.setOnClickListener(
+
+
+
+        binding.cardViewStudent.setOnClickListener(
                 v -> {
-                    NavDirections action = HomeFragmentDirections.actionHomeFragmentToSubjectScreenFragment();
+                    NavDirections action = HomeFragmentDirections.actionHomeFragmentToStudentScreenFragment();
                     Navigation.findNavController(v).navigate(action);
                 }
         );
+        binding.cardViewSubject.setOnClickListener(v -> {
+            NavDirections action = HomeFragmentDirections.actionHomeFragmentToSubjectScreenFragment();
+            Navigation.findNavController(v).navigate(action);
+        });
+        /*homeViewModel.getGradesWithStudents().subscribe(
+                gradeWithStudents -> {
+                    gradeWithStudents.forEach(
+                           gradeWithStudents1 -> Log.d(
+                                   "HomeFragment",
+                                   gradeWithStudents1.toString()
+                           )
+                    );
+                }
+        );*/
+
     }
 }

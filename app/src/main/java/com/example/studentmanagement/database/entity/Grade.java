@@ -39,4 +39,12 @@ public class Grade {
         return ((Grade) obj).gradeId.equals(this.gradeId)
                 && ((Grade) obj).teacherName.equals(this.teacherName);
     }
+
+    @Override
+    public String toString() {
+        return "Grade{" +
+                "gradeId='" + gradeId + '\'' +
+                ", teacherName='" + teacherName + '\'' +
+                '}';
+    }
 }

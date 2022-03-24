@@ -12,7 +12,6 @@
         android:paddingBottom="100dp"
         android:layout_width="fill_parent"
         android:layout_height="128dp"
-        app:cardCornerRadius="16dp"
         android:shadowColor="@color/primary_color"
         android:shadowDx="6"
         android:shadowDy="6">
@@ -25,8 +24,7 @@
                 android:src="@drawable/art_class2"
                 android:layout_width="128dp"
                 android:layout_height="128dp"
-                android:scaleType="centerCrop"
-                app:riv_corner_radius="16dp"/>
+                android:scaleType="centerCrop" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -37,7 +35,10 @@
                 android:layout_marginStart="16dp">
                 <TextView
                     android:id="@+id/txt_subject_id"
+
                     android:text="MH001"
+
+
                     android:textSize="24sp"
                     android:textStyle="bold"
                     android:layout_weight="1"

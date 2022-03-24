@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+
 import com.example.studentmanagement.R;
 import com.example.studentmanagement.database.entity.Subject;
 import com.example.studentmanagement.databinding.DialogAddSubjectBinding;
@@ -24,7 +25,7 @@ import com.omega_r.libs.omegarecyclerview.OmegaRecyclerView;
 public class SubjectScreenFragment extends Fragment {
     private FragmentSubjectScreenBinding binding;
     private OmegaRecyclerView recyclerView;
-    private SubjectViewModel subjectViewModel;
+    private com.example.studentmanagement.feature.SubjectScreen.SubjectViewModel subjectViewModel;
 
     public SubjectScreenFragment(){
 
@@ -42,7 +43,7 @@ public class SubjectScreenFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         subjectViewModel = new
-                ViewModelProvider(requireActivity()).get(SubjectViewModel.class);
+                ViewModelProvider(requireActivity()).get(com.example.studentmanagement.feature.SubjectScreen.SubjectViewModel.class);
 
         recyclerView = binding.recyclerViewSubject;
 

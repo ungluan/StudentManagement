@@ -102,13 +102,11 @@ public class GradeScreenFragment extends Fragment {
 
             gradeViewModel.getGradeById(gradeId).subscribe(
                     grade -> binding.textInputLayoutGradeName.setError("Mã lớp đã tồn tại."),
-
                     throwable -> AppUtils.showNotificationDialog(
                             context,
                             "Thêm lớp thất bại",
                             throwable.getLocalizedMessage()
                     ),
-
                     () -> gradeViewModel.insertGrade(new Grade(gradeId, teacherName))
                             .subscribe(
                                     () -> {
@@ -117,7 +115,6 @@ public class GradeScreenFragment extends Fragment {
                                                 Toast.LENGTH_SHORT).show();
                                         dialog.dismiss();
                                     },
-
                                     throwable -> AppUtils.showNotificationDialog(
                                             context,
                                             "Thêm lớp thất bại",

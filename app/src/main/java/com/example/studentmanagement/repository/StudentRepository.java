@@ -4,10 +4,12 @@ import android.app.Application;
 
 import com.example.studentmanagement.database.AppDatabase;
 import com.example.studentmanagement.database.dao.StudentDao;
+import com.example.studentmanagement.database.entity.Student;
 import com.example.studentmanagement.database.entity.relationship.StudentWithMarks;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Flowable;
 
 public class StudentRepository {
@@ -23,5 +25,12 @@ public class StudentRepository {
 
     public Flowable<Integer> getNumberOfStudents(){
         return studentDao.getNumberOfStudents();
+    }
+
+    public Flowable<List<Student>> getStudentsByGradeId(String gradeId){
+        return studentDao.getStudentsByGradeId(gradeId);
+    }
+    public Completable insertStudent(Student student){
+        return studentDao.insertStudent(student);
     }
 }
