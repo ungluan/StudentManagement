@@ -12,6 +12,7 @@ import com.example.studentmanagement.database.entity.relationship.SubjectWithMar
 import java.util.List;
 
 import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.core.Maybe;
 
 public class SubjectRepository {
     private final SubjectDao subjectDao;
@@ -32,4 +33,6 @@ public class SubjectRepository {
     public Flowable<Integer> getNumberOfSubjects(){
         return subjectDao.getNumberOfSubjects();
     }
+
+    public Maybe<List<Subject>> getListSubject(){return subjectDao.getListSubject();}
 }

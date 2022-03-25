@@ -34,7 +34,7 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         homeViewModel = new ViewModelProvider(requireActivity()).get(HomeViewModel.class);
-        // Hiện tại đang phải call tuần tự hay bất đồng bộ?
+
         homeViewModel.getNumberOfGrades().subscribe(
                 number -> binding.txtNumberOfGrades.setText(
                         getString(R.string.number_and_noun, number, "Lớp")),

@@ -44,4 +44,5 @@ public class StudentRepository {
     public Completable deleteStudent(Student student) {
         return studentDao.deleteStudent(student);
     }
+
 }

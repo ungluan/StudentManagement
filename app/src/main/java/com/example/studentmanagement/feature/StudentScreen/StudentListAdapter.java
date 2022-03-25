@@ -1,6 +1,6 @@
 package com.example.studentmanagement.feature.StudentScreen;
 
-import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.util.Log;
@@ -19,25 +19,38 @@ import androidx.recyclerview.widget.ListAdapter;
 import com.example.studentmanagement.MainActivity;
 import com.example.studentmanagement.R;
 import com.example.studentmanagement.database.entity.Grade;
+import com.example.studentmanagement.database.entity.Mark;
 import com.example.studentmanagement.database.entity.Student;
+import com.example.studentmanagement.database.entity.Subject;
 import com.example.studentmanagement.databinding.DialogAddStudentBinding;
 import com.example.studentmanagement.databinding.DialogDelGradeBinding;
+import com.example.studentmanagement.databinding.DialogUpdateSubjectBinding;
 import com.example.studentmanagement.feature.home.HomeViewModel;
 import com.example.studentmanagement.utils.AppUtils;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.omega_r.libs.omegarecyclerview.swipe_menu.SwipeViewHolder;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.Observer;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.functions.Consumer;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 
 public class StudentListAdapter extends ListAdapter<Student, StudentListAdapter.StudentViewHolder> {
     private StudentViewModel studentViewModel;
-
+    private List<Subject> allSubject;
     protected StudentListAdapter(StudentViewModel studentViewModel, @NonNull DiffUtil.ItemCallback<Student> diffCallback) {
         super(diffCallback);
         this.studentViewModel = studentViewModel;
@@ -49,7 +62,7 @@ public class StudentListAdapter extends ListAdapter<Student, StudentListAdapter.
         return new StudentViewHolder(
                 parent,
                 R.layout.student_item,
-                R.layout.item_swipe_left_menu,
+                R.layout.item_swipe_student_menu,
                 studentViewModel
         );
     }
@@ -66,8 +79,10 @@ public class StudentListAdapter extends ListAdapter<Student, StudentListAdapter.
         private TextView txtBirthdate;
         private TextView txtEdit;
         private TextView txtDel;
+        private TextView txtUpdateSubject;
         private Student student;
-
+        private ChipGroup chipGroupSubjects;
+        private List<Subject> subjectSelected = new ArrayList<>();
         public StudentViewHolder(ViewGroup parent, int contentRes, int swipeLeftMenuRes, StudentViewModel studentViewModel) {
             super(parent, contentRes, swipeLeftMenuRes);
             txtName = findViewById(R.id.txt_name);
@@ -75,6 +90,7 @@ public class StudentListAdapter extends ListAdapter<Student, StudentListAdapter.
             txtBirthdate = findViewById(R.id.txt_birth_day);
             txtEdit = findViewById(R.id.txtEdit);
             txtDel = findViewById(R.id.txtDel);
+            txtUpdateSubject = findViewById(R.id.txtUpdate);
             this.studentViewModel = studentViewModel;
         }
 
@@ -85,6 +101,7 @@ public class StudentListAdapter extends ListAdapter<Student, StudentListAdapter.
             this.student = student;
             txtEdit.setOnClickListener(this);
             txtDel.setOnClickListener(this);
+            txtUpdateSubject.setOnClickListener(this);
         }
 
         @Override
@@ -93,6 +110,8 @@ public class StudentListAdapter extends ListAdapter<Student, StudentListAdapter.
                 showAddStudentDialog(getContext());
             } else if (v.getId() == txtDel.getId()) {
                 showDelStudentDialog(getContext());
+            }else if(v.getId()==txtUpdateSubject.getId()){
+                showUpdateSubjectDialog(getContext());
             }
         }
 
@@ -205,6 +224,90 @@ public class StudentListAdapter extends ListAdapter<Student, StudentListAdapter.
                                 )
                         );
 
+            });
+            dialog.show();
+        }
+
+        private void addChips(Subject subject) {
+            Chip chip = (Chip) ((Activity)getContext()).getLayoutInflater().inflate(R.layout.item_chip_subject, null, false);
+            chip.setText(subject.getSubjectName());
+            chipGroupSubjects.addView(chip);
+            chip.setTag(subject.getId());
+            chip.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                 allSubject.forEach(s -> {
+                     if(s.getId()==chip.getTag()){
+                         if(isChecked) {
+                             subjectSelected.add(s);
+                         }else{
+                             subjectSelected.remove(s);
+                         }
+                         Log.d("StudentFragment","SubjectSelected: "+String.valueOf(subjectSelected));
+                         return;
+                     }
+                });
+            });
+        }
+        private void showUpdateSubjectDialog(Context context) {
+
+            Dialog dialog = new Dialog(context, R.style.DialogStyle);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            DialogUpdateSubjectBinding binding = DialogUpdateSubjectBinding.inflate(
+                    LayoutInflater.from(context)
+            );
+            dialog.setContentView(binding.getRoot());
+            dialog.getWindow().setBackgroundDrawableResource(R.drawable.bg_white_color);
+
+            chipGroupSubjects = binding.chipGroupSubject;
+
+            studentViewModel.getListSubject().subscribe(
+                    subjects -> {
+                        allSubject = subjects;
+                        studentViewModel.loadChipGroupSubject(subjects).subscribe(
+                                subject -> addChips(subject),
+                                throwable -> Log.d("AddSubjectDialog","Error: "+throwable.getMessage())
+                        );
+                    },
+                    throwable -> Log.d("AddSubjectDialog","Error: "+throwable.getMessage())
+            );
+            // Xử lý click chip -> Add vào subjectSelected
+
+            binding.btnCancel.setOnClickListener(v -> dialog.dismiss());
+            binding.btnAdd.setOnClickListener(v -> {
+                if(subjectSelected.size()==0){
+                    binding.txtError.setVisibility(View.VISIBLE);
+                }else{
+                    binding.txtError.setVisibility(View.INVISIBLE);
+                    Observable.fromIterable(subjectSelected)
+                            .subscribeOn(Schedulers.computation())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(
+                                    new Observer<Subject>() {
+                                        @Override
+                                        public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
+                                            Log.d("StudentFragment","onSubscribe");
+                                        }
+
+                                        @Override
+                                        public void onNext(@io.reactivex.rxjava3.annotations.NonNull Subject subject) {
+                                            Log.d("StudentFragment","onNext");
+                                            studentViewModel.insertMark(new Mark(student.getId(),subject.getId(),0.0)).subscribe();
+                                        }
+
+                                        @Override
+                                        public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                                            Log.d("StudentFragment","onError: "+e.getMessage());
+                                        }
+
+                                        @Override
+                                        public void onComplete() {
+                                            Log.d("StudentFragment","onComplete");
+                                            Toast.makeText(context,"Add Subject Successful",Toast.LENGTH_SHORT).show();
+                                            dialog.dismiss();
+                                            subjectSelected.removeAll(subjectSelected);
+                                        }
+                                    }
+                            );
+                }
             });
             dialog.show();
         }

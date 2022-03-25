@@ -16,4 +16,9 @@ public class StudentWithMarks {
             entityColumn = "MAHOCSINH"
     )
     public List<Mark> marks;
+
+    public StudentWithMarks(Student student, List<Mark> marks) {
+        this.student = student;
+        this.marks = marks;
+    }
 }

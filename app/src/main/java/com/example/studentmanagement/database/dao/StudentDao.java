@@ -36,4 +36,5 @@ public interface StudentDao {
     Completable updateStudent(Student student);
     @Delete
     Completable deleteStudent(Student student);
+
 }

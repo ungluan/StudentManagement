@@ -25,8 +25,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.studentmanagement.R;
+import com.example.studentmanagement.database.entity.Mark;
 import com.example.studentmanagement.database.entity.Student;
 import com.example.studentmanagement.database.entity.Subject;
+import com.example.studentmanagement.database.entity.relationship.StudentWithMarks;
 import com.example.studentmanagement.databinding.DialogAddStudentBinding;
 import com.example.studentmanagement.databinding.FragmentStudentScreenBinding;
 import com.example.studentmanagement.utils.AppUtils;
@@ -41,7 +43,9 @@ import java.util.Date;
 import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.CompletableObserver;
 import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 
@@ -54,7 +58,8 @@ public class StudentScreenFragment extends Fragment {
     private OmegaRecyclerView recyclerView;
     private StudentListAdapter studentListAdapter;
     private TextView txtListEmpty;
-    private ChipGroup chipGroupSubject;
+//    private ChipGroup chipGroupSubject;
+//    private List<Subject> allSubject;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -75,8 +80,11 @@ public class StudentScreenFragment extends Fragment {
         recyclerView = binding.recyclerViewStudent;
         recyclerView.setAdapter(studentListAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-
         txtListEmpty = binding.txtListEmpty;
+
+
+        initialStudentScreen();
+
 
         editTextGradeName.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -87,29 +95,40 @@ public class StudentScreenFragment extends Fragment {
         });
         binding.fab.setOnClickListener(v -> {
             showAddStudentDialog(requireContext());
+//            studentViewModel.insertMark(new Mark(100,"MH001",0.0));
+
+//            Log.d("StudentFragment", "Insert Student");
+//            studentViewModel.insertMark(new Mark(12001, "MH001", 10.0)).subscribe(
+//                    () -> {
+//                        Log.d("StudentFragment", "Successfull Insert Student");
+//                    },
+//                    throwable -> Log.d("StudentFragment", throwable.getMessage())
+//
+//            );
+//            Log.d("StudentFragment", "Finished Insert Student");
+
         });
         binding.btnBack.setOnClickListener(v -> {
             NavDirections action = StudentScreenFragmentDirections.actionStudentScreenFragmentToHomeFragment();
             Navigation.findNavController(v).navigate(action);
         });
 
-        initialStudentScreen();
 
     }
 
     private void loadRecyclerViewStudent(String gradeId) {
-        studentViewModel.getStudentsByGradeId(gradeId).observeOn(AndroidSchedulers.mainThread()).subscribe(
-                students -> {
-                    studentListAdapter.submitList(students);
-                    if (students.size() != 0) txtListEmpty.setVisibility(View.INVISIBLE);
+        studentViewModel.getStudentsByGradeId(gradeId).subscribe(
+                students -> studentListAdapter.submitList(students),
+                throwable -> Log.d("StudentFragment", throwable.getMessage()),
+                () -> {
+                    if (studentListAdapter.getCurrentList().size() != 0)
+                        txtListEmpty.setVisibility(View.INVISIBLE);
                     else txtListEmpty.setVisibility(View.VISIBLE);
-                },
-                throwable -> Log.d("StudentFragment", throwable.getMessage())
+                }
         );
     }
 
-    private void initialDropdown(List<String> gradeNames) {
-        dropdownItems.addAll(gradeNames);
+    private void initialDropdown() {
         arrayAdapter = new ArrayAdapter<>(requireContext(), R.layout.dropdown_item, dropdownItems);
         editTextGradeName.setText(dropdownItems.get(0));
         editTextGradeName.setAdapter(arrayAdapter);
@@ -118,16 +137,14 @@ public class StudentScreenFragment extends Fragment {
 
     private void initialStudentScreen() {
         studentViewModel.getListGrade().subscribe(
-                strings -> Observable.fromIterable(strings)
-                        .map(grade -> grade.getGradeId()).toList()
-                        .subscribeOn(Schedulers.computation())
-                        .observeOn(AndroidSchedulers.mainThread()).subscribe(
-                                gradeNames -> initialDropdown(gradeNames),
-                                throwable -> Log.d("StudentFragment", "Error: " + throwable.getMessage())
+                grades -> Observable.just(grades).subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(
+                                grades1 -> grades.forEach(grade -> dropdownItems.add(grade.getGradeId())),
+                                throwable -> Log.d("StudentFragment", "Error: " + throwable.getMessage()),
+                                () -> initialDropdown()
                         ),
-                throwable -> {
-                    Log.d("StudentFragment", "Error: " + throwable.getMessage());
-                }
+                throwable -> Log.d("StudentFragment", "Error: " + throwable.getMessage())
         );
     }
 
@@ -144,8 +161,17 @@ public class StudentScreenFragment extends Fragment {
         @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
         binding.editTextBirthday.setText(simpleDateFormat.format(new Date()));
         // Set ChipGroup
-        chipGroupSubject = binding.chipGroupSubject;
-
+//        chipGroupSubject = binding.chipGroupSubject;
+//        studentViewModel.getListSubject().subscribe(
+//                subjects -> {
+//                    allSubject = subjects;
+//                    studentViewModel.loadChipGroupSubject(subjects).subscribe(
+//                            subject -> addChips(subject),
+//                            throwable -> Log.d("StudentFragment", "Error: " + throwable.getMessage())
+//                    );
+//                },
+//                throwable -> Log.d("StudentFragment", "Error: " + throwable.getMessage())
+//        );
 
         // Set Action
         binding.btnCancel.setOnClickListener(v -> dialog.dismiss());
@@ -168,6 +194,16 @@ public class StudentScreenFragment extends Fragment {
             String gender = binding.radioButtonNam.isChecked() ? "Nam" : "Nữ";
             String birthday = binding.editTextBirthday.getText().toString();
 
+//            List<Integer> subjectIds = chipGroupSubject.getCheckedChipIds();
+//            Log.d("StudentFragment", String.valueOf(chipGroupSubject.getCheckedChipIds()));
+//            subjectIds.forEach(id -> {
+//                Chip chip = chipGroupSubject.findViewById(id);
+//                allSubject.forEach(subject -> {
+//                            if (subject.getId() == chip.getTag()) subjectsSelected.add(subject);
+//                        }
+//                );
+//            });
+
             if (firstName.equals("") || lastName.equals("") || birthday.equals("")) {
                 if (firstName.equals(""))
                     binding.textInputLayoutFirstName.setError("Họ không được trống.");
@@ -175,35 +211,30 @@ public class StudentScreenFragment extends Fragment {
                     binding.textInputLayoutLastName.setError("Tên không được trống.");
                 return;
             }
+            Student student = new Student(firstName, lastName, gender, birthday, gradeId);
+            studentViewModel.insertStudent(student).subscribe(
+                    new CompletableObserver() {
+                        @Override
+                        public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
 
-            studentViewModel.insertStudent(
-                    new Student(firstName, lastName, gender, birthday, gradeId)).subscribe(
-                    () -> {
-                        Observable.just("").observeOn(AndroidSchedulers.mainThread()).subscribe(
-                                s -> Toast.makeText(
-                                        context, "Thêm học sinh thành công!",
-                                        Toast.LENGTH_SHORT).show(),
-                                throwable -> AppUtils.showNotificationDialog(
-                                        context,
-                                        "Thêm học sinh thất bại",
-                                        throwable.getLocalizedMessage()
-                                )
-                        );
-                        dialog.dismiss();
-                    },
+                        }
 
-                    throwable -> AppUtils.showNotificationDialog(
-                            context,
-                            "Thêm học sinh thất bại",
-                            throwable.getLocalizedMessage()
-                    )
+                        @Override
+                        public void onComplete() {
+                            Toast.makeText(context, "Thêm học sinh thành công!",
+                                    Toast.LENGTH_SHORT).show();
+                            dialog.dismiss();
+                        }
+
+                        @Override
+                        public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                            Log.d("StudentFragment", "Thêm học sinh thất bại");
+                        }
+                    }
             );
         });
         dialog.show();
     }
-    private void addChips(Subject subject){
-        Chip chip = (Chip) this.getLayoutInflater().inflate(R.layout.item_chip_subject,null,false);
-        chip.setText(subject.getSubjectName());
-        chipGroupSubject.addView(chip);
-    }
+
+
 }

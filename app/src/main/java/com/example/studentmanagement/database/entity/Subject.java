@@ -41,4 +41,13 @@ public class Subject {
     public void setCoefficient(int coefficient) {
         this.coefficient = coefficient;
     }
+
+    @Override
+    public String toString() {
+        return "Subject{" +
+                "subjectId='" + subjectId + '\'' +
+                ", subjectName='" + subjectName + '\'' +
+                ", coefficient=" + coefficient +
+                '}';
+    }
 }

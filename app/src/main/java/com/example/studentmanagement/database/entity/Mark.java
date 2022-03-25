@@ -28,12 +28,12 @@ public class Mark {
     @NonNull
     String subjectId;
     @ColumnInfo(name = "DIEM")
-    double mark;
+    double score;
 
-    public Mark(int studentId, String subjectId, double mark) {
+    public Mark(int studentId, @NonNull String subjectId, double score) {
         this.studentId = studentId;
         this.subjectId = subjectId;
-        this.mark = mark;
+        this.score = score;
     }
 
     public int getStudentId() {
@@ -44,11 +44,11 @@ public class Mark {
         return subjectId;
     }
 
-    public double getMark() {
-        return mark;
+    public double getScore() {
+        return score;
     }
 
-    public void setMark(double mark) {
-        this.mark = mark;
+    public void setScore(double score) {
+        this.score = score;
     }
 }

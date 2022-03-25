@@ -11,6 +11,7 @@ import com.example.studentmanagement.database.entity.relationship.SubjectWithMar
 import java.util.List;
 
 import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.core.Maybe;
 
 @Dao
 public interface SubjectDao {
@@ -24,4 +25,7 @@ public interface SubjectDao {
 
     @Query("SELECT COUNT(*) FROM MONHOC")
     Flowable<Integer> getNumberOfSubjects();
+
+    @Query("SELECT * FROM MONHOC")
+    Maybe<List<Subject>> getListSubject();
 }

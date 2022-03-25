@@ -10,6 +10,7 @@ import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.example.studentmanagement.database.dao.GradeDao;
+import com.example.studentmanagement.database.dao.MarkDao;
 import com.example.studentmanagement.database.dao.StudentDao;
 import com.example.studentmanagement.database.dao.SubjectDao;
 
@@ -23,13 +24,15 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 
-@Database(entities = {Grade.class, Subject.class, Student.class, Mark.class}, version = 2, exportSchema = false)
+@Database(entities = {Grade.class, Subject.class, Student.class, Mark.class}, version = 6, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract GradeDao classDao();
 
     public abstract SubjectDao subjectDao();
 
     public abstract StudentDao studentDao();
+
+    public abstract MarkDao markDao();
 
     private static volatile AppDatabase INSTANCES;
     private static final int NUM_OF_THREADS = 4;

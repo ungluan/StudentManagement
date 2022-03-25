@@ -5,7 +5,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:text="Action"
     app:chipBackgroundColor="@android:color/transparent"
-    android:textColor="@color/white"
+    android:textColor="@android:color/black"
     app:chipStrokeWidth="1dp"
-    app:chipStrokeColor="@color/primary_color">
+    app:chipStrokeColor="@color/primary_color"
+    android:checkable="true"
+    app:singleSelection="true">
 </com.google.android.material.chip.Chip>
