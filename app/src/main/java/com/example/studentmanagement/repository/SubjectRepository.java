@@ -40,6 +40,6 @@ public class SubjectRepository {
     public Completable updateSubject(Subject subject) {return subjectDao.updateSubject(subject);}
     public Completable deleteSubject(Subject subject) {return subjectDao.deleteSubject(subject);}
     public Maybe<Subject> getSubjectById(String id) {return subjectDao.getSubjectById(id);}
-
+    public Maybe<List<Subject>> getListSubject(){return subjectDao.getListSubject();}
 
 }

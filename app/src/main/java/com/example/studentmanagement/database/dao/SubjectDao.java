@@ -8,6 +8,7 @@ import androidx.room.Query;
 import androidx.room.Transaction;
 import androidx.room.Update;
 
+import com.example.studentmanagement.database.entity.Grade;
 import com.example.studentmanagement.database.entity.Subject;
 import com.example.studentmanagement.database.entity.relationship.SubjectWithMarks;
 
@@ -41,5 +42,8 @@ public interface SubjectDao {
 
     @Query("SELECT * FROM MONHOC WHERE MAMONHOC=:id ")
     Maybe<Subject> getSubjectById(String id);
+
+    @Query("SELECT * FROM MONHOC")
+    Maybe<List<Subject>> getListSubject();
 
 }

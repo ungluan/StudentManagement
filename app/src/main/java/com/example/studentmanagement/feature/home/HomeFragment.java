@@ -70,7 +70,7 @@ public class HomeFragment extends Fragment {
                 }
         );
         binding.cardViewSubject.setOnClickListener(v -> {
-            NavDirections action = HomeFragmentDirections.actionHomeFragmentToSubjectScreenFragment();
+            NavDirections action = HomeFragmentDirections.actionHomeFragmentToMarkScreenFragment();
             Navigation.findNavController(v).navigate(action);
         });
         /*homeViewModel.getGradesWithStudents().subscribe(

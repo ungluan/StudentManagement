@@ -24,7 +24,13 @@ public class StudentRepository {
     /*public List<StudentWithMarks> getStudentsWithMarks() {
         return studentDao.getStudentsWithMarks();
     }*/
+    public Flowable<List<Student>> getStudentByGradeIdAndSubjectId(String gradeId, String subjectId){
+        return studentDao.getStudentByGradeIdAndSubjectId(gradeId, subjectId);
+    }
 
+    public Flowable<Student> getStudentById(int id){
+        return this.studentDao.getStudentById(id);
+    }
     public Flowable<Integer> getNumberOfStudents() {
         return studentDao.getNumberOfStudents();
     }

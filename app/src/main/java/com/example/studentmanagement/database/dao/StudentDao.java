@@ -30,6 +30,15 @@ public interface StudentDao {
     @Query("SELECT * FROM HOCSINH WHERE LOP = :gradeId")
     Flowable<List<Student>> getStudentsByGradeId(String gradeId);
 
+    @Query("SELECT * FROM HOCSINH WHERE MAHOCSINH=:id")
+    Flowable<Student> getStudentById(int id);
+
+
+    @Query("SELECT HS.* FROM (SELECT * FROM HOCSINH WHERE LOP = :gradeId) AS HS," +
+            "(SELECT MAHOCSINH FROM DIEM WHERE MAMONHOC = :subjectId) AS D " +
+            "WHERE HS.MAHOCSINH = D.MAHOCSINH")
+    Flowable<List<Student>> getStudentByGradeIdAndSubjectId(String gradeId, String subjectId);
+
     @Insert
     Completable insertStudent(Student student);
     @Update
