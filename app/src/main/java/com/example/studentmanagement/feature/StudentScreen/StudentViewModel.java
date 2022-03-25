@@ -10,6 +10,7 @@ import com.example.studentmanagement.database.entity.Mark;
 import com.example.studentmanagement.database.entity.Student;
 import com.example.studentmanagement.database.entity.Subject;
 import com.example.studentmanagement.database.entity.relationship.StudentWithMarks;
+import com.example.studentmanagement.database.entity.relationship.SubjectWithMarks;
 import com.example.studentmanagement.repository.GradeRepository;
 import com.example.studentmanagement.repository.MarkRepository;
 import com.example.studentmanagement.repository.StudentRepository;
@@ -23,6 +24,7 @@ import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Maybe;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
+import kotlinx.coroutines.flow.Flow;
 
 public class StudentViewModel extends AndroidViewModel {
     private StudentRepository studentRepository;
@@ -89,6 +91,27 @@ public class StudentViewModel extends AndroidViewModel {
         return markRepository.updateMark(mark)
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public Maybe<List<SubjectWithMarks>> getSubjectAndMarkByStudentId(int studentId){
+        return subjectRepository.getSubjectAndMarkByStudentId(studentId)
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+    public Observable<SubjectWithMarks> checkSubjectsSelected(List<SubjectWithMarks> list){
+        return Observable.fromIterable(list)
+                .subscribeOn(Schedulers.computation());
+    }
+
+    public Observable<Subject> addListSubject(List<Subject> listNewSubject) {
+        return Observable.fromIterable(listNewSubject)
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public Maybe<List<Subject>> getSubjectsByStudentId(int studentId) {
+        return subjectRepository.getSubjectsByStudentId(studentId).
+                subscribeOn(Schedulers.computation());
     }
 
 //    public Completable insertStudentWithMarks(StudentWithMarks studentWithMarks) {

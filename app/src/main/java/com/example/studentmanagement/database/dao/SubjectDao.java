@@ -12,6 +12,7 @@ import java.util.List;
 
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Maybe;
+import io.reactivex.rxjava3.core.Single;
 
 @Dao
 public interface SubjectDao {
@@ -28,4 +29,17 @@ public interface SubjectDao {
 
     @Query("SELECT * FROM MONHOC")
     Maybe<List<Subject>> getListSubject();
+
+    @Query("SELECT * FROM MONHOC " +
+            "WHERE MAMONHOC IN (SELECT MAMONHOC FROM DIEM WHERE DIEM.MAHOCSINH = :studentId) ")
+    Maybe<List<Subject>> getSubjectsByStudentId(int studentId);
+
+    @Transaction
+    @Query("SELECT * FROM MONHOC " +
+            "WHERE MAMONHOC IN (SELECT MAMONHOC FROM DIEM WHERE DIEM.MAHOCSINH = :studentId) ")
+    Maybe<List<SubjectWithMarks>> getSubjectAndMarkByStudentId(int studentId);
+
+//    @Transaction
+//    @Query("SELECT * FROM MONHOC")
+//    List<SubjectWithMarks> getSubjectWithMarkByStudentId;
 }

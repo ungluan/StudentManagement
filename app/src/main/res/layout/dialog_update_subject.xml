@@ -37,11 +37,41 @@
             android:layout_marginLeft="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-        <com.google.android.material.chip.ChipGroup
-            android:id="@+id/chip_group_subject"
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"/>
+            android:layout_height="wrap_content">
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="64dp">
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/chip_group_subject"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"/>
+            </HorizontalScrollView>
+
+            <LinearLayout
+                android:id="@+id/linear_layout_center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ProgressBar
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:text="Loading..."
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"/>
+
+            </LinearLayout>
+
+        </RelativeLayout>
 
 
         <LinearLayout
@@ -71,4 +101,5 @@
         </LinearLayout>
 
     </LinearLayout>
+
 </layout>

@@ -5,6 +5,8 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.lang.reflect.Member;
+
 @Entity(tableName = "MONHOC")
 public class Subject {
     @PrimaryKey
@@ -49,5 +51,28 @@ public class Subject {
                 ", subjectName='" + subjectName + '\'' +
                 ", coefficient=" + coefficient +
                 '}';
+    }
+
+    /***
+     *
+     *  You have to know that
+     *
+     *  ArrayList#removeAll(Collection)
+     *
+     *  ArrayList#contains(Object)
+     *
+     *  ArrayList#indexOf(Object)
+     *
+     * Object#equals
+     *  So if equals is not correctly overridden (following the equals contract rules), you're not getting the correct behaviour.
+     *
+     ***/
+    @Override
+    public boolean equals(Object sub2) {
+        if (!(sub2 instanceof Subject)) {
+            return false;
+        }
+        Subject subject2 = (Subject) sub2;
+        return subject2.getId().equals(this.getId());
     }
 }

@@ -26,8 +26,8 @@ public class SubjectRepository {
         return subjectDao.getAllSubject();
     }
 
-    public List<SubjectWithMarks> getSubjectsWithMarks() {
-        return subjectDao.getSubjectsWithMarks();
+    public Maybe<List<Subject>> getSubjectsByStudentId(int studentId) {
+        return subjectDao.getSubjectsByStudentId(studentId);
     }
 
     public Flowable<Integer> getNumberOfSubjects(){
@@ -35,4 +35,8 @@ public class SubjectRepository {
     }
 
     public Maybe<List<Subject>> getListSubject(){return subjectDao.getListSubject();}
+
+    public Maybe<List<SubjectWithMarks>> getSubjectAndMarkByStudentId(int studentId){
+        return subjectDao.getSubjectAndMarkByStudentId(studentId);
+    }
 }

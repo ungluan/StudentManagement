@@ -18,39 +18,33 @@ import androidx.recyclerview.widget.ListAdapter;
 
 import com.example.studentmanagement.MainActivity;
 import com.example.studentmanagement.R;
-import com.example.studentmanagement.database.entity.Grade;
 import com.example.studentmanagement.database.entity.Mark;
 import com.example.studentmanagement.database.entity.Student;
 import com.example.studentmanagement.database.entity.Subject;
 import com.example.studentmanagement.databinding.DialogAddStudentBinding;
 import com.example.studentmanagement.databinding.DialogDelGradeBinding;
 import com.example.studentmanagement.databinding.DialogUpdateSubjectBinding;
-import com.example.studentmanagement.feature.home.HomeViewModel;
 import com.example.studentmanagement.utils.AppUtils;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.omega_r.libs.omegarecyclerview.swipe_menu.SwipeViewHolder;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Objects;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 
 public class StudentListAdapter extends ListAdapter<Student, StudentListAdapter.StudentViewHolder> {
     private StudentViewModel studentViewModel;
     private List<Subject> allSubject;
+
     protected StudentListAdapter(StudentViewModel studentViewModel, @NonNull DiffUtil.ItemCallback<Student> diffCallback) {
         super(diffCallback);
         this.studentViewModel = studentViewModel;
@@ -82,7 +76,9 @@ public class StudentListAdapter extends ListAdapter<Student, StudentListAdapter.
         private TextView txtUpdateSubject;
         private Student student;
         private ChipGroup chipGroupSubjects;
-        private List<Subject> subjectSelected = new ArrayList<>();
+        private List<Subject> subjectsSelected;
+        private List<Subject> listSubjectRemove = new ArrayList<>();
+
         public StudentViewHolder(ViewGroup parent, int contentRes, int swipeLeftMenuRes, StudentViewModel studentViewModel) {
             super(parent, contentRes, swipeLeftMenuRes);
             txtName = findViewById(R.id.txt_name);
@@ -110,7 +106,7 @@ public class StudentListAdapter extends ListAdapter<Student, StudentListAdapter.
                 showAddStudentDialog(getContext());
             } else if (v.getId() == txtDel.getId()) {
                 showDelStudentDialog(getContext());
-            }else if(v.getId()==txtUpdateSubject.getId()){
+            } else if (v.getId() == txtUpdateSubject.getId()) {
                 showUpdateSubjectDialog(getContext());
             }
         }
@@ -130,7 +126,7 @@ public class StudentListAdapter extends ListAdapter<Student, StudentListAdapter.
             // FirstName - LastName - Gender - Birthday
             binding.editTextFirstName.setText(student.getFirstName());
             binding.editTextLastName.setText(student.getLastName());
-            if(student.getGender().equals("Nam")) binding.radioButtonNam.setChecked(true);
+            if (student.getGender().equals("Nam")) binding.radioButtonNam.setChecked(true);
             else binding.radioButtonNu.setChecked(true);
             binding.editTextBirthday.setText(txtBirthdate.getText());
 
@@ -189,6 +185,7 @@ public class StudentListAdapter extends ListAdapter<Student, StudentListAdapter.
             });
             dialog.show();
         }
+
         private void showDelStudentDialog(Context context) {
             Dialog dialog = new Dialog(context, R.style.DialogStyle);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -228,25 +225,30 @@ public class StudentListAdapter extends ListAdapter<Student, StudentListAdapter.
             dialog.show();
         }
 
-        private void addChips(Subject subject) {
-            Chip chip = (Chip) ((Activity)getContext()).getLayoutInflater().inflate(R.layout.item_chip_subject, null, false);
+        private void addChips(@NonNull Subject subject) {
+            Chip chip = (Chip) ((Activity) getContext()).getLayoutInflater().inflate(R.layout.item_chip_subject, null, false);
             chip.setText(subject.getSubjectName());
             chipGroupSubjects.addView(chip);
+            subjectsSelected.forEach(sub -> {
+                if (sub.getId().equals(subject.getId())) chip.setChecked(true);
+            });
             chip.setTag(subject.getId());
             chip.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                 allSubject.forEach(s -> {
-                     if(s.getId()==chip.getTag()){
-                         if(isChecked) {
-                             subjectSelected.add(s);
-                         }else{
-                             subjectSelected.remove(s);
-                         }
-                         Log.d("StudentFragment","SubjectSelected: "+String.valueOf(subjectSelected));
-                         return;
-                     }
-                });
+                Log.d("StudentFragment", "Tag: " + buttonView.getTag());
+                Log.d("StudentFragment", "IsChecked: " + isChecked);
+                if (isChecked)
+                    allSubject.forEach(s -> {
+                        if (s.getId() == buttonView.getTag()) {
+                            subjectsSelected.add(s);
+                        }
+                    });
+                else
+                    subjectsSelected.removeIf(sub -> sub.getId().equals(buttonView.getTag()));
+                Log.d("StudentFragment", "SubjectSelected: " + String.valueOf(subjectsSelected));
+
             });
         }
+
         private void showUpdateSubjectDialog(Context context) {
 
             Dialog dialog = new Dialog(context, R.style.DialogStyle);
@@ -256,63 +258,129 @@ public class StudentListAdapter extends ListAdapter<Student, StudentListAdapter.
             );
             dialog.setContentView(binding.getRoot());
             dialog.getWindow().setBackgroundDrawableResource(R.drawable.bg_white_color);
+            binding.btnAdd.setText("Cập nhật");
+
+            dialog.setOnDismissListener(dialog1 -> {
+                subjectsSelected.clear();
+                listSubjectRemove.clear();
+                Log.d("StudentFragment", "Cleared SubjectSelected");
+            });
+
+            studentViewModel.getSubjectsByStudentId(student.getId()).subscribe(
+                    subjects -> subjectsSelected = subjects
+            );
+
 
             chipGroupSubjects = binding.chipGroupSubject;
 
             studentViewModel.getListSubject().subscribe(
                     subjects -> {
                         allSubject = subjects;
-                        studentViewModel.loadChipGroupSubject(subjects).subscribe(
-                                subject -> addChips(subject),
-                                throwable -> Log.d("AddSubjectDialog","Error: "+throwable.getMessage())
-                        );
+                        studentViewModel.loadChipGroupSubject(subjects)
+                                .subscribe(
+                                        // Chỉ khi nào add hết các Chip rồi thì mới cập nhật UI
+                                        // ==> Ý tưởng Cho Load màn hình cần nhiều Query
+                                        subject -> addChips(subject),
+                                        throwable -> Log.d("AddSubjectDialog", "Error: " + throwable.getMessage()),
+                                        () -> binding.linearLayoutCenter.setVisibility(View.INVISIBLE)
+
+                                );
                     },
-                    throwable -> Log.d("AddSubjectDialog","Error: "+throwable.getMessage())
+                    throwable -> Log.d("AddSubjectDialog", "Error: " + throwable.getMessage())
             );
             // Xử lý click chip -> Add vào subjectSelected
 
             binding.btnCancel.setOnClickListener(v -> dialog.dismiss());
             binding.btnAdd.setOnClickListener(v -> {
-                if(subjectSelected.size()==0){
+                if (subjectsSelected.size() == 0) {
                     binding.txtError.setVisibility(View.VISIBLE);
-                }else{
+                } else {
                     binding.txtError.setVisibility(View.INVISIBLE);
-                    Observable.fromIterable(subjectSelected)
-                            .subscribeOn(Schedulers.computation())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(
-                                    new Observer<Subject>() {
-                                        @Override
-                                        public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
-                                            Log.d("StudentFragment","onSubscribe");
-                                        }
+                    // Todo Bugs:
+                    /***
+                     *  Các Bug còn sai:
+                     *  1. Có môn học 0.0đ ở ds cũ -> Khi bỏ tích -> Cập nhật -> Môn vẫn chưa đc xóa
+                     *  dù đã đạt yêu cầu.
+                     *  2. Hiển thị thông báo môn học không thể hủy sai.
+                     *  3. Vẫn chưa check điều kiện xóa học sinh.
+                     *  4. Vẫn chưa check điều kiện xóa môn học, lớp học.
+                     *  5. Vận dụng ý tưởng của Dialog khi loading Chip -> Triển khai cho các màn hình còn lại
+                     *  6. Custom layout cho Dialog và Button , progressbar
+                     *  7. Vẫn chưa thực hiện thống kê
+                     * ***/
+                    studentViewModel.getSubjectAndMarkByStudentId(student.getId()).subscribe(
+                            // Subjects: danh sách môn học đã chọn của học sinh này
+                            // Kiểm tra danh sách này với danh sách mới
+                            // Nếu không có trong danh sách mới thì phải kiểm tra điểm
+                            subjectWithMarks -> {
+                                studentViewModel.checkSubjectsSelected(subjectWithMarks)
+                                        .subscribe(
+                                                subjectAndMark -> {
+                                                    // Môn học có chứa trong ds mới -> Không cần phải insert nữa
+                                                    if (subjectsSelected.contains(subjectAndMark.subject)) {
+                                                        subjectsSelected.remove(subjectAndMark.subject);
+                                                        Log.d("StudentFragment", "Remove Subject Selected: " + subjectsSelected);
+                                                    }
+                                                    // Môn học không còn trong ds mới
+                                                    else {
+                                                        // Điểm ==0 -> Có thể hủy bỏ môn học
+                                                        // Thêm vào danh sách hủy bỏ môn học
+                                                        // TH1: Nếu có môn học đã có điểm thì show dialog
+                                                        // TH2: Tiến hành Hủy bỏ môn học trong SubjectSelected
+                                                        // và Thêm từng môn học trong SubjectSelected
+                                                        if (subjectAndMark.marks.get(0).getScore() == 0.0)
+                                                            listSubjectRemove.add(subjectAndMark.subject);
+                                                        else
+                                                            throw new Exception("Học sinh đã có điểm môn "
+                                                                    + subjectAndMark.subject.getSubjectName() +
+                                                                    ".Không thể bỏ chọn môn học này.");
+                                                    }
+                                                },
+                                                throwable -> Observable.just(String.valueOf(throwable.getMessage()))
+                                                        .observeOn(AndroidSchedulers.mainThread()).subscribe(
+                                                                s -> AppUtils.showNotificationDialog(context, "Thông báo", s)
+                                                        ),
+                                                () -> {
+                                                    Log.d("StudentFragment", "Begin Remove SubjectSelected ");
+                                                    subjectsSelected.removeAll(listSubjectRemove);
+                                                    Log.d("StudentFragment", "Finished Remove SubjectSelected: " + subjectsSelected);
+                                                    studentViewModel.addListSubject(subjectsSelected).subscribe(
+                                                            subject -> {
+                                                                Log.d("StudentFragment", "Thread.Name before insertMark: " + Thread.currentThread().getName());
+                                                                studentViewModel.insertMark(new Mark(student.getId(), subject.getId(), 0.0)).subscribe();
+                                                            },
+                                                            throwable -> {
+                                                                Log.d("StudentFragment", "Cập nhật môn học thất bại!");
+                                                                dialog.dismiss();
+                                                            },
+                                                            () -> {
+                                                                Log.d("StudentFragment", "Thread.Name: " + Thread.currentThread().getName());
+                                                                Observable.just("Cập nhật môn học thành công")
+                                                                        .observeOn(AndroidSchedulers.mainThread()).subscribe(
+                                                                        s -> {
+                                                                            Log.d("StudentFragment","Thread.Name (onNext): "+Thread.currentThread().getName());
+                                                                            Log.d("StudentFragment",s);
 
-                                        @Override
-                                        public void onNext(@io.reactivex.rxjava3.annotations.NonNull Subject subject) {
-                                            Log.d("StudentFragment","onNext");
-                                            studentViewModel.insertMark(new Mark(student.getId(),subject.getId(),0.0)).subscribe();
-                                        }
-
-                                        @Override
-                                        public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
-                                            Log.d("StudentFragment","onError: "+e.getMessage());
-                                        }
-
-                                        @Override
-                                        public void onComplete() {
-                                            Log.d("StudentFragment","onComplete");
-                                            Toast.makeText(context,"Add Subject Successful",Toast.LENGTH_SHORT).show();
-                                            dialog.dismiss();
-                                            subjectSelected.removeAll(subjectSelected);
-                                        }
-                                    }
-                            );
+                                                                        },
+                                                                        throwable -> Log.d("StudentFragment", "Cập nhật môn học thất bại! " + throwable.getMessage()),
+                                                                        () -> {
+                                                                            Log.d("StudentFragment", "Thread.Name: " + Thread.currentThread().getName());
+                                                                            Toast.makeText(context, "Cập nhật môn học thành công", Toast.LENGTH_SHORT).show();
+                                                                        }
+                                                                );
+                                                                dialog.dismiss();
+//                                                                subjectsSelected.removeAll(subjectsSelected);
+                                                            }
+                                                    );
+                                                }
+                                        );
+                            }
+                    );
                 }
             });
             dialog.show();
         }
     }
-
 
     public static class StudentDiff extends DiffUtil.ItemCallback<Student> {
 

@@ -20,9 +20,9 @@ import io.reactivex.rxjava3.core.Maybe;
 
 @Dao
 public interface StudentDao {
-//    @Transaction
-//    @Query("SELECT * FROM HOCSINH")
-//    List<StudentWithMarks> getStudentsWithMarks();
+    @Transaction
+    @Query("SELECT * FROM HOCSINH WHERE MAHOCSINH = :studentId ")
+    Maybe<StudentWithMarks> getStudentWithMarks(int studentId);
 
     @Query("SELECT COUNT(*) FROM HOCSINH")
     Flowable<Integer> getNumberOfStudents();
