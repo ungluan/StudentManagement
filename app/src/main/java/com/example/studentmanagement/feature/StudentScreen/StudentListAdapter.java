@@ -35,6 +35,9 @@ import java.util.Iterator;
 import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.CompletableObserver;
+import io.reactivex.rxjava3.core.CompletableSource;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
@@ -78,6 +81,7 @@ public class StudentListAdapter extends ListAdapter<Student, StudentListAdapter.
         private ChipGroup chipGroupSubjects;
         private List<Subject> subjectsSelected;
         private List<Subject> listSubjectRemove = new ArrayList<>();
+        private List<Subject> saveSubjectSelected = new ArrayList<>();
 
         public StudentViewHolder(ViewGroup parent, int contentRes, int swipeLeftMenuRes, StudentViewModel studentViewModel) {
             super(parent, contentRes, swipeLeftMenuRes);
@@ -245,8 +249,22 @@ public class StudentListAdapter extends ListAdapter<Student, StudentListAdapter.
                 else
                     subjectsSelected.removeIf(sub -> sub.getId().equals(buttonView.getTag()));
                 Log.d("StudentFragment", "SubjectSelected: " + String.valueOf(subjectsSelected));
+                Log.d("StudentFragment", "SavedSubjectSelected: " + String.valueOf(saveSubjectSelected));
+
 
             });
+        }
+
+        private void reloadChip() {
+            for (int i = 0; i < chipGroupSubjects.getChildCount(); i++) {
+                Chip chip = (Chip) chipGroupSubjects.getChildAt(i);
+
+                saveSubjectSelected.forEach(subject -> {
+                    if (subject.getId().equals(chip.getTag())) {
+                        chip.setChecked(true);
+                    }
+                });
+            }
         }
 
         private void showUpdateSubjectDialog(Context context) {
@@ -267,7 +285,10 @@ public class StudentListAdapter extends ListAdapter<Student, StudentListAdapter.
             });
 
             studentViewModel.getSubjectsByStudentId(student.getId()).subscribe(
-                    subjects -> subjectsSelected = subjects
+                    subjects -> {
+                        subjectsSelected = subjects;
+                        saveSubjectSelected.addAll(subjects);
+                    }
             );
 
 
@@ -300,8 +321,8 @@ public class StudentListAdapter extends ListAdapter<Student, StudentListAdapter.
                     /***
                      *  Các Bug còn sai:
                      *  1. Có môn học 0.0đ ở ds cũ -> Khi bỏ tích -> Cập nhật -> Môn vẫn chưa đc xóa
-                     *  dù đã đạt yêu cầu.
-                     *  2. Hiển thị thông báo môn học không thể hủy sai.
+                     *  dù đã đạt yêu cầu. -> Done
+                     *  2. Hiển thị thông báo môn học không thể hủy sai. -> Done
                      *  3. Vẫn chưa check điều kiện xóa học sinh.
                      *  4. Vẫn chưa check điều kiện xóa môn học, lớp học.
                      *  5. Vận dụng ý tưởng của Dialog khi loading Chip -> Triển khai cho các màn hình còn lại
@@ -330,48 +351,70 @@ public class StudentListAdapter extends ListAdapter<Student, StudentListAdapter.
                                                         // và Thêm từng môn học trong SubjectSelected
                                                         if (subjectAndMark.marks.get(0).getScore() == 0.0)
                                                             listSubjectRemove.add(subjectAndMark.subject);
-                                                        else
+                                                        else {
+                                                            subjectsSelected.clear();
+                                                            subjectsSelected.addAll(saveSubjectSelected);
                                                             throw new Exception("Học sinh đã có điểm môn "
                                                                     + subjectAndMark.subject.getSubjectName() +
                                                                     ".Không thể bỏ chọn môn học này.");
+                                                        }
                                                     }
                                                 },
                                                 throwable -> Observable.just(String.valueOf(throwable.getMessage()))
                                                         .observeOn(AndroidSchedulers.mainThread()).subscribe(
-                                                                s -> AppUtils.showNotificationDialog(context, "Thông báo", s)
+                                                                s -> {
+                                                                    AppUtils.showNotificationDialog(context, "Thông báo", s);
+                                                                    reloadChip();
+                                                                }
                                                         ),
                                                 () -> {
-                                                    Log.d("StudentFragment", "Begin Remove SubjectSelected ");
-                                                    subjectsSelected.removeAll(listSubjectRemove);
-                                                    Log.d("StudentFragment", "Finished Remove SubjectSelected: " + subjectsSelected);
-                                                    studentViewModel.addListSubject(subjectsSelected).subscribe(
-                                                            subject -> {
-                                                                Log.d("StudentFragment", "Thread.Name before insertMark: " + Thread.currentThread().getName());
-                                                                studentViewModel.insertMark(new Mark(student.getId(), subject.getId(), 0.0)).subscribe();
-                                                            },
-                                                            throwable -> {
-                                                                Log.d("StudentFragment", "Cập nhật môn học thất bại!");
-                                                                dialog.dismiss();
-                                                            },
-                                                            () -> {
-                                                                Log.d("StudentFragment", "Thread.Name: " + Thread.currentThread().getName());
-                                                                Observable.just("Cập nhật môn học thành công")
-                                                                        .observeOn(AndroidSchedulers.mainThread()).subscribe(
-                                                                        s -> {
-                                                                            Log.d("StudentFragment","Thread.Name (onNext): "+Thread.currentThread().getName());
-                                                                            Log.d("StudentFragment",s);
-
-                                                                        },
-                                                                        throwable -> Log.d("StudentFragment", "Cập nhật môn học thất bại! " + throwable.getMessage()),
-                                                                        () -> {
-                                                                            Log.d("StudentFragment", "Thread.Name: " + Thread.currentThread().getName());
-                                                                            Toast.makeText(context, "Cập nhật môn học thành công", Toast.LENGTH_SHORT).show();
-                                                                        }
-                                                                );
-                                                                dialog.dismiss();
-//                                                                subjectsSelected.removeAll(subjectsSelected);
-                                                            }
-                                                    );
+                                                    studentViewModel.deleteListMark(convertSubjectToMark(listSubjectRemove))
+                                                            .andThen(
+                                                                    (CompletableSource) observer ->
+                                                                    {
+                                                                        Log.d("StudentFragment", "andThen and ThreadName: " + Thread.currentThread());
+                                                                        studentViewModel.insertListMark(convertSubjectToMark(subjectsSelected)).subscribe();
+                                                                        Log.d("StudentFragment", "Finished andThen and ThreadName: " + Thread.currentThread());
+                                                                        Observable.empty().observeOn(AndroidSchedulers.mainThread())
+                                                                                .doOnComplete(() -> {
+                                                                                    dialog.dismiss();
+                                                                                    Toast.makeText(context, "Cập nhật môn học thành công!", Toast.LENGTH_SHORT).show();
+                                                                                })
+                                                                                .doOnError(throwable -> Log.d("StudentFragment", "DismissDialog Error: " + throwable.getMessage()))
+                                                                                .subscribe();
+                                                                    }
+                                                            ).subscribe();
+//                                                    Log.d("StudentFragment", "Begin Remove SubjectSelected ");
+//                                                    subjectsSelected.removeAll(listSubjectRemove);
+//                                                    Log.d("StudentFragment", "Finished Remove SubjectSelected: " + subjectsSelected);
+//                                                    studentViewModel.addListSubject(subjectsSelected).subscribe(
+//                                                            subject -> {
+//                                                                Log.d("StudentFragment", "Thread.Name before insertMark: " + Thread.currentThread().getName());
+//                                                                studentViewModel.insertMark(new Mark(student.getId(), subject.getId(), 0.0)).subscribe();
+//                                                            },
+//                                                            throwable -> {
+//                                                                Log.d("StudentFragment", "Cập nhật môn học thất bại!");
+//                                                                dialog.dismiss();
+//                                                            },
+//                                                            () -> {
+//                                                                Log.d("StudentFragment", "Thread.Name: " + Thread.currentThread().getName());
+//                                                                Observable.just("Cập nhật môn học thành công")
+//                                                                        .observeOn(AndroidSchedulers.mainThread()).subscribe(
+//                                                                        s -> {
+//                                                                            Log.d("StudentFragment", "Thread.Name (onNext): " + Thread.currentThread().getName());
+//                                                                            Log.d("StudentFragment", s);
+//
+//                                                                        },
+//                                                                        throwable -> Log.d("StudentFragment", "Cập nhật môn học thất bại! " + throwable.getMessage()),
+//                                                                        () -> {
+//                                                                            Log.d("StudentFragment", "Thread.Name: " + Thread.currentThread().getName());
+//                                                                            Toast.makeText(context, "Cập nhật môn học thành công", Toast.LENGTH_SHORT).show();
+//                                                                        }
+//                                                                );
+//                                                                dialog.dismiss();
+////                                                                subjectsSelected.removeAll(subjectsSelected);
+//                                                            }
+//                                                    );
                                                 }
                                         );
                             }
@@ -379,6 +422,14 @@ public class StudentListAdapter extends ListAdapter<Student, StudentListAdapter.
                 }
             });
             dialog.show();
+        }
+
+        private List<Mark> convertSubjectToMark(List<Subject> list) {
+            List<Mark> l = new ArrayList<>();
+            list.forEach(v -> {
+                l.add(new Mark(student.getId(), v.getId(), 0.0));
+            });
+            return l;
         }
     }
 

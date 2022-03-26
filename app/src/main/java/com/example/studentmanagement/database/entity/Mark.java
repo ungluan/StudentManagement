@@ -51,4 +51,13 @@ public class Mark {
     public void setScore(double score) {
         this.score = score;
     }
+
+    @Override
+    public String toString() {
+        return "Mark{" +
+                "studentId=" + studentId +
+                ", subjectId='" + subjectId + '\'' +
+                ", score=" + score +
+                '}';
+    }
 }
