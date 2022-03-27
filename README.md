@@ -18,6 +18,8 @@ show ra 1 DiaLog thông báo lỗi, nên sử dụng onError là cực kì cần
 - App không bị Crash khi có Exception mà ta không implement onError.
 - Tận dụng MainThread để cập nhật UI cụ thể là Dialog.<br>
 ```java
+                        // Do on MainThread
+                        Log.d("HomeFragment", "The First "+ Thread.currentThread().getName());
 // try {
                         Observable
                                 .just(new Grade("12AA", "LUN"))
