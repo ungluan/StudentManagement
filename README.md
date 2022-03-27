@@ -1,7 +1,7 @@
 ### StudentManagement
 Lưu ý khi sử dụng Observable
 1. Đặt try catch ở ngoài Observable là dư thừa bởi vì: <br>
-  +> Khi có bất cứ lỗi nào nó sẽ nhảy vào doOnError() hoặc onError() bên trong subscribe()
+  +> Khi có bất cứ lỗi nào nó sẽ nhảy vào doOnError() và onError() bên trong subscribe()
 2. Observable có quan tâm đến thứ tự gọi func cụ thể: <br>
   +> Theo function dưới đây thì các func trước .observeOn(AndroidSchedules.mainThread()) sẽ cùng sử dụng chung 1 Thread. Tùy theo operator mà có thể có nhiều
   thread khác nhau.<br>
