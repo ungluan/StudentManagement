@@ -16,8 +16,8 @@ Lưu ý khi sử dụng Observable
 ====> doOnError() khá không cần thiết, ta chỉ cần gọi onError bên trong onSubscribe là được, bởi vì khi có lỗi thì trong trường hợp này tôi muốn<br>
 show ra 1 DiaLog thông báo lỗi, nên sử dụng onError là cực kì cần thiết nhằm đảm bảo 2 mục đính:
 - App không bị Crash khi có Exception mà ta không implement onError.
-- Tận dụng MainThread để cập nhật UI cụ thể là Dialog.
-  ```java
+- Tận dụng MainThread để cập nhật UI cụ thể là Dialog.<br>
+```java
 // try {
                         Observable
                                 .just(new Grade("12AA", "LUN"))
