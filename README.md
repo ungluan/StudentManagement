@@ -27,20 +27,21 @@ show ra 1 DiaLog thông báo lỗi, nên sử dụng onError là cực kì cần
                                                     + Thread.currentThread().getName());
                                     dao.insertGrade(integer);
                                 })
+                                // Do on ComputationThread
                                 .doOnError(throwable -> {
                                     Log.d("HomeFragment", "Error: " + throwable.getMessage());
                                     Log.d("HomeFragment", "Error CurrentThread1: " + 
                                                                             Thread.currentThread().getName());
                                 })
                                 .subscribeOn(Schedulers.computation())
-                                // Do on Computation Thread
+                                // Do on ComputationThread
                                 .doOnError(throwable -> {
                                     Log.d("HomeFragment", "Error After Subscribe on: " + throwable.getMessage());
                                     Log.d("HomeFragment", "Error After Subscribe on " + 
                                                                             Thread.currentThread().getName());
                                 })
                                 .observeOn(AndroidSchedulers.mainThread())
-                                // Do on Computation Thread
+                                // Do on MainThread
                                 .doOnError(throwable -> {
                                     Log.d("HomeFragment", "Error After observeOn: " + throwable.getMessage());
                                     Log.d("HomeFragment", "Error After observerOn: " + 
