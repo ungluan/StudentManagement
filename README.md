@@ -6,8 +6,8 @@ Lưu ý khi sử dụng Observable
   +> Theo function dưới đây thì các func trước .observeOn(AndroidSchedules.mainThread()) sẽ cùng sử dụng chung 1 Thread. Tùy theo operator mà có thể có nhiều
   thread khác nhau.<br>
   +> Theo thứ tự func doOnError() sau doOnNext() , doOnError() sau subcribeOn(), doOnError() sau observeOn() thì các xử lý sẽ được thực hiện
-  trên các Thread khác nhau cụ thể: 2 func doOnError() đầu tiên sẽ chạy cùng 1 Thread và doOnError cuối cùng sẽ chạy trên MainThread cùng với onError.<br>
-  Vậy khi xuất hiện lỗi thì ta gọi hàm doOnError cuối thay cho onError ở bên trong subcribe. (Nghe thì có vẻ hợp lý nhưng không)<br>
+  trên các Thread khác nhau cụ thể: 2 func doOnError() đầu tiên sẽ chạy cùng 1 Thread và doOnError cuối cùng sẽ chạy trên MainThread cùng với onError.
+  Vậy khi xuất hiện lỗi thì ta gọi hàm doOnError cuối thay cho onError ở bên trong subcribe.-------- (Nghe thì có vẻ hợp lý nhưng không)<br>
   ```java
   ---> Khi đó app sẽ bị Crash và thông báo lỗi:
   The exception was not handled due to missing onError handler in the subscribe() method call.
