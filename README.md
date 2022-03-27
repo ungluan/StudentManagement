@@ -29,25 +29,29 @@ show ra 1 DiaLog thông báo lỗi, nên sử dụng onError là cực kì cần
                                     dao.insertGrade(integer);
 //                                    }catch (Exception e){
 //                                        Log.d("HomeFragment", "Error: " + e.getMessage());
-//                                        Log.d("HomeFragment", "TryCatchError CurrentThread: " + Thread.currentThread().getName());
+//                                        Log.d("HomeFragment", "TryCatchError CurrentThread: " + 
+                                                                             Thread.currentThread().getName());
 //                                    }
 //                                    throw new Exception("Quangw ");
                                 })
                                 .doOnError(throwable -> {
                                     Log.d("HomeFragment", "Error: " + throwable.getMessage());
-                                    Log.d("HomeFragment", "Error CurrentThread1: " + Thread.currentThread().getName());
+                                    Log.d("HomeFragment", "Error CurrentThread1: " + 
+                                                                            Thread.currentThread().getName());
                                 })
                                 .subscribeOn(Schedulers.computation())
                                 // Do on Computation Thread
                                 .doOnError(throwable -> {
                                     Log.d("HomeFragment", "Error After Subscribe on: " + throwable.getMessage());
-                                    Log.d("HomeFragment", "Error After Subscribe on " + Thread.currentThread().getName());
+                                    Log.d("HomeFragment", "Error After Subscribe on " + 
+                                                                            Thread.currentThread().getName());
                                 })
                                 .observeOn(AndroidSchedulers.mainThread())
                                 // Do on Computation Thread
                                 .doOnError(throwable -> {
                                     Log.d("HomeFragment", "Error After observeOn: " + throwable.getMessage());
-                                    Log.d("HomeFragment", "Error After observerOn: " + Thread.currentThread().getName());
+                                    Log.d("HomeFragment", "Error After observerOn: " + 
+                                                                            Thread.currentThread().getName());
                                 })
                                 .subscribe(
                                         grade -> {},
