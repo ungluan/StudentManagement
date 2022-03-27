@@ -25,14 +25,7 @@ show ra 1 DiaLog thông báo lỗi, nên sử dụng onError là cực kì cần
                                     Log.d("HomeFragment",
                                             "Emitting item " + integer + " on: "
                                                     + Thread.currentThread().getName());
-//                                    try {
                                     dao.insertGrade(integer);
-//                                    }catch (Exception e){
-//                                        Log.d("HomeFragment", "Error: " + e.getMessage());
-//                                        Log.d("HomeFragment", "TryCatchError CurrentThread: " + 
-                                                                             Thread.currentThread().getName());
-//                                    }
-//                                    throw new Exception("Quangw ");
                                 })
                                 .doOnError(throwable -> {
                                     Log.d("HomeFragment", "Error: " + throwable.getMessage());
