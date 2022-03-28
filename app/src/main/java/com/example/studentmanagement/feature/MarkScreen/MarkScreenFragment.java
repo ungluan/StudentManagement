@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,6 +17,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.studentmanagement.R;
@@ -23,6 +27,7 @@ import com.example.studentmanagement.database.entity.Subject;
 import com.example.studentmanagement.databinding.FragmentMarkGreenBinding;
 import com.example.studentmanagement.feature.StudentScreen.StudentViewModel;
 import com.google.android.material.chip.ChipGroup;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.omega_r.libs.omegarecyclerview.OmegaRecyclerView;
 
 import java.util.ArrayList;
@@ -44,6 +49,7 @@ public class MarkScreenFragment extends Fragment {
     private OmegaRecyclerView recyclerView;
     private MarkListAdapter markListAdapter;
     private TextView txtListEmpty;
+    private ImageButton btnBack;
 
     @Nullable
     @Override
@@ -61,6 +67,8 @@ public class MarkScreenFragment extends Fragment {
 
         editTextGradeName = binding.editTextGradeNameMarkScreen;
         editTextSubjectName = binding.editTextSubjectNameMarkScreen;
+        btnBack = binding.btnBackMarkScreen;
+
 
         markListAdapter = new MarkListAdapter( markViewModel, new MarkListAdapter.MarkDiff());
 
@@ -85,6 +93,12 @@ public class MarkScreenFragment extends Fragment {
                 //
                 loadRecyclerViewStudent(editTextGradeName.getText().toString(), dropdownItemsSubject.get(position).getSubjectId());
             }
+        });
+
+        btnBack.setOnClickListener(v->
+        {
+            NavDirections action = MarkScreenFragmentDirections.actionMarkScreenFragmentToHomeFragment();
+            Navigation.findNavController(v).navigate(action);
         });
         initialMarkScreen();
     }
@@ -156,4 +170,6 @@ public class MarkScreenFragment extends Fragment {
                 }
         );
     }
+
+
 }

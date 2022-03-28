@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -21,6 +22,8 @@ import com.example.studentmanagement.databinding.FragmentSubjectScreenBinding;
 import com.example.studentmanagement.utils.AppUtils;
 import com.example.studentmanagement.utils.ItemMargin;
 import com.omega_r.libs.omegarecyclerview.OmegaRecyclerView;
+
+import io.reactivex.rxjava3.core.Observable;
 
 public class SubjectScreenFragment extends Fragment {
     private FragmentSubjectScreenBinding binding;
@@ -46,6 +49,18 @@ public class SubjectScreenFragment extends Fragment {
                 ViewModelProvider(requireActivity()).get(com.example.studentmanagement.feature.SubjectScreen.SubjectViewModel.class);
 
         recyclerView = binding.recyclerViewSubject;
+
+//        Observable.create(emitter -> {
+//            while (!emitter.isDisposed()) {
+//                long time = System.currentTimeMillis();
+//                emitter.onNext(time);
+//                if (time % 2 != 0) {
+//                    emitter.onError(new IllegalStateException("Odd millisecond!"));
+//                    break;
+//                }
+//            }
+//        })
+//                .subscribe(System.out::println, Throwable::printStackTrace);
 
         //set data to recycler view
         SubjectListAdapter adapter = new
@@ -74,7 +89,8 @@ public class SubjectScreenFragment extends Fragment {
 
     private void showAddSubjectDialog(Context context) {
         Dialog dialog = new Dialog(context, R.style.DialogStyle);
-
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.getWindow().setBackgroundDrawableResource(R.drawable.bg_white_color);
         DialogAddSubjectBinding binding = DialogAddSubjectBinding.inflate(
                 LayoutInflater.from(context)
         );

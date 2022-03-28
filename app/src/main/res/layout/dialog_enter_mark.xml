@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp">
+
+        <TextView
+            android:id="@+id/txt_title_dialog_enter_mark"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="24dp"
+            android:gravity="center"
+            android:text="Cập nhật điểm học sinh"
+            android:textColor="@color/secondary_blue"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:hint="Họ và tên"
+            android:nextFocusDown="@id/edit_text_teacher_name"
+            app:boxStrokeWidth="1dp"
+            app:startIconCheckable="true"
+            android:enabled="false">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_text_student_name_mark"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:enabled="false"
+                android:inputType="textEmailAddress" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+
+        <com.google.android.material.textfield.TextInputLayout
+
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:hint="Mã học sinh"
+            app:boxStrokeWidth="1dp"
+            app:hintEnabled="true"
+            app:startIconCheckable="true">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_text_student_id_mark"
+                android:enabled="false"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:inputType="text" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:hint="Lớp"
+            app:boxStrokeWidth="1dp"
+            app:hintEnabled="true"
+            app:startIconCheckable="true">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_text_student_grade_mark"
+                android:layout_width="match_parent"
+                android:enabled="false"
+                android:layout_height="60dp"
+                android:inputType="text" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:hint="Môn học"
+            app:boxStrokeWidth="1dp"
+            app:hintEnabled="true"
+            app:startIconCheckable="true">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_text_subject_id_mark"
+                android:layout_width="match_parent"
+                android:enabled="false"
+                android:layout_height="60dp"
+                android:inputType="text" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:hint="Điểm"
+            app:boxStrokeWidth="1dp"
+            app:hintEnabled="true"
+            app:startIconCheckable="true">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_text_student_mark_mark"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:inputType="numberDecimal" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="16dp">
+
+            <Button
+                android:id="@+id/btn_cancel_mark"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Hủy"
+                android:textStyle="bold"
+                android:layout_marginEnd="16dp"/>
+
+            <Button
+                android:id="@+id/btn_enter_mark"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="LƯU"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+    </LinearLayout>
+</layout>

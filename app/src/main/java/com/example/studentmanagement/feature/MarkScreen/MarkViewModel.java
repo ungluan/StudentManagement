@@ -38,10 +38,10 @@ public class MarkViewModel extends AndroidViewModel {
 
     }
 
-    public Flowable<Student> getStudentById(int id){
+   public Flowable<Student> getStudentById(int id){
         return studentRepository.getStudentById(id)
                 .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.newThread());
+               .observeOn(AndroidSchedulers.mainThread());
     }
 
     public Flowable<Float> getStudentMark(String studentId, String subjectId){
