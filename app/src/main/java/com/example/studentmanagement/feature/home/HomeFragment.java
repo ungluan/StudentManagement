@@ -9,19 +9,27 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.studentmanagement.R;
+import com.example.studentmanagement.database_sqlite.DataBaseHelper;
+import com.example.studentmanagement.database_sqlite.Result;
 import com.example.studentmanagement.databinding.FragmentHomeBinding;
+
+import io.reactivex.rxjava3.core.Observable;
 
 
 public class HomeFragment extends Fragment {
     // HomeViewModel initial in onCreateView
     private FragmentHomeBinding binding;
     private HomeViewModel homeViewModel;
+    private DataBaseHelper db;
+    private Handler handler = new Handler(Looper.getMainLooper());
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -69,15 +77,33 @@ public class HomeFragment extends Fragment {
             NavDirections action = HomeFragmentDirections.actionHomeFragmentToSubjectScreenFragment();
             Navigation.findNavController(v).navigate(action);
         });
-        /*homeViewModel.getGradesWithStudents().subscribe(
-                gradeWithStudents -> {
-                    gradeWithStudents.forEach(
-                           gradeWithStudents1 -> Log.d(
-                                   "HomeFragment",
-                                   gradeWithStudents1.toString()
-                           )
-                    );
-                }
-        );*/
+        db = DataBaseHelper.getInstance(this.requireActivity().getApplication());
+
+        binding.noticeBoard.setOnClickListener(v -> {
+            DataBaseHelper.databaseExecutor.execute(() -> {
+                Log.d("HomeFragment","ThreadName on Executor: "+Thread.currentThread().getName());
+                handler.post(() -> {
+                    homeViewModel.getNumberOfGrade().observe((this.getViewLifecycleOwner()), value -> {
+                        binding.txtNumberOfGrades.setText(String.valueOf(value));
+                    });
+                });
+                Log.d("NumberOfGrade: ",String.valueOf(db.getNumberOfGrade()));
+            });
+        });
+    }
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        DataBaseHelper.databaseExecutor.execute(() -> {
+            Log.d("HomeFragment","ThreadName on Executor on Start: "+Thread.currentThread().getName());
+            handler.post(() -> {
+                homeViewModel.getNumberOfGrade().observe((this.getViewLifecycleOwner()), value -> {
+                    binding.txtNumberOfGrades.setText(String.valueOf(value));
+                });
+            });
+            Log.d("NumberOfGrade: ",String.valueOf(db.getNumberOfGrade()));
+        });
     }
 }
