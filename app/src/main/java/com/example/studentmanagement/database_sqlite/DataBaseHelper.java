@@ -1,11 +1,15 @@
 package com.example.studentmanagement.database_sqlite;
 
 import android.app.Application;
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import androidx.core.database.sqlite.SQLiteDatabaseKt;
+
+import java.util.Vector;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -61,7 +65,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     private static final String createMarkTableStatement = "CREATE TABLE " + TABLE_DIEM + "(\n" +
             "        " + COLUMN_MA_HOC_SINH + " INTEGER NOT NULL,\n" +
             "        " + COLUMN_MA_MON_HOC + " TEXT NOT NULL ,\n" +
-            "        " + COLUMN_DIEM + " DOUBLE,\n" +
+            "        " + COLUMN_DIEM + " REAL,\n" +
             "        PRIMARY KEY (" + COLUMN_MA_HOC_SINH + ", " + COLUMN_MA_MON_HOC + "),\n" +
             "        FOREIGN KEY (" + COLUMN_MA_HOC_SINH + ") REFERENCES " + TABLE_HOC_SINH + "(" + COLUMN_MA_HOC_SINH + ") \n" +
             "        ON DELETE NO ACTION\n" +
@@ -71,8 +75,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             "        ON UPDATE CASCADE" +
             "    )";
 
-    private DataBaseHelper(Application application) {
-        super(application, "app_database_sqlite.db", null, 1);
+    public DataBaseHelper(Application application) {
+        super(application, "app_database_sqlite.db", null, 2);
     }
 
     public static synchronized DataBaseHelper getInstance(Application application) {
@@ -142,5 +146,35 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         System.out.println(cursor.getInt(0));
         Log.d("HomeFragment","ThreadName on Executorx: "+Thread.currentThread().getName());
         return cursor.getInt(0);
+    }
+
+    //insert, delete, update, select
+
+
+
+    public Cursor select(String sql){
+        return this.getReadableDatabase().rawQuery(sql,null);
+    }
+
+    public boolean insert(String tableName, ContentValues contentValues ){
+        SQLiteDatabase db = this.getWritableDatabase() ;
+        Long success = db.insert(tableName,null, contentValues);
+        if(success==-1){
+            return false;
+        }else return true;
+    }
+
+    public boolean update(String tableName,ContentValues updateColumns, String whereClause,  String[] whereValues){
+        SQLiteDatabase db = this.getWritableDatabase();
+        int success = db.update(tableName,updateColumns, whereClause,  whereValues );
+        if(success==-1) return false;
+        else return true;
+    }
+
+    public boolean delete(String tableName, String whereClause, String[]whereValues){
+        SQLiteDatabase db = this.getWritableDatabase();
+        int success = db.delete(tableName , whereClause,  whereValues );
+        if(success==-1) return false;
+        else return true;
     }
 }

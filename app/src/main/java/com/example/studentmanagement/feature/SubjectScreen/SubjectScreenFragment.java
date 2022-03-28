@@ -50,11 +50,10 @@ public class SubjectScreenFragment extends Fragment {
                 16,0,0,16
         ));
 
-        subjectViewModel.getAllSubject().observe(this.getViewLifecycleOwner(), subjects ->
-                {
-                    adapter.submitList(subjects);
+
+                    adapter.submitList(subjectViewModel.getAllSubject());
                     recyclerView.setAdapter(adapter);
-                }
-                );
+
+
     }
 }

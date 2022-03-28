@@ -3,6 +3,7 @@ package com.example.studentmanagement.database.entity;
 
 import static androidx.room.ForeignKey.CASCADE;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
@@ -59,5 +60,16 @@ public class Mark {
                 ", subjectId='" + subjectId + '\'' +
                 ", score=" + score +
                 '}';
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (obj == null || obj.getClass() != Mark.class) return false;
+
+        return this.getStudentId()==((Mark) obj).getStudentId()
+                && this.getSubjectId()==((Mark) obj).getSubjectId()
+                && this.getScore() == ((Mark) obj).getScore();
+
+
     }
 }

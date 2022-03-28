@@ -6,20 +6,21 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
+import com.example.studentmanagement.database.daosqlite.SubjectDaoSqlite;
 import com.example.studentmanagement.database.entity.Subject;
 import com.example.studentmanagement.repository.SubjectRepository;
 
 import java.util.List;
 
 public class SubjectViewModel extends AndroidViewModel {
-    private SubjectRepository subjectRepository;
-    private LiveData<List<Subject>> subjects;
+    private SubjectDaoSqlite subjectDaoSqlite;
+    private List<Subject> subjects;
 
     public SubjectViewModel(@NonNull Application application) {
         super(application);
-        this.subjectRepository = new SubjectRepository(application);
-        subjects = this.subjectRepository.getAllSubject();
+        this.subjectDaoSqlite = new SubjectDaoSqlite(application);
+        subjects = this.subjectDaoSqlite.getAllSubject();
     }
 
-    public LiveData<List<Subject>> getAllSubject(){return this.subjects;}
+    public List<Subject> getAllSubject(){return this.subjects;}
 }

@@ -39,6 +39,9 @@ public interface SubjectDao {
             "WHERE MAMONHOC IN (SELECT MAMONHOC FROM DIEM WHERE DIEM.MAHOCSINH = :studentId) ")
     Maybe<List<SubjectWithMarks>> getSubjectAndMarkByStudentId(int studentId);
 
+
+
+
 //    @Transaction
 //    @Query("SELECT * FROM MONHOC")
 //    List<SubjectWithMarks> getSubjectWithMarkByStudentId;

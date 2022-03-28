@@ -77,6 +77,11 @@ public class HomeFragment extends Fragment {
             NavDirections action = HomeFragmentDirections.actionHomeFragmentToSubjectScreenFragment();
             Navigation.findNavController(v).navigate(action);
         });
+
+        binding.cardViewMark.setOnClickListener(v -> {
+            NavDirections action = HomeFragmentDirections.actionHomeFragmentToMarkScreenFragment();
+            Navigation.findNavController(v).navigate(action);
+        });
         db = DataBaseHelper.getInstance(this.requireActivity().getApplication());
 
         binding.noticeBoard.setOnClickListener(v -> {
