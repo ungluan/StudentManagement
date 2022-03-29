@@ -22,6 +22,7 @@ import com.example.studentmanagement.database.entity.Grade;
 import com.example.studentmanagement.database.entity.Mark;
 import com.example.studentmanagement.database.entity.Student;
 import com.example.studentmanagement.database.entity.Subject;
+import com.example.studentmanagement.database_sqlite.DataBaseHelper;
 import com.example.studentmanagement.databinding.DialogAddStudentBinding;
 import com.example.studentmanagement.databinding.DialogDelGradeBinding;
 import com.example.studentmanagement.databinding.DialogUpdateSubjectBinding;
@@ -32,7 +33,11 @@ import com.google.android.material.datepicker.MaterialDatePicker;
 import com.omega_r.libs.omegarecyclerview.swipe_menu.SwipeViewHolder;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import io.reactivex.rxjava3.core.Observable;
 
 
 public class StudentListAdapter extends ListAdapter<Student, StudentListAdapter.StudentViewHolder> {
@@ -72,9 +77,11 @@ public class StudentListAdapter extends ListAdapter<Student, StudentListAdapter.
         private TextView txtUpdateSubject;
         private Student student;
         private ChipGroup chipGroupSubjects;
-        private List<Subject> subjectsSelected;
-        private List<Subject> listSubjectRemove = new ArrayList<>();
-        private List<Subject> saveSubjectSelected = new ArrayList<>();
+        private List<Subject> listSubjects;
+        private List<Subject> listSelected = new ArrayList<>();
+        private List<Subject> saveList = new ArrayList<>();
+        private List<Subject> delList = new ArrayList<>();
+        private Map<String,Double> maps = new HashMap<>();
 
         public StudentViewHolder(ViewGroup parent, int contentRes, int swipeLeftMenuRes,
                                  StudentViewModel studentViewModel, StudentListAdapter studentListAdapter) {
@@ -97,6 +104,12 @@ public class StudentListAdapter extends ListAdapter<Student, StudentListAdapter.
             txtEdit.setOnClickListener(this);
             txtDel.setOnClickListener(this);
             txtUpdateSubject.setOnClickListener(this);
+
+            // Khoi tao
+            DataBaseHelper.databaseExecutor.execute(() -> {
+                listSubjects = studentViewModel.getSubjects();
+
+            });
         }
 
         @Override
@@ -111,6 +124,7 @@ public class StudentListAdapter extends ListAdapter<Student, StudentListAdapter.
         }
 
         private void showEditStudentDialog(Context context) {
+
             Dialog dialog = new Dialog(context, R.style.DialogStyle);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.getWindow().setBackgroundDrawableResource(R.drawable.bg_white_color);
@@ -179,8 +193,6 @@ public class StudentListAdapter extends ListAdapter<Student, StudentListAdapter.
             students.get(getAdapterPosition()).setStudent(student);
             return students;
         }
-
-
         private void showDelStudentDialog(Context context) {
             Dialog dialog = new Dialog(context, R.style.DialogStyle);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -208,93 +220,86 @@ public class StudentListAdapter extends ListAdapter<Student, StudentListAdapter.
             });
             dialog.show();
         }
-
-        private void addChips(@NonNull Subject subject) {
-            Chip chip = (Chip) ((Activity) getContext()).getLayoutInflater().inflate(R.layout.item_chip_subject, null, false);
-            chip.setText(subject.getSubjectName());
-            chipGroupSubjects.addView(chip);
-            subjectsSelected.forEach(sub -> {
-                if (sub.getId().equals(subject.getId())) chip.setChecked(true);
-            });
-            chip.setTag(subject.getId());
-            chip.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                Log.d("StudentFragment", "Tag: " + buttonView.getTag());
-                Log.d("StudentFragment", "IsChecked: " + isChecked);
-                if (isChecked)
-                    allSubject.forEach(s -> {
-                        if (s.getId() == buttonView.getTag()) {
-                            subjectsSelected.add(s);
-                        }
-                    });
-                else
-                    subjectsSelected.removeIf(sub -> sub.getId().equals(buttonView.getTag()));
-                Log.d("StudentFragment", "SubjectSelected: " + String.valueOf(subjectsSelected));
-                Log.d("StudentFragment", "SavedSubjectSelected: " + String.valueOf(saveSubjectSelected));
-
-
-            });
-        }
-
-        private void reloadChip() {
-            for (int i = 0; i < chipGroupSubjects.getChildCount(); i++) {
-                Chip chip = (Chip) chipGroupSubjects.getChildAt(i);
-
-                saveSubjectSelected.forEach(subject -> {
-                    if (subject.getId().equals(chip.getTag())) {
-                        chip.setChecked(true);
-                    }
-                });
-            }
-        }
-
-        private void showToast(String message){
-            Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
-        }
         private void showUpdateSubjectDialog(Context context) {
+
 
             Dialog dialog = new Dialog(context, R.style.DialogStyle);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             DialogUpdateSubjectBinding binding = DialogUpdateSubjectBinding.inflate(
                     LayoutInflater.from(context)
             );
+            binding.linearLayoutCenter.setVisibility(View.VISIBLE);
             dialog.setContentView(binding.getRoot());
             dialog.getWindow().setBackgroundDrawableResource(R.drawable.bg_white_color);
             binding.btnAdd.setText("Cập nhật");
 
-            dialog.setOnDismissListener(dialog1 -> {
-                subjectsSelected.clear();
-                listSubjectRemove.clear();
-                Log.d("StudentFragment", "Cleared SubjectSelected");
-            });
-
-
             chipGroupSubjects = binding.chipGroupSubject;
 
+            listSelected = studentViewModel.getSubjectSubjectId(student.getId());
+            maps = studentViewModel.getSubjectsSelectedByStudentId(student.getId());
+
+            // Load chip
+            for(int i=0 ; i<listSubjects.size() ; i++){
+                addChips(listSubjects.get(i));
+            }
+            binding.linearLayoutCenter.setVisibility(View.INVISIBLE);
+
+            dialog.setOnDismissListener(d -> {
+                saveList.clear();
+                delList.clear();
+                listSelected.clear();
+            });
 
             binding.btnCancel.setOnClickListener(v -> dialog.dismiss());
             binding.btnAdd.setOnClickListener(v -> {
-                if (subjectsSelected.size() == 0) {
+
+                if (listSelected.size() == 0) {
                     binding.txtError.setVisibility(View.VISIBLE);
                 } else {
                     binding.txtError.setVisibility(View.INVISIBLE);
-                    // Todo Bugs:
+
+                    //viewModel.deleteAndInsertMark
+
 
                 }
             });
             dialog.show();
         }
 
-        private List<Mark> convertSubjectToMark(List<Subject> list) {
-            List<Mark> l = new ArrayList<>();
-            list.forEach(v -> {
-                l.add(new Mark(student.getId(), v.getId(), 0.0));
+        private void addChips(@NonNull Subject subject) {
+            Chip chip = (Chip) ((Activity) getContext()).getLayoutInflater()
+                    .inflate(R.layout.item_chip_subject, null, false);
+            chip.setText(subject.getSubjectName());
+            chip.setTag(subject.getId());
+
+            chipGroupSubjects.addView(chip);
+            // Nếu subject này có trong danh sách môn học đã chọn
+            double mark = maps.get(subject.getId())==null ? -1 : maps.get(subject.getId()) ;
+            if(mark != -1){
+                chip.setChecked(true);
+                if( mark != 0){
+                    chip.setEnabled(false);
+                }else{
+                    saveList.add(subject);
+                }
+            }
+            chip.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if (isChecked){
+                    delList.add(subject);
+                    saveList.remove(subject);
+                }else{
+                    delList.remove(subject);
+                    saveList.add(subject);
+                }
             });
-            return l;
+        }
+
+        private void showToast(String message){
+            Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
         }
     }
 
     public static class StudentDiff extends DiffUtil.ItemCallback<Student> {
-
         @Override
         public boolean areItemsTheSame(@NonNull Student oldItem, @NonNull Student newItem) {
             return oldItem.getId() == newItem.getId();

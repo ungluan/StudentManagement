@@ -13,7 +13,9 @@ import com.example.studentmanagement.database.entity.Subject;
 import com.example.studentmanagement.database_sqlite.DataBaseHelper;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SubjectDao {
     private SQLiteDatabase db;
@@ -54,7 +56,9 @@ public class SubjectDao {
         Cursor cursor = dataBaseHelper
                 .query("SELECT COUNT(*) FROM " + DataBaseHelper.TABLE_MON_HOC, null);
         cursor.moveToFirst();
-        return cursor.getInt(0);
+        int result = cursor.getInt(0);
+        cursor.close();
+        return result;
     }
 
     public List<Subject> getSubjects(){
@@ -70,6 +74,45 @@ public class SubjectDao {
                 list.add(subject);
             }while (cursor.moveToNext());
         }
+        cursor.close();
+        return list;
+    }
+
+    public Map<String,Double> getListSubjectAndMarkByStudentId(int studentId){
+        Map<String,Double> maps = new HashMap<String,Double>();
+        String query = "SELECT MONHOC.MAMONHOC, DIEM.DIEM FROM MONHOC,DIEM \n" +
+                " WHERE DIEM.MAHOCSINH = "+ studentId + " AND DIEM.MAMONHOC = MONHOC.MAMONHOC ";
+        Cursor cursor = db.rawQuery(query,null);
+        if(cursor.moveToFirst()){
+            do{
+                String subjectId = cursor.getString(0);
+//                String subjectName = cursor.getString(1);
+//                int coefficient = cursor.getInt(2);
+                Double mark = cursor.getDouble(1);
+//                Subject subject = new Subject(subjectId,subjectName,coefficient);
+                maps.put(subjectId,mark);
+            }while(cursor.moveToNext());
+        }
+        cursor.close();
+        return maps;
+    }
+
+    public List<Subject> getSubjectSubjectId(int studentId){
+        List<Subject> list = new ArrayList<>();
+        String query = "SELECT MONHOC.MAMONHOC, MONHOC.TENMONHOC , MONHOC.HESO FROM MONHOC,DIEM \n" +
+                " WHERE DIEM.MAHOCSINH = "+ studentId + " AND DIEM.MAMONHOC = MONHOC.MAMONHOC ";
+
+        Cursor cursor = db.rawQuery(query,null);
+        if(cursor.moveToFirst()){
+            do{
+                String subjectId = cursor.getString(0);
+                String subjectName = cursor.getString(1);
+                int coefficient = cursor.getInt(2);
+                Subject subject = new Subject(subjectId,subjectName,coefficient);
+                list.add(subject);
+            }while(cursor.moveToNext());
+        }
+        cursor.close();
         return list;
     }
 
@@ -80,4 +123,5 @@ public class SubjectDao {
         values.put(DataBaseHelper.COLUMN_HE_SO, subject.getCoefficient());
         return values;
     }
+
 }

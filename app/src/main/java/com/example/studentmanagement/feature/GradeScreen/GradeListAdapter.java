@@ -123,17 +123,15 @@ public class GradeListAdapter extends ListAdapter<Grade, GradeListAdapter.GradeV
 
             binding.btnCancel.setOnClickListener(v -> dialog.dismiss());
             binding.btnAdd.setOnClickListener(v -> {
-                String gradeId = String.valueOf(binding.editTextGradeName.getText());
-                String teacherName = AppUtils.formatGradeName(String.valueOf(binding.editTextTeacherName.getText()));
+            String gradeId = String.valueOf(binding.editTextGradeName.getText());
+            String teacherName = AppUtils.formatPersonName(String.valueOf(binding.editTextTeacherName.getText()));
 
 
                 Grade grade = new Grade(gradeId, teacherName);
                 if (gradeViewModel.updateGrade(grade)) {
                     showToast("Cập nhật lớp thành công!");
-
-                    List<Grade> grades = updateGradeInList(grade);
-                    gradeListAdapter.submitList(grades);
-
+                    gradeListAdapter.submitList(updateGradeInList(grade));
+                    gradeListAdapter.notifyItemChanged(getAdapterPosition());
                     dialog.dismiss();
                 } else {
                     AppUtils.showNotificationDialog(
@@ -144,8 +142,11 @@ public class GradeListAdapter extends ListAdapter<Grade, GradeListAdapter.GradeV
         }
 
         private List<Grade> updateGradeInList(Grade grade) {
+
             List<Grade> grades = new ArrayList(gradeListAdapter.getCurrentList());
+            System.out.println(grades.toString());
             grades.get(getAdapterPosition()).setTeacherName(grade.getTeacherName());
+            System.out.println(grades.toString());
             return grades;
         }
 
