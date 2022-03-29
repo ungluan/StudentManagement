@@ -170,7 +170,13 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     public boolean delete(String tableName, String whereClause, String[] whereArgs) {
         SQLiteDatabase db = this.getWritableDatabase();
-        return db.delete(tableName, whereClause, whereArgs) > 0;
+        db.execSQL("PRAGMA foreign_keys=ON");
+        try{
+            db.delete(tableName, whereClause, whereArgs);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
     }
 
     public Cursor query(String query, String[] selectionArgs) {
