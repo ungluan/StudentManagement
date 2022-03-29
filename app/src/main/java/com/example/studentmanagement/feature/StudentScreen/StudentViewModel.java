@@ -10,6 +10,9 @@ import com.example.studentmanagement.database.entity.Mark;
 import com.example.studentmanagement.database.entity.Student;
 import com.example.studentmanagement.database.entity.Subject;
 import com.example.studentmanagement.database.entity.relationship.SubjectWithMarks;
+import com.example.studentmanagement.database_sqlite.Dao.GradeDao;
+import com.example.studentmanagement.database_sqlite.Dao.StudentDao;
+import com.example.studentmanagement.database_sqlite.Dao.SubjectDao;
 import com.example.studentmanagement.repository.GradeRepository;
 import com.example.studentmanagement.repository.MarkRepository;
 import com.example.studentmanagement.repository.StudentRepository;
@@ -25,54 +28,40 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class StudentViewModel extends AndroidViewModel {
-    private StudentRepository studentRepository;
-    private GradeRepository gradeRepository;
-    private SubjectRepository subjectRepository;
-    private MarkRepository markRepository;
+    private GradeDao gradeDao;
+    private StudentDao studentDao;
+    private SubjectDao subjectDao;
+
 
     public StudentViewModel(@NonNull Application application) {
         super(application);
-//        AppDatabase db = AppDatabase.getDatabase(application);
-        this.studentRepository = new StudentRepository(application);
-        this.gradeRepository = new GradeRepository(application);
-        this.subjectRepository = new SubjectRepository(application);
-        this.markRepository = new MarkRepository(application);
+        gradeDao = new GradeDao(application);
+        subjectDao = new SubjectDao(application);
+        studentDao = new StudentDao(application);
     }
 
-    public Maybe<List<Grade>> getListGrade() {
-        return gradeRepository.getListGrade()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+    public List<Grade> getGrades() {
+        return gradeDao.getGrades();
     }
 
-    public Flowable<List<Student>> getStudentsByGradeId(String gradeId) {
-        return studentRepository.getStudentsByGradeId(gradeId)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+    public List<Student> getStudentsByGradeId(String gradeId) {
+        return studentDao.getStudentsByGradeId(gradeId);
     }
 
-    public Completable insertStudent(Student student) {
-        return studentRepository.insertStudent(student)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+    public boolean insertStudent(Student student) {
+        return studentDao.insertStudent(student);
     }
 
-    public Completable updateStudent(Student student) {
-        return studentRepository.updateStudent(student)
-                .subscribeOn(Schedulers.computation())
-                .observeOn(Schedulers.newThread());
+    public boolean updateStudent(Student student) {
+        return studentDao.updateStudent(student);
     }
 
-    public Completable deleteStudent(Student student) {
-        return studentRepository.deleteStudent(student)
-                .subscribeOn(Schedulers.computation())
-                .observeOn(Schedulers.newThread());
+    public boolean deleteStudent(int studentId) {
+        return studentDao.deleteStudent(studentId);
     }
 
-    public Maybe<List<Subject>> getListSubject() {
-        return subjectRepository.getListSubject()
-                .subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread());
+    public List<Subject> getSubjects() {
+        return subjectDao.getSubjects();
     }
 
     public Observable<Subject> loadChipGroupSubject(List<Subject> subjects) {
@@ -81,21 +70,21 @@ public class StudentViewModel extends AndroidViewModel {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    public Completable insertMark(Mark mark) {
-        return markRepository.insertMark(mark).subscribeOn(Schedulers.computation());
-    }
-
-    public Completable updateMark(Mark mark) {
-        return markRepository.updateMark(mark)
-                .subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread());
-    }
-
-    public Maybe<List<SubjectWithMarks>> getSubjectAndMarkByStudentId(int studentId) {
-        return subjectRepository.getSubjectAndMarkByStudentId(studentId)
-                .subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread());
-    }
+//    public Boolean insertMark(Mark mark) {
+//        return markRepository.insertMark(mark).subscribeOn(Schedulers.computation());
+//    }
+//
+//    public Completable updateMark(Mark mark) {
+//        return markRepository.updateMark(mark)
+//                .subscribeOn(Schedulers.computation())
+//                .observeOn(AndroidSchedulers.mainThread());
+//    }
+//
+//    public Maybe<List<SubjectWithMarks>> getSubjectAndMarkByStudentId(int studentId) {
+//        return subjectRepository.getSubjectAndMarkByStudentId(studentId)
+//                .subscribeOn(Schedulers.computation())
+//                .observeOn(AndroidSchedulers.mainThread());
+//    }
 
     public Observable<SubjectWithMarks> checkSubjectsSelected(List<SubjectWithMarks> list) {
         return Observable.fromIterable(list)
@@ -108,32 +97,18 @@ public class StudentViewModel extends AndroidViewModel {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    public Maybe<List<Subject>> getSubjectsByStudentId(int studentId) {
-        return subjectRepository.getSubjectsByStudentId(studentId).
-                subscribeOn(Schedulers.computation());
-    }
-
-    public Completable insertListMark(List<Mark> marks) {
-        return markRepository.insertListMark(marks)
-                .subscribeOn(Schedulers.computation());
-    }
-
-    public Completable deleteListMark(List<Mark> marks) {
-        return markRepository.deleteListMark(marks);
-    }
-//    public Observable<List<Mark>> deleteMarks(List<Mark> marks){
-//        return Observable.fromArray(marks).flatMap(
-//                marks1 -> Ob
-//        )
+//    public Maybe<List<Subject>> getSubjectsByStudentId(int studentId) {
+//        return subjectRepository.getSubjectsByStudentId(studentId).
+//                subscribeOn(Schedulers.computation());
+//    }
+//
+//    public Completable insertListMark(List<Mark> marks) {
+//        return markRepository.insertListMark(marks)
+//                .subscribeOn(Schedulers.computation());
+//    }
+//
+//    public Completable deleteListMark(List<Mark> marks) {
+//        return markRepository.deleteListMark(marks);
 //    }
 
-    /*public void deleteAndInsertMark(List<Mark> listRemove, List<Mark> listSelected) {
-        markRepository.deleteAndInsertMark(listRemove, listSelected);
-    }*/
-
-//    public Completable insertStudentWithMarks(StudentWithMarks studentWithMarks) {
-//        return studentRepository.insertStudentWithMarks(studentWithMarks)
-//                .subscribeOn(Schedulers.computation())
-//                .observeOn(Schedulers.newThread());
-//    }
 }
