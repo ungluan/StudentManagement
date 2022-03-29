@@ -26,13 +26,17 @@ public class GradeDao {
         values.put(DataBaseHelper.COLUMN_CHU_NHIEM,grade.getTeacherName());
         long result = -1;
 //        try{
-//            result = db.insertOrThrow(DataBaseHelper.TABLE_LOP,null,values);
-            db.execSQL("insert into HOCSINH VALUES('12AA@','AAA')");
+            result = db.insertOrThrow(DataBaseHelper.TABLE_LOP,null,values);
 //        }catch (SQLiteException e){
 //            Log.d("HomeFragment","Exception in insertGrade "+e.getMessage());
 //            Log.d("HomeFragment","GradeDao ThreadName"+ Thread.currentThread().getName() );
 //        }
         return result != 1;
+    }
+
+    public Boolean deleteGrade(Grade grade){
+        ContentValues values = new ContentValues();
+
     }
 
 
