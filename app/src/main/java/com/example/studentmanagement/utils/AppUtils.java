@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
-
+import android.widget.Toast;
 
 
 import com.example.studentmanagement.R;
@@ -20,6 +20,7 @@ import com.example.studentmanagement.databinding.DialogSuccessBinding;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.concurrent.Callable;
 
 public class AppUtils {
     static boolean flag=false;
@@ -88,17 +89,15 @@ public class AppUtils {
 
     public  static void showNotiDialog(
             Context context,
-            String content
+            String content,
+            Callable<Void> actionAccept
     ) {
         Dialog dialog = new Dialog(context, R.style.DialogStyle);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_notification);
-        DialogNotificationBinding binding = DialogNotificationBinding.inflate(
-                LayoutInflater.from(context)
-        );
-        TextView txtContentNoti = binding.txtContentNoti;
-        Button btnAcceptNoti = binding.btnAcceptNoti;
-        Button btnCancelNoti = binding.btnCancelNoti;
+        TextView txtContentNoti = dialog.findViewById(R.id.txt_content_noti);
+        Button btnAcceptNoti = dialog.findViewById(R.id.btn_accept_noti);
+        Button btnCancelNoti = dialog.findViewById(R.id.btn_cancel_noti);
 
 
 
@@ -113,24 +112,28 @@ public class AppUtils {
         btnAcceptNoti.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                try{
+                    actionAccept.call();
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
                 dialog.dismiss();
             }
         });
         dialog.show();
+
+
     }
 
-    public  static boolean showSuccessDialog(
+    public  static void showSuccessDialog(
             Context context,
             String content
     ) {
         Dialog dialog = new Dialog(context, R.style.DialogStyle);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_success);
-        DialogSuccessBinding binding = DialogSuccessBinding.inflate(
-                LayoutInflater.from(context)
-        );
-        TextView txtContentSuccess = binding.txtContentSuccess;
-        Button btnOk = binding.btnOk;
+        TextView txtContentSuccess = dialog.findViewById(R.id.txt_content_success);
+        Button btnOk = dialog.findViewById(R.id.btn_ok_success);
 
 
 
@@ -140,15 +143,14 @@ public class AppUtils {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                flag = true;
+                return;
             }
         });
 
         dialog.show();
-        return  flag;
     }
 
-    public  static boolean showErrorDialog(
+    public  static void showErrorDialog(
             Context context,
             String title,
             String content
@@ -156,12 +158,9 @@ public class AppUtils {
         Dialog dialog = new Dialog(context, R.style.DialogStyle);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_error);
-        DialogErrorBinding binding = DialogErrorBinding.inflate(
-                LayoutInflater.from(context)
-        );
-        TextView txtTitleError = binding.txtTitleError;
-        TextView txtContentError = binding.txtContentError;
-        Button btnTryAgainError = binding.btnTryAgainError;
+        TextView txtTitleError = dialog.findViewById(R.id.txt_title_error);
+        TextView txtContentError = dialog.findViewById(R.id.txt_content_error);
+        Button btnTryAgainError = dialog.findViewById(R.id.btn_try_again_error);
 
 
 
@@ -172,11 +171,9 @@ public class AppUtils {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                flag = true;
             }
         });
         dialog.show();
-        return flag;
     }
     //TODO 1: Add FormatPersonName
     public static String formatPersonName(String name){
@@ -201,4 +198,5 @@ public class AppUtils {
     public static String formatTimeStampToDate(Long timeStamp){
         return new SimpleDateFormat("dd/MM/yyyy").format(new Date(timeStamp));
     }
+
 }

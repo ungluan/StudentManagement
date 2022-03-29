@@ -8,29 +8,30 @@ import androidx.lifecycle.LiveData;
 
 import com.example.studentmanagement.database.daosqlite.SubjectDaoSqlite;
 import com.example.studentmanagement.database.entity.Subject;
+import com.example.studentmanagement.database_sqlite.Dao.SubjectDao;
 import com.example.studentmanagement.repository.SubjectRepository;
 
 import java.util.List;
 
 public class SubjectViewModel extends AndroidViewModel {
-    private SubjectDaoSqlite subjectDaoSqlite;
+    private SubjectDao subjectDao;
 
     public SubjectViewModel(@NonNull Application application) {
         super(application);
-        this.subjectDaoSqlite = new SubjectDaoSqlite(application);
+        this.subjectDao = new SubjectDao(application);
     }
 
-    public List<Subject> getAllSubject(){return subjectDaoSqlite.getAllSubject();}
+    public List<Subject> getAllSubject(){return subjectDao.getSubjects();}
 
-    public boolean insert(Subject subject){
-        return subjectDaoSqlite.insert(subject);
+    public boolean insertSubejct(Subject subject){
+        return subjectDao.insertSubject(subject);
     }
 
-    public boolean update(Subject subject){
-        return subjectDaoSqlite.update(subject);
+    public boolean updateSubject(Subject subject){
+        return subjectDao.updateSubject(subject);
     }
 
-    public boolean delete(String subjectId){
-        return subjectDaoSqlite.delete(subjectId);
+    public boolean deleteSubject(String subjectId){
+        return subjectDao.deleteSubject(subjectId);
     }
 }

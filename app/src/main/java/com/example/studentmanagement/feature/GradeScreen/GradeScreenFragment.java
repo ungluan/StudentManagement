@@ -1,5 +1,6 @@
 package com.example.studentmanagement.feature.GradeScreen;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.studentmanagement.R;
+import com.example.studentmanagement.database.AppDatabase;
 import com.example.studentmanagement.database.entity.Grade;
 import com.example.studentmanagement.databinding.DialogAddGradeBinding;
 import com.example.studentmanagement.databinding.FragmentGradeScreenBinding;
@@ -28,6 +31,10 @@ import com.example.studentmanagement.utils.ItemMargin;
 import com.omega_r.libs.omegarecyclerview.OmegaRecyclerView;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
+import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
 
 
@@ -35,6 +42,8 @@ public class GradeScreenFragment extends Fragment {
     private FragmentGradeScreenBinding binding;
     private OmegaRecyclerView recyclerView;
     private GradeViewModel gradeViewModel;
+    private GradeListAdapter adapter;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -54,31 +63,31 @@ public class GradeScreenFragment extends Fragment {
         recyclerView = binding.recyclerViewGrade;
 
         // Set data to recycler view
-        GradeListAdapter adapter = new GradeListAdapter(gradeViewModel, new GradeListAdapter.GradeDiff());
+        adapter = new GradeListAdapter(gradeViewModel, new GradeListAdapter.GradeDiff());
         recyclerView.setAdapter(adapter);
-
 
         // Add margin to recycler view item
         recyclerView.addItemDecoration(
                 new ItemMargin(16, 0, 0, 16));
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
 
-        gradeViewModel.getAllGrade().observe(this.getViewLifecycleOwner(), grades -> {
-            adapter.submitList(grades);
-            recyclerView.setAdapter(adapter);
-        });
+        adapter.submitList(gradeViewModel.getGrades());
+        recyclerView.setAdapter(adapter);
 
         binding.fab.setOnClickListener(fab -> showAddGradeDialog(requireContext()));
-
         binding.btnBack.setOnClickListener(
                 v -> {
                     NavDirections action = GradeScreenFragmentDirections.actionGradeScreenFragmentToHomeFragment();
                     Navigation.findNavController(v).navigate(action);
                 }
-            );
+        );
     }
 
+    public void showToast(String message){
+        Toast.makeText(this.requireContext(), message, Toast.LENGTH_SHORT).show();
+    }
 
+    @SuppressLint("NotifyDataSetChanged")
     private void showAddGradeDialog(Context context) {
         Dialog dialog = new Dialog(context, R.style.DialogStyle);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -88,6 +97,7 @@ public class GradeScreenFragment extends Fragment {
         dialog.setContentView(binding.getRoot());
         binding.btnCancel.setOnClickListener(v -> dialog.dismiss());
         dialog.getWindow().setBackgroundDrawableResource(R.drawable.bg_white_color);
+
 
         binding.btnAdd.setOnClickListener(v -> {
             String gradeId = AppUtils.formatGradeName(String.valueOf(binding.editTextGradeName.getText()));
@@ -100,29 +110,22 @@ public class GradeScreenFragment extends Fragment {
                     binding.textInputLayoutTeacherName.setError("Tên GVCN không được trống.");
                 return;
             }
-
-            gradeViewModel.getGradeById(gradeId).subscribe(
-                    grade -> binding.textInputLayoutGradeName.setError("Mã lớp đã tồn tại."),
-                    throwable -> AppUtils.showNotificationDialog(
-                            context,
-                            "Thêm lớp thất bại",
-                            throwable.getLocalizedMessage()
-                    ),
-                    () -> gradeViewModel.insertGrade(new Grade(gradeId, teacherName))
-                            .subscribe(
-                                    () -> {
-                                        Toast.makeText(
-                                                context, "Thêm lớp thành công!",
-                                                Toast.LENGTH_SHORT).show();
-                                        dialog.dismiss();
-                                    },
-                                    throwable -> AppUtils.showNotificationDialog(
-                                            context,
-                                            "Thêm lớp thất bại",
-                                            throwable.getLocalizedMessage()
-                                    )
-                            )
-            );
+            Grade grade = new Grade(gradeId,teacherName);
+            // Chưa check id
+            if(!gradeViewModel.checkGradeId(gradeId)){
+                if(gradeViewModel.insertGrade(grade)){
+                    showToast("Thêm lớp thành công");
+                    List<Grade> gradeList = new ArrayList<>(adapter.getCurrentList());
+                    gradeList.add(grade);
+                    adapter.submitList(gradeList);
+                    dialog.dismiss();
+                }else{
+                    AppUtils.showNotificationDialog(context,"Thông báo","Thêm lớp thất bại!");
+                    dialog.dismiss();
+                }
+            }else{
+                AppUtils.showNotificationDialog(context,"Thông báo","Lớp "+gradeId+" đã tồn tại!");
+            }
         });
         dialog.show();
     }

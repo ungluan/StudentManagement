@@ -23,6 +23,8 @@ import com.example.studentmanagement.utils.AppUtils;
 import com.example.studentmanagement.utils.ItemMargin;
 import com.omega_r.libs.omegarecyclerview.OmegaRecyclerView;
 
+import java.util.List;
+
 public class SubjectScreenFragment extends Fragment {
     private FragmentSubjectScreenBinding binding;
     private OmegaRecyclerView recyclerView;
@@ -92,17 +94,18 @@ public class SubjectScreenFragment extends Fragment {
             int factor = Integer.parseInt(binding.editTextSubjectCoefficient
                     .getText().toString());
 
-            boolean success = subjectViewModel.insert(new Subject(id, name, factor));
+            Subject subject = new Subject(id, name, factor);
+            boolean success = subjectViewModel.insertSubejct(subject);
             if (success) {
-                AppUtils.showNotificationDialog(context
-                        , "INSERT"
-                        , "Add subject successfully!");
+                AppUtils.showSuccessDialog(context
+                        , "INSERT SUCCESS");
                 dialog.dismiss();
                 adapter.submitList(subjectViewModel.getAllSubject());
+
             } else {
-                AppUtils.showNotificationDialog(context
-                        , "INSERT"
-                        , "Add subject failed!");
+                AppUtils.showErrorDialog(context
+                        , "INSERT FAILED",
+                        "Subject id have conflict");
             }
 
         });

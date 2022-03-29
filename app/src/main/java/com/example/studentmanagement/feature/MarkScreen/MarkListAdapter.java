@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,7 +44,8 @@ public class MarkListAdapter extends ListAdapter<Mark, MarkListAdapter.MarkViewH
                 parent,
                 R.layout.student_mark_item,
                 R.layout.item_swipe_left_menu,
-                markViewModel
+                markViewModel,
+                this
         );
     }
 
@@ -62,17 +64,22 @@ public class MarkListAdapter extends ListAdapter<Mark, MarkListAdapter.MarkViewH
         private TextView btnMark;
         private TextView txtMark;
         private Mark mark;
+        private MarkListAdapter markListAdapter;
 
-        public MarkViewHolder(ViewGroup parent, int contentRes, int swipeLeftMenuRes, MarkViewModel markViewModel) {
+        public MarkViewHolder(ViewGroup parent, int contentRes, int swipeLeftMenuRes
+                , MarkViewModel markViewModel, MarkListAdapter markListAdapter) {
             super(parent, contentRes, swipeLeftMenuRes);
+            this.markListAdapter = markListAdapter;
             txtName = findViewById(R.id.txt_name_mark_item);
             txtGenre = findViewById(R.id.txt_genre_mark_item);
             txtBirthdate = findViewById(R.id.txt_birth_day_mark_item);
             txtMark = findViewById(R.id.txt_mark_mark_item);
+            // setting swipe menu
             txtEdit = findViewById(R.id.txtEdit);
             txtEdit.setVisibility(View.GONE);
             btnMark = findViewById(R.id.txtDel);
             btnMark.setText("Nhập điểm");
+            btnMark.setOnClickListener(this);
             this.markViewModel = markViewModel;
         }
 
@@ -84,25 +91,20 @@ public class MarkListAdapter extends ListAdapter<Mark, MarkListAdapter.MarkViewH
         public void onClick(View v) {
             if (v.getId() == R.id.txtDel) {
                 Toast.makeText(getContext(), "click nhap diem", Toast.LENGTH_SHORT).show();
+                showEditMarkOfStudentDialog(getContext()
+                        , markViewModel.getStudentByMark(mark.getStudentId(), mark.getSubjectId())
+                        , mark.getSubjectId(), mark.getScore());
             }
         }
 
         public void bind(Mark mark) {
             this.mark = mark;
-            Student student = markViewModel.getStudentByMark(mark.getStudentId());
-            if (student == null) {
-
-                return;
-            } else {
-                txtName.setText(student.getFirstName() + " " + student.getLastName());
-                txtGenre.setText(student.getGender());
-                txtBirthdate.setText(student.getBirthday());
-                txtMark.setText(Double.toString(mark.getScore()));
-                btnMark.setOnClickListener(v -> {
-                    showEditMarkOfStudentDialog(getContext(), student
-                            , mark.getSubjectId(), mark.getScore());
-                });
-            }
+            Student student = markViewModel.getStudentByMark(mark.getStudentId(), mark.getSubjectId());
+            txtName.setText(student.getFirstName() + " " + student.getLastName());
+            txtGenre.setText(student.getGender());
+            txtBirthdate.setText(student.getBirthday());
+            txtMark.setText(Double.toString(mark.getScore()));
+//            }
 //            markViewModel.getStudentById(mark.getStudentId()).subscribe(
 //
 //            );
@@ -149,29 +151,33 @@ public class MarkListAdapter extends ListAdapter<Mark, MarkListAdapter.MarkViewH
             binding.editTextSubjectIdMark.setText(subjectId);
             binding.editTextStudentMarkMark.setText(mark + "");
 
-//            binding.btnEnterMark.setOnClickListener(v->{
-//                this.mark.setScore(Double.parseDouble(
-//                        binding.editTextStudentMarkMark.getText().toString()));
-////                markViewModel.updateMark(this.mark).subscribe(
-////                        () -> Observable.just("Cập nhật điểm thành công!")
-////                                .observeOn(AndroidSchedulers.mainThread()).subscribe(
-////                                message -> {
-////                                    Toast.makeText(
-////                                            context, message,
-////                                            Toast.LENGTH_SHORT).show();
-////                                    dialog.dismiss();
-////                                }
-////                        ),
-////                        throwable -> AppUtils.showNotificationDialog(
-////                                context,
-////                                "Cập nhật điểm thất bại!",
-////                                throwable.getLocalizedMessage()
-////                        )
-//                );
-//                dialog.dismiss();
-//            });
 
-//            binding.btnCancelMark.setOnClickListener(v -> dialog.dismiss());
+            Button btnEnterMark =  dialog.findViewById(R.id.btn_enter_mark);
+            btnEnterMark.setOnClickListener(v -> {
+                double score = 0.0;
+                try{
+                    score = Double.parseDouble(
+                            binding.editTextStudentMarkMark.getText().toString());
+                }catch (Exception e){
+                    AppUtils.showErrorDialog(
+                            getContext()
+                            , "ParseDouble Error"
+                            , e.getMessage()
+                    );
+                    return;
+                }
+                this.mark.setScore(score);
+                if(markViewModel.updateMark(this.mark)){
+                    AppUtils.showSuccessDialog(
+                            context
+                            , "Update mark successfully!"
+                    );
+                    markListAdapter.submitList(markViewModel.getMarks(student.getGradeId(), this.mark.getSubjectId()));
+                }
+                dialog.dismiss();
+            });
+
+            binding.btnCancelMark.setOnClickListener(v -> dialog.dismiss());
             dialog.show();
 
         }
@@ -183,13 +189,13 @@ public class MarkListAdapter extends ListAdapter<Mark, MarkListAdapter.MarkViewH
         @Override
         public boolean areItemsTheSame(@NonNull Mark oldItem, @NonNull Mark newItem) {
             return oldItem.getSubjectId() == newItem.getSubjectId()
-                    && oldItem.getStudentId() == newItem.getStudentId();
+                    && oldItem.getStudentId() == newItem.getStudentId() ;
         }
 
 
         @Override
         public boolean areContentsTheSame(@NonNull Mark oldItem, @NonNull Mark newItem) {
-            return oldItem.equals(newItem);
+            return Double.compare(oldItem.getScore(),newItem.getScore())!=0;
         }
     }
 

@@ -2,6 +2,7 @@ package com.example.studentmanagement.feature.GradeScreen;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,19 +18,20 @@ import com.example.studentmanagement.R;
 import com.example.studentmanagement.database.entity.Grade;
 import com.example.studentmanagement.databinding.DialogAddGradeBinding;
 import com.example.studentmanagement.databinding.DialogDelGradeBinding;
-import com.example.studentmanagement.databinding.GradeItemBinding;
-import com.example.studentmanagement.databinding.ItemSwipeLeftMenuBinding;
+
 import com.example.studentmanagement.utils.AppUtils;
 import com.omega_r.libs.omegarecyclerview.swipe_menu.SwipeViewHolder;
 
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.core.CompletableObserver;
-import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.schedulers.Schedulers;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Function;
+
+import kotlin.Unit;
+
 
 public class GradeListAdapter extends ListAdapter<Grade, GradeListAdapter.GradeViewHolder> {
     private GradeViewModel gradeViewModel;
+
 
     public GradeListAdapter(GradeViewModel gradeViewModel, @NonNull DiffUtil.ItemCallback<Grade> diffCallback) {
         super(diffCallback);
@@ -38,12 +40,23 @@ public class GradeListAdapter extends ListAdapter<Grade, GradeListAdapter.GradeV
 
     @NonNull
     @Override
+    public List<Grade> getCurrentList() {
+        return super.getCurrentList();
+    }
+
+    @NonNull
+    @Override
     public GradeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new GradeViewHolder(
                 parent,
-                gradeViewModel
+                gradeViewModel,
+                this
         );
     }
+//
+//    public void notiDatasetChange(){
+//        this.notifyItemChanged();
+//    }
 
     @Override
     public void onBindViewHolder(@NonNull GradeViewHolder holder, int position) {
@@ -52,19 +65,22 @@ public class GradeListAdapter extends ListAdapter<Grade, GradeListAdapter.GradeV
 
     static class GradeViewHolder extends SwipeViewHolder implements View.OnClickListener {
         private GradeViewModel gradeViewModel;
+        private GradeListAdapter gradeListAdapter;
 
         private TextView txtEdit;
         private TextView txtDel;
         private TextView txtGradeName;
         private TextView txtTeacherName;
 
+
         public GradeViewHolder(
                 ViewGroup parent,
-                GradeViewModel gradeViewModel) {
+                GradeViewModel gradeViewModel,
+                GradeListAdapter gradeListAdapter
+        ) {
             super(parent, R.layout.grade_item, R.layout.item_swipe_left_menu);
-//            this.setRightSwipeEnable(false);
             this.gradeViewModel = gradeViewModel;
-
+            this.gradeListAdapter = gradeListAdapter;
             txtGradeName = findViewById(R.id.txt_grade_name);
             txtTeacherName = findViewById(R.id.txt_teacher_name);
             txtEdit = findViewById(R.id.txtEdit);
@@ -74,10 +90,12 @@ public class GradeListAdapter extends ListAdapter<Grade, GradeListAdapter.GradeV
         }
 
         public void bind(Grade grade) {
-
             txtTeacherName.setText(getString(R.string.teacher_of_the_grade, grade.getTeacherName()));
             txtGradeName.setText(getString(R.string.name_of_the_grade, grade.getGradeId()));
+        }
 
+        public void showToast(String message) {
+            Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
         }
 
         @Override
@@ -108,25 +126,27 @@ public class GradeListAdapter extends ListAdapter<Grade, GradeListAdapter.GradeV
                 String gradeId = String.valueOf(binding.editTextGradeName.getText());
                 String teacherName = AppUtils.formatGradeName(String.valueOf(binding.editTextTeacherName.getText()));
 
-                gradeViewModel.updateGrade(new Grade(gradeId, teacherName))
-                        .subscribe(
-                                () -> Observable.just("Sửa lớp thành công!").observeOn(AndroidSchedulers.mainThread()).subscribe(
-                                        message -> {
-                                            Toast.makeText(
-                                                    context.getApplicationContext(), message,
-                                                    Toast.LENGTH_SHORT).show();
-                                            dialog.dismiss();
-                                        }
-                                ),
-                                throwable -> AppUtils.showNotificationDialog(
-                                        context,
-                                        "Sửa lớp thất bại!",
-                                        throwable.getLocalizedMessage()
-                                )
-                        );
 
+                Grade grade = new Grade(gradeId, teacherName);
+                if (gradeViewModel.updateGrade(grade)) {
+                    showToast("Cập nhật lớp thành công!");
+
+                    List<Grade> grades = updateGradeInList(grade);
+                    gradeListAdapter.submitList(grades);
+
+                    dialog.dismiss();
+                } else {
+                    AppUtils.showNotificationDialog(
+                            getContext(), "Thông báo", "Cập nhật lớp thất bại!");
+                }
             });
             dialog.show();
+        }
+
+        private List<Grade> updateGradeInList(Grade grade) {
+            List<Grade> grades = new ArrayList(gradeListAdapter.getCurrentList());
+            grades.get(getAdapterPosition()).setTeacherName(grade.getTeacherName());
+            return grades;
         }
 
         private void showDelGradeDialog(Context context) {
@@ -144,29 +164,25 @@ public class GradeListAdapter extends ListAdapter<Grade, GradeListAdapter.GradeV
             binding.btnDel.setOnClickListener(v -> {
                 String gradeId = String.valueOf(txtGradeName.getText()).split(":")[1].trim();
                 String teacherName = AppUtils.formatPersonName(String.valueOf(txtTeacherName.getText()).split(":")[1].trim());
-                gradeViewModel.deleteGrade(new Grade(gradeId, teacherName))
-                        .subscribe(
-                                () -> {
-                                    Toast.makeText(
-                                            context, "Xóa lớp thành công!",
-                                            Toast.LENGTH_SHORT).show();
-                                    dialog.dismiss();
-                                },
 
-                                throwable -> AppUtils.showNotificationDialog(
-                                        context,
-                                        "Xóa lớp thất bại",
-                                        throwable.getLocalizedMessage()
-                                )
-                        );
-
+                Grade grade = new Grade(gradeId, teacherName);
+                // Kiem tra co hs trong lop khong
+                if (gradeViewModel.deleteGrade(grade.getGradeId())) {
+                    showToast("Xóa lớp thành công!");
+                    List<Grade> grades = new ArrayList<Grade>(gradeListAdapter.getCurrentList());
+                    grades.remove(grade);
+                    gradeListAdapter.submitList(grades);
+                    dialog.dismiss();
+                } else {
+                    AppUtils.showNotificationDialog(
+                            getContext(), "Thông báo", "Xóa lớp thất bại!");
+                }
             });
             dialog.show();
         }
     }
 
     public static class GradeDiff extends DiffUtil.ItemCallback<Grade> {
-
         @Override
         public boolean areItemsTheSame(@NonNull Grade oldItem, @NonNull Grade newItem) {
             return oldItem.getGradeId().equals(newItem.getGradeId());
@@ -174,7 +190,7 @@ public class GradeListAdapter extends ListAdapter<Grade, GradeListAdapter.GradeV
 
         @Override
         public boolean areContentsTheSame(@NonNull Grade oldItem, @NonNull Grade newItem) {
-            return oldItem.getTeacherName().equals(newItem.getTeacherName());
+            return oldItem.equals(newItem);
         }
     }
 }

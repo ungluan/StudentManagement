@@ -7,8 +7,14 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.studentmanagement.database.dao.SubjectDao;
+
+
 import com.example.studentmanagement.database.daosqlite.SubjectDaoSqlite;
+
+import com.example.studentmanagement.database_sqlite.Dao.GradeDao;
+import com.example.studentmanagement.database_sqlite.Dao.StudentDao;
+import com.example.studentmanagement.database_sqlite.Dao.SubjectDao;
+
 import com.example.studentmanagement.database_sqlite.DataBaseHelper;
 import com.example.studentmanagement.repository.GradeRepository;
 import com.example.studentmanagement.repository.StudentRepository;
@@ -20,52 +26,32 @@ import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class HomeViewModel extends AndroidViewModel {
-    private GradeRepository gradeRepository;
-    private SubjectRepository subjectRepository;
-    private StudentRepository studentRepository;
-    private DataBaseHelper db ;
-    private SubjectDaoSqlite subjectDaoSqlite;
-    private MutableLiveData<Integer> numberOfGrade = new MutableLiveData<Integer>();
-//    public LiveData<Integer> getNumberOfGrade(){ return numberOfGrade;}
 
-    public int getNumberOfSubject(){
-        return subjectDaoSqlite.getNumberOfSubject();
-    }
+
+    private GradeDao gradeDao;
+    private StudentDao studentDao;
+    private SubjectDao subjectDao;
+
+
 
     public HomeViewModel(@NonNull Application application) {
         super(application);
-        this.gradeRepository = new GradeRepository(application);
-        this.subjectRepository = new SubjectRepository(application);
-        this.studentRepository = new StudentRepository(application);
-        this.subjectDaoSqlite = new SubjectDaoSqlite(application);
-        db = DataBaseHelper.getInstance(application);
+
+        gradeDao = new GradeDao(application);
+        subjectDao = new SubjectDao(application);
+        studentDao = new StudentDao(application);
     }
 
-    public Flowable<Integer> getNumberOfGrades(){
-        return gradeRepository.getNumberOfGrades()
-                .subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread());
+    public int getNumberOfGrades(){
+        return gradeDao.getNumberOfGrade();
     }
 
-    public Flowable<Integer> getNumberOfSubjects(){
-        return subjectRepository.getNumberOfSubjects()
-                .subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread());
+    public int getNumberOfSubjects(){
+        return subjectDao.getNumberOfSubject();
     }
 
-    public Flowable<Integer> getNumberOfStudents(){
-        return studentRepository.getNumberOfStudents()
-                .subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread());
+    public int getNumberOfStudents(){
+        return studentDao.getNumberOfStudent();
     }
 
-    /*public Flowable<List<GradeWithStudents>> getGradesWithStudents(){
-        return gradeRepository.getGradesWithStudents()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
-    }*/
-    public LiveData<Integer> getNumberOfGrade(){
-        numberOfGrade.postValue(db.getNumberOfGrade());
-        return numberOfGrade;
-    }
 }

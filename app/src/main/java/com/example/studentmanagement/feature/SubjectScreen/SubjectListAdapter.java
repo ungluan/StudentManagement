@@ -14,11 +14,17 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 
 import com.example.studentmanagement.R;
+import com.example.studentmanagement.database.entity.Grade;
+import com.example.studentmanagement.database.entity.Student;
 import com.example.studentmanagement.database.entity.Subject;
 
 import com.example.studentmanagement.databinding.DialogAddSubjectBinding;
 import com.example.studentmanagement.utils.AppUtils;
 import com.omega_r.libs.omegarecyclerview.swipe_menu.SwipeViewHolder;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Callable;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
@@ -38,9 +44,8 @@ public class SubjectListAdapter extends ListAdapter<Subject, SubjectListAdapter.
     public SubjectViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new SubjectViewHolder(
                 parent,
-                R.layout.subject_item,
-                R.layout.item_swipe_left_menu,
-                subjectViewModel
+                this.subjectViewModel,
+                this
         );
     }
 
@@ -51,17 +56,19 @@ public class SubjectListAdapter extends ListAdapter<Subject, SubjectListAdapter.
 
     static class SubjectViewHolder extends SwipeViewHolder implements View.OnClickListener {
 
-        SubjectViewModel subjectViewModel;
+        private SubjectViewModel subjectViewModel;
+        private SubjectListAdapter subjectListAdapter;
         private TextView txtEdit;
         private TextView txtDel;
         private TextView txtSubjectId;
         private TextView txtSubjectName;
         private TextView txtCoefficient;
 
-        public SubjectViewHolder(ViewGroup parent, int layout, int swipe, SubjectViewModel subjectViewModel) {
-            super(parent, layout, swipe);
+        public SubjectViewHolder(ViewGroup parent, SubjectViewModel subjectViewModel, SubjectListAdapter subjectListAdapter) {
+            super(parent, R.layout.subject_item, R.layout.item_swipe_left_menu);
 
             this.subjectViewModel = subjectViewModel;
+            this.subjectListAdapter = subjectListAdapter;
             txtSubjectId = findViewById(R.id.txt_subject_id);
             txtSubjectName = findViewById(R.id.txt_subject_name);
             txtCoefficient = findViewById(R.id.txt_subject_coefficient);
@@ -102,20 +109,31 @@ public class SubjectListAdapter extends ListAdapter<Subject, SubjectListAdapter.
                         int factor = Integer.parseInt(binding.editTextSubjectCoefficient
                                 .getText().toString());
 
-                        boolean success = subjectViewModel.update(new Subject(id, name, factor));
+                    Subject subject = new Subject(id, name, factor);
+
+                        boolean success = subjectViewModel.updateSubject(subject);
                         if(success){
-                            AppUtils.showNotificationDialog(context
-                                    , "UPDATE"
+                            AppUtils.showSuccessDialog(context
                                     , "Update subject successfully!");
+
+                            subjectListAdapter.submitList(subjectViewModel.getAllSubject());
+                            dialog.dismiss();
                         }else{
-                            AppUtils.showNotificationDialog(context
-                                    , "UPDATE"
+                            AppUtils.showErrorDialog(context
+                                    , "UPDATE ERROR"
                                     , "Update subject failed!");
                         }
 
                     });
 
             dialog.show();
+        }
+
+        private List<Subject> updateSubjectInList(Subject subject) {
+            List<Subject> subjects = new ArrayList(subjectListAdapter.getCurrentList());
+            subjects.get(getAdapterPosition()).setSubjectName(subject.getSubjectName());
+            subjects.get(getAdapterPosition()).setCoefficient(subject.getCoefficient());
+            return subjects;
         }
 
         private void showToast(String message) {
@@ -141,9 +159,25 @@ public class SubjectListAdapter extends ListAdapter<Subject, SubjectListAdapter.
 
         private void showDelSubjectDialog(Context context, String subjectId) {
              AppUtils.showNotiDialog(
-                    context
-                    , "Are you sure delete this subject?"
-            );
+                     context
+                     , "Are you sure delete this subject?",
+                     new Callable<Void>() {
+                         @Override
+                         public Void call() throws Exception {
+                             boolean check = subjectViewModel.deleteSubject(txtSubjectId.getText().toString().split(":")[1].trim());
+                             if(check){
+                                 AppUtils.showSuccessDialog(context
+                                         , "Delete subject successfully!");
+                                 subjectListAdapter.submitList(subjectViewModel.getAllSubject());
+                             }else{
+                                 AppUtils.showErrorDialog(context
+                                         , "DELETE ERROR"
+                                         , "Subject have more student!");
+                             }
+                             return null;
+                         }
+                     }
+             );
 //            if(del){
 //                boolean checkFK= subjectViewModel.delete(subjectId);
 //                if(checkFK){

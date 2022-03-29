@@ -28,7 +28,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     public static final String TABLE_HOC_SINH = "HOCSINH";
     public static final String COLUMN_MA_HOC_SINH = "MAHOCSINH";
-    public static final String COLUMN__PHAI = "PHAI";
+    public static final String COLUMN_PHAI = "PHAI";
     public static final String COLUMN_NGAY_SINH = "NGAYSINH";
 
     public static final String TABLE_DIEM = "DIEM";
@@ -54,7 +54,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             "        " + COLUMN_MA_HOC_SINH + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,\n" +
             "        " + COLUMN_HO + " TEXT,\n" +
             "        " + COLUMN_TEN + " TEXT,\n" +
-            "        " + COLUMN__PHAI + " TEXT,\n" +
+            "        " + COLUMN_PHAI + " TEXT,\n" +
             "        " + COLUMN_NGAY_SINH + " TEXT,\n" +
             "        " + COLUMN_LOP + " TEXT ," +
             "        FOREIGN KEY (" + COLUMN_LOP + ") REFERENCES " + TABLE_LOP + "(" + COLUMN_LOP + ")\n" +
@@ -75,8 +75,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             "        ON UPDATE CASCADE" +
             "    )";
 
-    public DataBaseHelper(Application application) {
-        super(application, "app_database_sqlite.db", null, 2);
+
+    private DataBaseHelper(Application application) {
+        super(application, "app_database_sqlite.db", null, 9);
+
     }
 
     public static synchronized DataBaseHelper getInstance(Application application) {
@@ -125,6 +127,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.execSQL(createSubjectTableStatement);
         db.execSQL(createStudentTableStatement);
         db.execSQL(createMarkTableStatement);
+        db.rawQuery("PRAGMA foreign_keys = ON", null);
     }
 
     // This is called if the database version number change.
@@ -144,37 +147,34 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         cursor.moveToFirst();
         System.out.println(cursor.getCount());
         System.out.println(cursor.getInt(0));
-        Log.d("HomeFragment","ThreadName on Executorx: "+Thread.currentThread().getName());
+        Log.d("HomeFragment", "ThreadName on Executorx: " + Thread.currentThread().getName());
         return cursor.getInt(0);
     }
+
 
     //insert, delete, update, select
 
 
 
-    public Cursor select(String sql){
-        return this.getReadableDatabase().rawQuery(sql,null);
-    }
 
-    public boolean insert(String tableName, ContentValues contentValues ){
-        SQLiteDatabase db = this.getWritableDatabase() ;
-        Long success = db.insert(tableName,null, contentValues);
-        if(success==-1){
-            return false;
-        }else return true;
-    }
-
-    public boolean update(String tableName,ContentValues updateColumns, String whereClause,  String[] whereValues){
+    public boolean insert(String tableName, ContentValues values) {
         SQLiteDatabase db = this.getWritableDatabase();
-        int success = db.update(tableName,updateColumns, whereClause,  whereValues );
-        if(success==-1) return false;
-        else return true;
+        return db.insertOrThrow(tableName, null, values) > 0;
     }
 
-    public boolean delete(String tableName, String whereClause, String[]whereValues){
+    public boolean update(String tableName, String whereClause,
+                          ContentValues values, String[] whereArgs) {
         SQLiteDatabase db = this.getWritableDatabase();
-        int success = db.delete(tableName , whereClause,  whereValues );
-        if(success==-1) return false;
-        else return true;
+        return db.update(tableName, values, whereClause, whereArgs) > 0;
+    }
+
+    public boolean delete(String tableName, String whereClause, String[] whereArgs) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.delete(tableName, whereClause, whereArgs) > 0;
+    }
+
+    public Cursor query(String query, String[] selectionArgs) {
+        return this.getReadableDatabase().rawQuery(query, selectionArgs, null);
     }
 }
+
