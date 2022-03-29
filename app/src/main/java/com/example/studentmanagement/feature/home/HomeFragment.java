@@ -43,24 +43,6 @@ public class HomeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         homeViewModel = new ViewModelProvider(requireActivity()).get(HomeViewModel.class);
 
-        homeViewModel.getNumberOfGrades().subscribe(
-                number -> binding.txtNumberOfGrades.setText(
-                        getString(R.string.number_and_noun, number, "Lớp")),
-                throwable -> Log.d("HomeFragment", throwable.getMessage()),
-                () -> Log.d("HomeFragment", "onCompleted")
-        );
-        homeViewModel.getNumberOfSubjects().subscribe(
-                number -> binding.txtNumberOfSubjects.setText(
-                        getString(R.string.number_and_noun, number, "Môn")),
-                throwable -> Log.d("HomeFragment", throwable.getMessage()),
-                () -> Log.d("HomeFragment", "onCompleted")
-        );
-        homeViewModel.getNumberOfStudents().subscribe(
-                number -> binding.txtNumberOfStudents.setText(
-                        getString(R.string.number_and_noun, number, "Học sinh")),
-                throwable -> Log.d("HomeFragment", throwable.getMessage()),
-                () -> Log.d("HomeFragment", "onCompleted")
-        );
         binding.cardViewGrade.setOnClickListener(
                 v -> {
                     NavDirections action = HomeFragmentDirections.actionHomeFragmentToGradeScreenFragment();
@@ -79,31 +61,14 @@ public class HomeFragment extends Fragment {
         });
         db = DataBaseHelper.getInstance(this.requireActivity().getApplication());
 
-        binding.noticeBoard.setOnClickListener(v -> {
-            DataBaseHelper.databaseExecutor.execute(() -> {
-                Log.d("HomeFragment","ThreadName on Executor: "+Thread.currentThread().getName());
-                handler.post(() -> {
-                    homeViewModel.getNumberOfGrade().observe((this.getViewLifecycleOwner()), value -> {
-                        binding.txtNumberOfGrades.setText(String.valueOf(value));
-                    });
-                });
-                Log.d("NumberOfGrade: ",String.valueOf(db.getNumberOfGrade()));
-            });
-        });
     }
 
 
     @Override
     public void onStart() {
         super.onStart();
-        DataBaseHelper.databaseExecutor.execute(() -> {
-            Log.d("HomeFragment","ThreadName on Executor on Start: "+Thread.currentThread().getName());
-            handler.post(() -> {
-                homeViewModel.getNumberOfGrade().observe((this.getViewLifecycleOwner()), value -> {
-                    binding.txtNumberOfGrades.setText(String.valueOf(value));
-                });
-            });
-            Log.d("NumberOfGrade: ",String.valueOf(db.getNumberOfGrade()));
-        });
+        binding.txtNumberOfGrades.setText(getString(R.string.number_and_noun,homeViewModel.getNumberOfGrades(),"Lớp"));
+        binding.txtNumberOfStudents.setText(getString(R.string.number_and_noun,homeViewModel.getNumberOfStudents(),"Học sinh"));
+        binding.txtNumberOfSubjects.setText(getString(R.string.number_and_noun,homeViewModel.getNumberOfSubjects(),"Môn"));
     }
 }

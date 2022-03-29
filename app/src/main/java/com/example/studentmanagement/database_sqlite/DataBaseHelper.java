@@ -7,8 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.example.studentmanagement.database.entity.Grade;
-
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -27,7 +25,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     public static final String TABLE_HOC_SINH = "HOCSINH";
     public static final String COLUMN_MA_HOC_SINH = "MAHOCSINH";
-    public static final String COLUMN__PHAI = "PHAI";
+    public static final String COLUMN_PHAI = "PHAI";
     public static final String COLUMN_NGAY_SINH = "NGAYSINH";
 
     public static final String TABLE_DIEM = "DIEM";
@@ -53,7 +51,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             "        " + COLUMN_MA_HOC_SINH + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,\n" +
             "        " + COLUMN_HO + " TEXT,\n" +
             "        " + COLUMN_TEN + " TEXT,\n" +
-            "        " + COLUMN__PHAI + " TEXT,\n" +
+            "        " + COLUMN_PHAI + " TEXT,\n" +
             "        " + COLUMN_NGAY_SINH + " TEXT,\n" +
             "        " + COLUMN_LOP + " TEXT ," +
             "        FOREIGN KEY (" + COLUMN_LOP + ") REFERENCES " + TABLE_LOP + "(" + COLUMN_LOP + ")\n" +
@@ -75,7 +73,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             "    )";
 
     private DataBaseHelper(Application application) {
-        super(application, "app_database_sqlite.db", null, 1);
+        super(application, "app_database_sqlite.db", null, 9);
     }
 
     public static synchronized DataBaseHelper getInstance(Application application) {
@@ -153,18 +151,18 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return db.insertOrThrow(tableName, null, values) > 0;
     }
 
-    public boolean update(String tableName,String whereClause,
+    public boolean update(String tableName, String whereClause,
                           ContentValues values, String[] whereArgs) {
         SQLiteDatabase db = this.getWritableDatabase();
         return db.update(tableName, values, whereClause, whereArgs) > 0;
     }
 
-    public boolean delete(String tableName,String whereClause ,
-                          String gradeId, String[] whereArgs) {
+    public boolean delete(String tableName, String whereClause, String[] whereArgs) {
         SQLiteDatabase db = this.getWritableDatabase();
         return db.delete(tableName, whereClause, whereArgs) > 0;
     }
-    public Cursor query(String query, String[] selectionArgs){
-        return this.getReadableDatabase().rawQuery(query,selectionArgs,null);
+
+    public Cursor query(String query, String[] selectionArgs) {
+        return this.getReadableDatabase().rawQuery(query, selectionArgs, null);
     }
 }
