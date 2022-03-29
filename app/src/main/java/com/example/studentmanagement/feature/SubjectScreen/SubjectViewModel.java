@@ -14,13 +14,23 @@ import java.util.List;
 
 public class SubjectViewModel extends AndroidViewModel {
     private SubjectDaoSqlite subjectDaoSqlite;
-    private List<Subject> subjects;
 
     public SubjectViewModel(@NonNull Application application) {
         super(application);
         this.subjectDaoSqlite = new SubjectDaoSqlite(application);
-        subjects = this.subjectDaoSqlite.getAllSubject();
     }
 
-    public List<Subject> getAllSubject(){return this.subjects;}
+    public List<Subject> getAllSubject(){return subjectDaoSqlite.getAllSubject();}
+
+    public boolean insert(Subject subject){
+        return subjectDaoSqlite.insert(subject);
+    }
+
+    public boolean update(Subject subject){
+        return subjectDaoSqlite.update(subject);
+    }
+
+    public boolean delete(String subjectId){
+        return subjectDaoSqlite.delete(subjectId);
+    }
 }

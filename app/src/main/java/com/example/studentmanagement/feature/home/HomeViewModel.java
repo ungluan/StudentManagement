@@ -7,6 +7,8 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.studentmanagement.database.dao.SubjectDao;
+import com.example.studentmanagement.database.daosqlite.SubjectDaoSqlite;
 import com.example.studentmanagement.database_sqlite.DataBaseHelper;
 import com.example.studentmanagement.repository.GradeRepository;
 import com.example.studentmanagement.repository.StudentRepository;
@@ -22,15 +24,20 @@ public class HomeViewModel extends AndroidViewModel {
     private SubjectRepository subjectRepository;
     private StudentRepository studentRepository;
     private DataBaseHelper db ;
+    private SubjectDaoSqlite subjectDaoSqlite;
     private MutableLiveData<Integer> numberOfGrade = new MutableLiveData<Integer>();
 //    public LiveData<Integer> getNumberOfGrade(){ return numberOfGrade;}
 
+    public int getNumberOfSubject(){
+        return subjectDaoSqlite.getNumberOfSubject();
+    }
 
     public HomeViewModel(@NonNull Application application) {
         super(application);
         this.gradeRepository = new GradeRepository(application);
         this.subjectRepository = new SubjectRepository(application);
         this.studentRepository = new StudentRepository(application);
+        this.subjectDaoSqlite = new SubjectDaoSqlite(application);
         db = DataBaseHelper.getInstance(application);
     }
 

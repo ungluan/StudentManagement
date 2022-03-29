@@ -81,14 +81,28 @@ public class MarkListAdapter extends ListAdapter<Mark, MarkListAdapter.MarkViewH
         }
 
         @Override
-        public void onClick(View v){
-            if(v.getId()== R.id.txtDel){
+        public void onClick(View v) {
+            if (v.getId() == R.id.txtDel) {
                 Toast.makeText(getContext(), "click nhap diem", Toast.LENGTH_SHORT).show();
             }
         }
 
         public void bind(Mark mark) {
             this.mark = mark;
+            Student student = markViewModel.getStudentByMark(mark.getStudentId());
+            if (student == null) {
+
+                return;
+            } else {
+                txtName.setText(student.getFirstName() + " " + student.getLastName());
+                txtGenre.setText(student.getGender());
+                txtBirthdate.setText(student.getBirthday());
+                txtMark.setText(Double.toString(mark.getScore()));
+                btnMark.setOnClickListener(v -> {
+                    showEditMarkOfStudentDialog(getContext(), student
+                            , mark.getSubjectId(), mark.getScore());
+                });
+            }
 //            markViewModel.getStudentById(mark.getStudentId()).subscribe(
 //
 //            );
@@ -107,7 +121,6 @@ public class MarkListAdapter extends ListAdapter<Mark, MarkListAdapter.MarkViewH
 //
 
 
-
 //            txtName.setText(student.getFirstName() + " " + student.getLastName());
 //                        txtGenre.setText(student.getGender());
 //                        txtBirthdate.setText(student.getBirthday());
@@ -121,7 +134,7 @@ public class MarkListAdapter extends ListAdapter<Mark, MarkListAdapter.MarkViewH
         }
 
         private void showEditMarkOfStudentDialog(Context context, Student student
-                ,String subjectId, Double mark){
+                , String subjectId, Double mark) {
             Dialog dialog = new Dialog(context, R.style.DialogStyle);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             DialogEnterMarkBinding binding = DialogEnterMarkBinding.inflate(
@@ -131,10 +144,10 @@ public class MarkListAdapter extends ListAdapter<Mark, MarkListAdapter.MarkViewH
             dialog.getWindow().setBackgroundDrawableResource(R.drawable.bg_white_color);
 
             binding.editTextStudentGradeMark.setText(student.getGradeId());
-            binding.editTextStudentNameMark.setText(student.getLastName()+ " " + student.getFirstName());
-            binding.editTextStudentIdMark.setText(student.getId()+"");
+            binding.editTextStudentNameMark.setText(student.getLastName() + " " + student.getFirstName());
+            binding.editTextStudentIdMark.setText(student.getId() + "");
             binding.editTextSubjectIdMark.setText(subjectId);
-            binding.editTextStudentMarkMark.setText(mark+"");
+            binding.editTextStudentMarkMark.setText(mark + "");
 
 //            binding.btnEnterMark.setOnClickListener(v->{
 //                this.mark.setScore(Double.parseDouble(
@@ -164,14 +177,13 @@ public class MarkListAdapter extends ListAdapter<Mark, MarkListAdapter.MarkViewH
         }
     }
 
-    static class MarkDiff extends DiffUtil.ItemCallback<Mark>{
-
+    static class MarkDiff extends DiffUtil.ItemCallback<Mark> {
 
 
         @Override
         public boolean areItemsTheSame(@NonNull Mark oldItem, @NonNull Mark newItem) {
-            return oldItem.getSubjectId()==newItem.getSubjectId()
-                    && oldItem.getStudentId()==newItem.getStudentId();
+            return oldItem.getSubjectId() == newItem.getSubjectId()
+                    && oldItem.getStudentId() == newItem.getStudentId();
         }
 
 

@@ -42,8 +42,12 @@ public class MarkViewModel extends AndroidViewModel {
 
     }
 
-    ArrayList<Mark> getAllMarkByGradeAndSubject(String gradeId, String subjectId){
+    public ArrayList<Mark> getAllMarkByGradeAndSubject(String gradeId, String subjectId){
         return markDaoSqlite.getMarkByGradeAndSubject(gradeId, subjectId);
+    }
+
+    public Student getStudentByMark(int studentId){
+        return markDaoSqlite.getStudentByMark(studentId);
     }
 
 

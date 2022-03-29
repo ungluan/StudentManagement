@@ -106,9 +106,13 @@ public class HomeFragment extends Fragment {
             handler.post(() -> {
                 homeViewModel.getNumberOfGrade().observe((this.getViewLifecycleOwner()), value -> {
                     binding.txtNumberOfGrades.setText(String.valueOf(value));
+
                 });
             });
             Log.d("NumberOfGrade: ",String.valueOf(db.getNumberOfGrade()));
         });
+
+        binding.txtNumberOfSubjects.setText(homeViewModel.getNumberOfSubject()+"");
+
     }
 }
