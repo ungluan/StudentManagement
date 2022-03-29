@@ -25,13 +25,13 @@ public class StudentDao {
     }
 
     public Boolean insertStudent(Student student) {
-        return dataBaseHelper.insert(DataBaseHelper.TABLE_HOC_SINH, values(student));
+        return dataBaseHelper.insert(DataBaseHelper.TABLE_HOC_SINH, values(student,true));
     }
 
     public Boolean updateStudent(Student student) {
         return dataBaseHelper.update(DataBaseHelper.TABLE_HOC_SINH,
                 DataBaseHelper.COLUMN_MA_HOC_SINH + "=" + student.getId(),
-                values(student), null);
+                values(student,false), null);
     }
 
     public Boolean checkStudent(String studentId) {
@@ -74,9 +74,9 @@ public class StudentDao {
     }
 
 
-    public ContentValues values(Student student) {
+    public ContentValues values(Student student, boolean noId) {
         ContentValues values = new ContentValues();
-//        values.put(DataBaseHelper.COLUMN_MA_HOC_SINH, student.getId());
+        if(!noId) values.put(DataBaseHelper.COLUMN_MA_HOC_SINH, student.getId());
         values.put(DataBaseHelper.COLUMN_HO, student.getFirstName());
         values.put(DataBaseHelper.COLUMN_TEN, student.getLastName());
         values.put(DataBaseHelper.COLUMN_PHAI, student.getGender());

@@ -160,13 +160,14 @@ public class StudentListAdapter extends ListAdapter<Student, StudentListAdapter.
                 });
             });
             binding.btnAdd.setOnClickListener(v -> {
+                int studentId = this.student.getId() ;
                 String gradeId = String.valueOf(binding.editTextGradeName.getText());
                 String firstName = AppUtils.formatPersonName(String.valueOf(binding.editTextFirstName.getText()));
                 String lastName = AppUtils.formatPersonName(String.valueOf(binding.editTextLastName.getText()));
                 String gender = binding.radioButtonNam.isChecked() ? "Nam" : "Nữ";
                 String birthday = binding.editTextBirthday.getText().toString();
 
-                Student student = new Student(firstName,lastName,gender,birthday,gradeId);
+                Student newStudent = new Student(studentId,firstName,lastName,gender,birthday,gradeId);
 
                 if (firstName.equals("") || lastName.equals("") || birthday.equals("")) {
                     if (firstName.equals(""))
@@ -175,10 +176,10 @@ public class StudentListAdapter extends ListAdapter<Student, StudentListAdapter.
                         binding.textInputLayoutLastName.setError("Tên không được trống.");
                 }
 
-                if(studentViewModel.updateStudent(student)){
+                if(studentViewModel.updateStudent(newStudent)){
                     showToast("Cập nhật học sinh thành công!");
-                    List<Student> students = updateStudentInList(student);
-                    studentListAdapter.submitList(students);
+                    studentListAdapter.submitList(updateStudentInList(newStudent));
+                    studentListAdapter.notifyItemChanged(getAdapterPosition());
                     dialog.dismiss();
                 }else{
                     AppUtils.showNotificationDialog(
