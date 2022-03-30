@@ -1,11 +1,13 @@
 package com.example.studentmanagement.database.entity;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import java.lang.reflect.Member;
+import java.util.Objects;
 
 @Entity(tableName = "MONHOC")
 public class Subject {
@@ -64,11 +66,11 @@ public class Subject {
      *
      ***/
     @Override
-    public boolean equals(Object sub2) {
-        if (!(sub2 instanceof Subject)) {
-            return false;
-        }
-        Subject subject2 = (Subject) sub2;
-        return subject2.getId().equals(this.getId());
+    public boolean equals(@Nullable Object obj) {
+        if(obj==null || obj.getClass() != Subject.class) return false;
+        return ((Subject) obj).subjectId.equals(this.subjectId)
+                && ((Subject) obj).subjectName.equals(this.subjectName)
+                && ((Subject) obj).coefficient == this.coefficient;
     }
+
 }

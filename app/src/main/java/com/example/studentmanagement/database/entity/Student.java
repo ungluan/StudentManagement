@@ -47,6 +47,14 @@ public class Student {
         this.gradeId = gradeId;
     }
 
+    public void setStudent(Student student) {
+        this.firstName = student.firstName;
+        this.lastName = student.lastName;
+        this.gender = student.gender;
+        this.birthday = student.birthday;
+        this.gradeId = student.gradeId;
+    }
+
     public int getId() {
         return id;
     }
@@ -105,15 +113,13 @@ public class Student {
 
     @Override
     public boolean equals(@Nullable Object obj) {
-        if (obj == null || obj.getClass() != Grade.class) return false;
+        if (obj == null || obj.getClass() != Student.class) return false;
 
-        return this.getFirstName().equals(((Student) obj).getFirstName())
-                && this.getLastName().equals(((Student) obj).getLastName())
-                && this.getGender().equals(((Student) obj).getGender())
-                && this.birthday.equals(((Student) obj).getBirthday())
+        return this.firstName.equals(((Student) obj).firstName)
+                && this.lastName.equals(((Student) obj).lastName)
+                && this.gender.equals(((Student) obj).gender)
+                && this.birthday.equals(((Student) obj).birthday)
                 && this.gradeId.equals(((Student) obj).gradeId)
                 && this.id == ((Student) obj).id;
-
-
     }
 }

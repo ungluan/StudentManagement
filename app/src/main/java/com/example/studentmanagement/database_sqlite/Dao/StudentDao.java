@@ -26,13 +26,13 @@ public class StudentDao {
     }
 
     public Boolean insertStudent(Student student) {
-        return dataBaseHelper.insert(DataBaseHelper.TABLE_HOC_SINH, values(student));
+        return dataBaseHelper.insert(DataBaseHelper.TABLE_HOC_SINH, values(student,true));
     }
 
     public Boolean updateStudent(Student student) {
         return dataBaseHelper.update(DataBaseHelper.TABLE_HOC_SINH,
                 DataBaseHelper.COLUMN_MA_HOC_SINH + "=" + student.getId(),
-                values(student), null);
+                values(student,false), null);
     }
 
     public Boolean checkStudent(String studentId) {
@@ -43,9 +43,9 @@ public class StudentDao {
         return cursor.getCount() != 0;
     }
 
-    public Boolean deleteStudent(String studentId) {
+    public boolean deleteStudent(int studentId) {
         return dataBaseHelper.delete(DataBaseHelper.TABLE_HOC_SINH,
-                DataBaseHelper.COLUMN_LOP + " = " + studentId , null);
+                DataBaseHelper.COLUMN_MA_HOC_SINH + " = " + studentId , null);
     }
 
     public int getNumberOfStudent() {
@@ -55,9 +55,11 @@ public class StudentDao {
         return cursor.getInt(0);
     }
 
-    public List<Student> getStudents(){
+    public List<Student> getStudentsByGradeId(String gradeId){
         List<Student> list = new ArrayList<>();
-        Cursor cursor = dataBaseHelper.query("SELECT * FROM "+DataBaseHelper.TABLE_HOC_SINH,null);
+        String query = "SELECT * FROM "+DataBaseHelper.TABLE_HOC_SINH +
+                " WHERE "+DataBaseHelper.COLUMN_LOP +" =?";
+        Cursor cursor = dataBaseHelper.query(query,new String[]{gradeId});
         if(cursor.moveToFirst()){
             do{
                 int studentId = cursor.getInt(0);
@@ -65,7 +67,6 @@ public class StudentDao {
                 String lastName = cursor.getString(2);
                 String gender = cursor.getString(3);
                 String birthdate = cursor.getString(4);
-                String gradeId = cursor.getString(5);
                 Student student = new Student(studentId,firstName,lastName,gender,birthdate,gradeId);
                 list.add(student);
             }while (cursor.moveToNext());
@@ -73,9 +74,10 @@ public class StudentDao {
         return list;
     }
 
-    public ContentValues values(Student student) {
+
+    public ContentValues values(Student student, boolean noId) {
         ContentValues values = new ContentValues();
-        values.put(DataBaseHelper.COLUMN_MA_HOC_SINH, student.getId());
+        if(!noId) values.put(DataBaseHelper.COLUMN_MA_HOC_SINH, student.getId());
         values.put(DataBaseHelper.COLUMN_HO, student.getFirstName());
         values.put(DataBaseHelper.COLUMN_TEN, student.getLastName());
         values.put(DataBaseHelper.COLUMN_PHAI, student.getGender());
