@@ -1,5 +1,6 @@
 package com.example.studentmanagement.database.dao;
 
+import androidx.annotation.Nullable;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -31,6 +32,8 @@ public interface MarkDao {
 
     @Update
     Completable deleteMark(Mark mark);
+
+
 
     /*@Transaction
     default void deleteAndInsertMark(

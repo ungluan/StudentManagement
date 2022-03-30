@@ -7,6 +7,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import androidx.core.database.sqlite.SQLiteDatabaseKt;
+
+import java.util.Vector;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -72,8 +75,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             "        ON UPDATE CASCADE" +
             "    )";
 
+
     private DataBaseHelper(Application application) {
         super(application, "app_database_sqlite.db", null, 9);
+
     }
 
     public static synchronized DataBaseHelper getInstance(Application application) {
@@ -146,6 +151,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return cursor.getInt(0);
     }
 
+
+    //insert, delete, update, select
+
+
+
+
     public boolean insert(String tableName, ContentValues values) {
         SQLiteDatabase db = this.getWritableDatabase();
         return db.insertOrThrow(tableName, null, values) > 0;
@@ -159,10 +170,17 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     public boolean delete(String tableName, String whereClause, String[] whereArgs) {
         SQLiteDatabase db = this.getWritableDatabase();
-        return db.delete(tableName, whereClause, whereArgs) > 0;
+        db.execSQL("PRAGMA foreign_keys=ON");
+        try{
+            db.delete(tableName, whereClause, whereArgs);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
     }
 
     public Cursor query(String query, String[] selectionArgs) {
         return this.getReadableDatabase().rawQuery(query, selectionArgs, null);
     }
 }
+

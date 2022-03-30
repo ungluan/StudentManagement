@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
@@ -83,5 +84,22 @@ public class StudentDao {
         values.put(DataBaseHelper.COLUMN_NGAY_SINH, student.getBirthday());
         values.put(DataBaseHelper.COLUMN_LOP, student.getGradeId());
         return values;
+    }
+
+    public Student getStudent(int studentId) {
+        Cursor cursor = dataBaseHelper.query("SELECT *"
+                        + " FROM " + DataBaseHelper.TABLE_HOC_SINH
+                        + " WHERE " + DataBaseHelper.COLUMN_MA_HOC_SINH + "=" + studentId
+                ,null);
+        if (cursor.moveToNext()) {
+            return new Student(cursor.getInt(0)//id
+                    , cursor.getString(1)//ho
+                    , cursor.getString(2)//ten
+                    , cursor.getString(3)//phai
+                    , cursor.getString(4)//birthday
+                    , cursor.getString(5)); // gradeId
+        }
+        Log.d("MarkDaoSqlite:", "getStudentByMark method");
+        return null;
     }
 }

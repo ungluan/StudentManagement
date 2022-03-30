@@ -34,6 +34,7 @@ public class SubjectRepository {
         return subjectDao.getNumberOfSubjects();
     }
 
+
     public Maybe<List<Subject>> getListSubject(){return subjectDao.getListSubject();}
 
     public Maybe<List<SubjectWithMarks>> getSubjectAndMarkByStudentId(int studentId){

@@ -42,9 +42,6 @@ public class Grade {
 
     @Override
     public String toString() {
-        return "Grade{" +
-                "gradeId='" + gradeId + '\'' +
-                ", teacherName='" + teacherName + '\'' +
-                '}';
+        return gradeId + "-"+ teacherName;
     }
 }

@@ -7,9 +7,14 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+
+
+import com.example.studentmanagement.database.daosqlite.SubjectDaoSqlite;
+
 import com.example.studentmanagement.database_sqlite.Dao.GradeDao;
 import com.example.studentmanagement.database_sqlite.Dao.StudentDao;
 import com.example.studentmanagement.database_sqlite.Dao.SubjectDao;
+
 import com.example.studentmanagement.database_sqlite.DataBaseHelper;
 import com.example.studentmanagement.repository.GradeRepository;
 import com.example.studentmanagement.repository.StudentRepository;
@@ -22,13 +27,16 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class HomeViewModel extends AndroidViewModel {
 
+
     private GradeDao gradeDao;
     private StudentDao studentDao;
     private SubjectDao subjectDao;
 
 
+
     public HomeViewModel(@NonNull Application application) {
         super(application);
+
         gradeDao = new GradeDao(application);
         subjectDao = new SubjectDao(application);
         studentDao = new StudentDao(application);

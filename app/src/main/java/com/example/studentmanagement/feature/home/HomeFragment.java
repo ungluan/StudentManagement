@@ -59,6 +59,11 @@ public class HomeFragment extends Fragment {
             NavDirections action = HomeFragmentDirections.actionHomeFragmentToSubjectScreenFragment();
             Navigation.findNavController(v).navigate(action);
         });
+
+        binding.cardViewMark.setOnClickListener(v -> {
+            NavDirections action = HomeFragmentDirections.actionHomeFragmentToMarkScreenFragment();
+            Navigation.findNavController(v).navigate(action);
+        });
         db = DataBaseHelper.getInstance(this.requireActivity().getApplication());
 
     }
@@ -67,8 +72,10 @@ public class HomeFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+
         binding.txtNumberOfGrades.setText(getString(R.string.number_and_noun,homeViewModel.getNumberOfGrades(),"Lớp"));
         binding.txtNumberOfStudents.setText(getString(R.string.number_and_noun,homeViewModel.getNumberOfStudents(),"Học sinh"));
         binding.txtNumberOfSubjects.setText(getString(R.string.number_and_noun,homeViewModel.getNumberOfSubjects(),"Môn"));
+
     }
 }

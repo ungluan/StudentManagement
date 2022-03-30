@@ -1,7 +1,11 @@
 package com.example.studentmanagement.feature.SubjectScreen;
 
+import android.app.Dialog;
+import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -10,22 +14,38 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 
 import com.example.studentmanagement.R;
+import com.example.studentmanagement.database.entity.Grade;
+import com.example.studentmanagement.database.entity.Student;
 import com.example.studentmanagement.database.entity.Subject;
 
+import com.example.studentmanagement.databinding.DialogAddSubjectBinding;
+import com.example.studentmanagement.utils.AppUtils;
 import com.omega_r.libs.omegarecyclerview.swipe_menu.SwipeViewHolder;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Callable;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Observable;
+
 public class SubjectListAdapter extends ListAdapter<Subject, SubjectListAdapter.SubjectViewHolder> {
-    protected SubjectListAdapter(@NonNull DiffUtil.ItemCallback<Subject> diffCallback) {
+    SubjectViewModel subjectViewModel;
+
+    protected SubjectListAdapter(SubjectViewModel subjectViewModel, @NonNull DiffUtil.ItemCallback<Subject> diffCallback) {
         super(diffCallback);
+        this.subjectViewModel = subjectViewModel;
     }
+
+
 
     @NonNull
     @Override
     public SubjectViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
-
         return new SubjectViewHolder(
-                parent
+                parent,
+                this.subjectViewModel,
+                this
         );
     }
 
@@ -36,15 +56,19 @@ public class SubjectListAdapter extends ListAdapter<Subject, SubjectListAdapter.
 
     static class SubjectViewHolder extends SwipeViewHolder implements View.OnClickListener {
 
+        private SubjectViewModel subjectViewModel;
+        private SubjectListAdapter subjectListAdapter;
         private TextView txtEdit;
         private TextView txtDel;
         private TextView txtSubjectId;
         private TextView txtSubjectName;
         private TextView txtCoefficient;
 
-        public SubjectViewHolder(ViewGroup parent) {
+        public SubjectViewHolder(ViewGroup parent, SubjectViewModel subjectViewModel, SubjectListAdapter subjectListAdapter) {
             super(parent, R.layout.subject_item, R.layout.item_swipe_left_menu);
 
+            this.subjectViewModel = subjectViewModel;
+            this.subjectListAdapter = subjectListAdapter;
             txtSubjectId = findViewById(R.id.txt_subject_id);
             txtSubjectName = findViewById(R.id.txt_subject_name);
             txtCoefficient = findViewById(R.id.txt_subject_coefficient);
@@ -56,26 +80,111 @@ public class SubjectListAdapter extends ListAdapter<Subject, SubjectListAdapter.
 
         }
 
-        @Override
-        public void onClick(View view) {
-            if(view.getId()==R.id.txtEdit){
-                txtEdit.setText("edit subject");
-            }else if(view.getId()==R.id.txtDel){
-                showToast("Delete subject clicked ");
-            }
+        private void showEditSubjectDialog(Context context) {
+            Dialog dialog = new Dialog(context, R.style.DialogStyle);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            DialogAddSubjectBinding binding = DialogAddSubjectBinding.inflate(
+                    LayoutInflater.from(context)
+            );
+            dialog.setContentView(binding.getRoot());
+            dialog.getWindow().setBackgroundDrawableResource(R.drawable.bg_white_color);
 
+            binding.dialogTitleAddSubject.setText("Cập nhật môn học");
+            binding.btnConfirmAddSubject.setText("Cập nhật");
+            binding.editTextSubjectId.setEnabled(false);
+
+            // get data
+
+            binding.editTextSubjectId.setText(
+                    txtSubjectId.getText().toString().split(":")[1].trim());
+            binding.editTextSubjectName.setText(
+                    txtSubjectName.getText().toString().split(":")[1].trim());
+            binding.editTextSubjectCoefficient.setText(
+                    txtCoefficient.getText().toString().split(":")[1].trim());
+
+            binding.btnCancelAddSubject.setOnClickListener(v -> dialog.dismiss());
+            binding.btnConfirmAddSubject.setOnClickListener(view -> {
+                        String id = binding.editTextSubjectId.getText().toString();
+                        String name = binding.editTextSubjectName.getText().toString();
+                        int factor = Integer.parseInt(binding.editTextSubjectCoefficient
+                                .getText().toString());
+
+                    Subject subject = new Subject(id, name, factor);
+
+                        boolean success = subjectViewModel.updateSubject(subject);
+                        if(success){
+                            AppUtils.showSuccessDialog(context
+                                    , "Update subject successfully!");
+
+                            subjectListAdapter.submitList(subjectViewModel.getAllSubject());
+                            dialog.dismiss();
+                        }else{
+                            AppUtils.showErrorDialog(context
+                                    , "UPDATE ERROR"
+                                    , "Update subject failed!");
+                        }
+
+                    });
+
+            dialog.show();
         }
 
-        private void showToast(String message){
-            Toast.makeText(itemView.getContext(),message, Toast.LENGTH_SHORT).show();
+        private List<Subject> updateSubjectInList(Subject subject) {
+            List<Subject> subjects = new ArrayList(subjectListAdapter.getCurrentList());
+            subjects.get(getAdapterPosition()).setSubjectName(subject.getSubjectName());
+            subjects.get(getAdapterPosition()).setCoefficient(subject.getCoefficient());
+            return subjects;
         }
 
+        private void showToast(String message) {
+            Toast.makeText(itemView.getContext(), message, Toast.LENGTH_SHORT).show();
+        }
 
 
         public void bind(Subject item) {
             txtSubjectId.setText(getString(R.string.id_of_the_subject, item.getId()));
             txtSubjectName.setText(getString(R.string.name_of_the_subject, item.getSubjectName()));
             txtCoefficient.setText(getString(R.string.coefficient_of_the_subject, item.getCoefficient()));
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (v.getId() == txtEdit.getId()) {
+                showEditSubjectDialog(getContext());
+            } else if (v.getId() == txtDel.getId()) {
+                String subjectId = txtSubjectId.getText().toString();
+                showDelSubjectDialog(getContext(), subjectId);
+            }
+        }
+
+        private void showDelSubjectDialog(Context context, String subjectId) {
+             AppUtils.showNotiDialog(
+                     context
+                     , "Are you sure delete this subject?",
+                     new Callable<Void>() {
+                         @Override
+                         public Void call() throws Exception {
+                             boolean check = subjectViewModel.deleteSubject(txtSubjectId.getText().toString().split(":")[1].trim());
+                             if(check){
+                                 AppUtils.showSuccessDialog(context
+                                         , "Delete subject successfully!");
+                                 subjectListAdapter.submitList(subjectViewModel.getAllSubject());
+                             }else{
+                                 AppUtils.showErrorDialog(context
+                                         , "DELETE ERROR"
+                                         , "Subject have more student!");
+                             }
+                             return null;
+                         }
+                     }
+             );
+//            if(del){
+//                boolean checkFK= subjectViewModel.delete(subjectId);
+//                if(checkFK){
+//                    AppUtils.showSuccessDialog(context, "Delete successfully!");
+//
+//                }
+//            }
         }
     }
 

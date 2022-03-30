@@ -33,8 +33,8 @@ public class SubjectDao {
 
     public Boolean updateSubject(Subject subject) {
         return dataBaseHelper.update(DataBaseHelper.TABLE_MON_HOC,
-                DataBaseHelper.COLUMN_MA_MON_HOC + "=" + subject.getId(),
-                values(subject), null);
+                DataBaseHelper.COLUMN_MA_MON_HOC + "=?" ,
+                values(subject), new String[]{ subject.getId()});
     }
 
     // Khoong '' co loi hong
@@ -49,7 +49,7 @@ public class SubjectDao {
     // Khoong '' co loi hong
     public Boolean deleteSubject(String subjectId) {
         return dataBaseHelper.delete(DataBaseHelper.TABLE_MON_HOC,
-                DataBaseHelper.COLUMN_MA_MON_HOC + " = " + subjectId , null);
+                DataBaseHelper.COLUMN_MA_MON_HOC + " = ?" ,new String[]{subjectId});
     }
 
     public int getNumberOfSubject() {

@@ -48,11 +48,7 @@ public class Subject {
 
     @Override
     public String toString() {
-        return "Subject{" +
-                "subjectId='" + subjectId + '\'' +
-                ", subjectName='" + subjectName + '\'' +
-                ", coefficient=" + coefficient +
-                '}';
+        return subjectId + "-" + subjectName;
     }
 
     /***

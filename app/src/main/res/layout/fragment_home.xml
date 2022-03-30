@@ -188,26 +188,26 @@
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="24dp"
                                 android:layout_marginStart="16dp"
+                                android:layout_marginTop="24dp"
                                 android:layout_marginEnd="16dp"
                                 android:orientation="vertical">
 
                                 <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
                                     android:text="Lớp học"
                                     android:textColor="@color/white"
                                     android:textSize="24sp"
-                                    android:textStyle="bold"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content" />
+                                    android:textStyle="bold" />
 
                                 <TextView
                                     android:id="@+id/txt_number_of_grades"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
                                     android:text="20 Lớp"
                                     android:textColor="@color/white"
-                                    android:textSize="16sp"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content" />
+                                    android:textSize="16sp" />
 
                             </LinearLayout>
 
@@ -220,6 +220,7 @@
                         </com.google.android.material.card.MaterialCardView>
 
                         <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/card_view_mark"
                             android:layout_width="match_parent"
                             android:layout_height="264dp"
                             android:layout_marginTop="24dp"
@@ -232,18 +233,18 @@
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="24dp"
                                 android:layout_marginStart="16dp"
+                                android:layout_marginTop="24dp"
                                 android:layout_marginEnd="16dp"
                                 android:orientation="vertical">
 
                                 <TextView
-                                    android:text="Thống kê"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Nhập điểm"
                                     android:textColor="@color/white"
                                     android:textSize="24sp"
-                                    android:textStyle="bold"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content" />
+                                    android:textStyle="bold" />
 
 
                             </LinearLayout>
@@ -269,42 +270,42 @@
                             android:id="@+id/card_view_subject"
                             android:layout_width="match_parent"
                             android:layout_height="264dp"
+                            android:layout_marginStart="12dp"
                             android:backgroundTint="@color/primary_color"
-                            app:cardCornerRadius="16dp"
-                            android:layout_marginStart="12dp">
+                            app:cardCornerRadius="16dp">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="24dp"
                                 android:layout_marginStart="16dp"
+                                android:layout_marginTop="24dp"
                                 android:layout_marginEnd="16dp"
                                 android:orientation="vertical">
 
                                 <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
                                     android:text="Môn học"
                                     android:textColor="@color/white"
                                     android:textSize="24sp"
-                                    android:textStyle="bold"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content" />
+                                    android:textStyle="bold" />
 
                                 <TextView
                                     android:id="@+id/txt_number_of_subjects"
-                                    tools:text="20 Lớp"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
                                     android:textColor="@color/white"
                                     android:textSize="16sp"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content" />
+                                    tools:text="20 Lớp" />
 
                             </LinearLayout>
 
                             <ImageView
-                                android:scaleType="centerCrop"
                                 android:layout_width="match_parent"
                                 android:layout_height="148dp"
                                 android:layout_gravity="bottom|center"
                                 android:layout_marginBottom="16dp"
+                                android:scaleType="centerCrop"
                                 android:src="@drawable/icon_subject" />
 
                         </com.google.android.material.card.MaterialCardView>
@@ -313,34 +314,34 @@
                             android:id="@+id/card_view_student"
                             android:layout_width="match_parent"
                             android:layout_height="216dp"
+                            android:layout_marginStart="12dp"
                             android:layout_marginTop="24dp"
                             android:backgroundTint="@color/secondary_orange"
-                            app:cardCornerRadius="16dp"
-                            android:layout_marginStart="12dp">
+                            app:cardCornerRadius="16dp">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="24dp"
                                 android:layout_marginStart="16dp"
+                                android:layout_marginTop="24dp"
                                 android:layout_marginEnd="16dp"
                                 android:orientation="vertical">
 
                                 <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
                                     android:text="Học sinh"
                                     android:textColor="@color/white"
                                     android:textSize="24sp"
-                                    android:textStyle="bold"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content" />
+                                    android:textStyle="bold" />
 
                                 <TextView
                                     android:id="@+id/txt_number_of_students"
-                                    tools:text="20 Lớp"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
                                     android:textColor="@color/white"
                                     android:textSize="16sp"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content" />
+                                    tools:text="20 Lớp" />
 
                             </LinearLayout>
 
@@ -355,7 +356,68 @@
 
 
                     </LinearLayout>
+
                 </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginBottom="32dp"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/card_view_query"
+                            android:layout_width="match_parent"
+                            android:layout_height="216dp"
+                            android:backgroundTint="@color/secondary_blue"
+                            app:cardCornerRadius="16dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="16dp"
+                                android:layout_marginTop="24dp"
+                                android:layout_marginEnd="16dp"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Thống kê"
+                                    android:textColor="@color/white"
+                                    android:textSize="24sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+
+                                    android:textColor="@color/white"
+                                    android:textSize="16sp" />
+
+                            </LinearLayout>
+
+                            <ImageView
+                                android:layout_width="match_parent"
+                                android:layout_height="132dp"
+                                android:layout_gravity="bottom|center"
+                                android:src="@drawable/icon_grade_class" />
+
+                        </com.google.android.material.card.MaterialCardView>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
             </LinearLayout>
         </ScrollView>
 
