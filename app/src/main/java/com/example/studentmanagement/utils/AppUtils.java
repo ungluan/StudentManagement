@@ -165,7 +165,7 @@ public class AppUtils {
 
 
         txtTitleError.setText(title);
-        txtTitleError.setText(content);
+        txtContentError.setText(content);
         dialog.getWindow().setBackgroundDrawableResource(R.drawable.bg_white_color);
         btnTryAgainError.setOnClickListener(new View.OnClickListener() {
             @Override

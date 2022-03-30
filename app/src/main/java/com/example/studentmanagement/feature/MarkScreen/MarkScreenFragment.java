@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.studentmanagement.R;
 import com.example.studentmanagement.database.entity.Grade;
+import com.example.studentmanagement.database.entity.Mark;
 import com.example.studentmanagement.database.entity.Subject;
 import com.example.studentmanagement.databinding.FragmentMarkGreenBinding;
 import com.omega_r.libs.omegarecyclerview.OmegaRecyclerView;
@@ -78,7 +79,7 @@ public class MarkScreenFragment extends Fragment {
                 Log.d("Clicked", "Position: " + position + " ID: " + id);
                 if(checkGradeAndSubject()){
                     loadRecyclerViewStudent(dropdownItemsGrade.get(position).getGradeId()
-                            , editTextSubjectName.getText().toString());
+                            , editTextSubjectName.getText().toString().split("-")[0].trim());
                 }
 
             }
@@ -90,7 +91,7 @@ public class MarkScreenFragment extends Fragment {
                 Log.d("Clicked", "Position: " + position + " ID: " + id);
                 //
                 if(checkGradeAndSubject()){
-                    loadRecyclerViewStudent(editTextGradeName.getText().toString()
+                    loadRecyclerViewStudent(editTextGradeName.getText().toString().split("-")[0].trim()
                             , dropdownItemsSubject.get(position).getId());
                 }
 
@@ -111,7 +112,16 @@ public class MarkScreenFragment extends Fragment {
     }
 
     private void loadRecyclerViewStudent(String gradeId, String subjectId) {
-        markListAdapter.submitList(markViewModel.getMarks(gradeId, subjectId));
+        List<Mark> marks = markViewModel.getMarks(gradeId, subjectId);
+        if(marks.size()>0) {
+            markListAdapter.submitList(markViewModel.getMarks(gradeId, subjectId));
+            txtListEmpty.setVisibility(View.INVISIBLE);
+            recyclerView.setVisibility(View.VISIBLE);
+        }
+        else {
+            txtListEmpty.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.INVISIBLE);
+        }
 //        markViewModel.getMarkByStudentAndSubject(gradeId, subjectId)
 //        .observeOn(AndroidSchedulers.mainThread())
 //        .subscribe(
