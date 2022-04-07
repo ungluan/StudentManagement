@@ -16,4 +16,5 @@
     <color name="secondary_red">#CA3B2A</color>
     <color name="secondary_orange">#EFA32A</color>
     <color name="text_color">#444444</color>
+    <color name="black">#000000</color>
 </resources>

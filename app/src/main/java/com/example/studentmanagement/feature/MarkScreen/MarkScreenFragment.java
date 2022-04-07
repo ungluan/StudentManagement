@@ -80,7 +80,6 @@ public class MarkScreenFragment extends Fragment {
                     loadRecyclerViewStudent(dropdownItemsGrade.get(position).getGradeId()
                             , editTextSubjectName.getText().toString());
                 }
-
             }
         });
 
@@ -112,16 +111,6 @@ public class MarkScreenFragment extends Fragment {
 
     private void loadRecyclerViewStudent(String gradeId, String subjectId) {
         markListAdapter.submitList(markViewModel.getMarks(gradeId, subjectId));
-//        markViewModel.getMarkByStudentAndSubject(gradeId, subjectId)
-//        .observeOn(AndroidSchedulers.mainThread())
-//        .subscribe(
-//                marks -> {
-//                    markListAdapter.submitList(marks);
-//                    if(marks.size()!=0) txtListEmpty.setVisibility(View.INVISIBLE);
-//                    else txtListEmpty.setVisibility(View.VISIBLE);
-//                },
-//                throwable -> Log.d("MarkFragment", throwable.getLocalizedMessage())
-//        );
     }
 
 
