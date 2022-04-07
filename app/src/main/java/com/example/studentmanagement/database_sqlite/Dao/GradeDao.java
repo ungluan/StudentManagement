@@ -18,13 +18,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GradeDao {
-    private SQLiteDatabase db;
     private DataBaseHelper dataBaseHelper;
 
     public GradeDao(Application application) {
         // GetInstances
         this.dataBaseHelper = DataBaseHelper.getInstance(application);
-        this.db = dataBaseHelper.getWritableDatabase();
     }
 
     public Boolean insertGrade(Grade grade) {
