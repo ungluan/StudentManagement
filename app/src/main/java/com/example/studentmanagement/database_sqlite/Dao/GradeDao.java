@@ -55,9 +55,13 @@ public class GradeDao {
     }
 
     public List<Grade> getGrades(){
-        MutableLiveData<List<Grade>> liveData = new MutableLiveData<>();
         List<Grade> grades = new ArrayList<>();
-        Cursor cursor = dataBaseHelper.query("SELECT * FROM LOP",null);
+        Cursor cursor = dataBaseHelper.query("SELECT "+
+                DataBaseHelper.COLUMN_LOP+ ","+
+                DataBaseHelper.COLUMN_TEN_CHU_NHIEM+
+                " FROM "+ DataBaseHelper.TABLE_LOP +"," +DataBaseHelper.TABLE_GVCN+
+                " WHERE + "+DataBaseHelper.TABLE_LOP +"."+ DataBaseHelper.COLUMN_MA_CHU_NHIEM +" = " +
+                DataBaseHelper.TABLE_GVCN+"."+DataBaseHelper.COLUMN_MA_CHU_NHIEM,null);
         if(cursor.moveToFirst()){
             do{
                 String gradeId = cursor.getString(0);

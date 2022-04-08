@@ -26,8 +26,6 @@ import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class HomeViewModel extends AndroidViewModel {
-
-
     private GradeDao gradeDao;
     private StudentDao studentDao;
     private SubjectDao subjectDao;

@@ -1,5 +1,7 @@
 package com.example.studentmanagement.feature.loginScreen;
 
+import static com.example.studentmanagement.utils.AppUtils.updateAuthentication;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -10,7 +12,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDirections;
-import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
 import android.view.LayoutInflater;
@@ -18,9 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.example.studentmanagement.R;
 import com.example.studentmanagement.databinding.FragmentLoginBinding;
-import com.example.studentmanagement.feature.home.HomeFragmentDirections;
 
 public class LoginFragment extends Fragment {
     private FragmentLoginBinding binding ;
@@ -37,7 +36,6 @@ public class LoginFragment extends Fragment {
     private void navigateToHomePage(){
         NavDirections action = LoginFragmentDirections.actionLoginFragmentToHomeFragment();
         NavController navController = NavHostFragment.findNavController(this);
-//        NavController navController = navHostFragment.getNavController();
         navController.navigate(action);
     }
 
@@ -58,19 +56,13 @@ public class LoginFragment extends Fragment {
             String password = String.valueOf(binding.editTextPassword.getText());
             if(loginViewModel.login(email,password)){
                 Toast.makeText(getContext(), "Login Thành công", Toast.LENGTH_SHORT).show();
-                saveLogin();
+                updateAuthentication(requireActivity(),true);
                 navigateToHomePage();
             }else{
                 Toast.makeText(getContext(), 
-                        "Tài khoản hoặc mật khẩu không chính xác!", Toast.LENGTH_SHORT).show();
+                "Tài khoản hoặc mật khẩu không chính xác!", Toast.LENGTH_SHORT).show();
             }
         });
     }
-    private void saveLogin(){
-        SharedPreferences sharedPref = requireActivity().
-                getPreferences(Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putBoolean("Authenticated",true);
-        editor.apply();
-    }
+
 }

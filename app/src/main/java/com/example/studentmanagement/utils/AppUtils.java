@@ -1,8 +1,10 @@
 package com.example.studentmanagement.utils;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -23,7 +25,8 @@ import java.util.Date;
 import java.util.concurrent.Callable;
 
 public class AppUtils {
-    static boolean flag=false;
+    static boolean flag = false;
+
     public static void showNotificationDialog(
             Context context,
             String title,
@@ -62,7 +65,6 @@ public class AppUtils {
         Button btnCancel = binding.btnCancelDialogDelete;
 
 
-
         txtTitle.setText(title);
         txtContent.setText(content);
         dialog.getWindow().setBackgroundDrawableResource(R.drawable.bg_white_color);
@@ -79,7 +81,7 @@ public class AppUtils {
         btnConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                flag=true;
+                flag = true;
                 dialog.dismiss();
             }
         });
@@ -87,7 +89,7 @@ public class AppUtils {
         return flag;
     }
 
-    public  static void showNotiDialog(
+    public static void showNotiDialog(
             Context context,
             String content,
             Callable<Void> actionAccept
@@ -98,7 +100,6 @@ public class AppUtils {
         TextView txtContentNoti = dialog.findViewById(R.id.txt_content_noti);
         Button btnAcceptNoti = dialog.findViewById(R.id.btn_accept_noti);
         Button btnCancelNoti = dialog.findViewById(R.id.btn_cancel_noti);
-
 
 
         txtContentNoti.setText(content);
@@ -112,9 +113,9 @@ public class AppUtils {
         btnAcceptNoti.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try{
+                try {
                     actionAccept.call();
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
                 dialog.dismiss();
@@ -125,7 +126,7 @@ public class AppUtils {
 
     }
 
-    public  static void showSuccessDialog(
+    public static void showSuccessDialog(
             Context context,
             String content
     ) {
@@ -134,7 +135,6 @@ public class AppUtils {
         dialog.setContentView(R.layout.dialog_success);
         TextView txtContentSuccess = dialog.findViewById(R.id.txt_content_success);
         Button btnOk = dialog.findViewById(R.id.btn_ok_success);
-
 
 
         txtContentSuccess.setText(content);
@@ -150,7 +150,7 @@ public class AppUtils {
         dialog.show();
     }
 
-    public  static void showErrorDialog(
+    public static void showErrorDialog(
             Context context,
             String title,
             String content
@@ -161,7 +161,6 @@ public class AppUtils {
         TextView txtTitleError = dialog.findViewById(R.id.txt_title_error);
         TextView txtContentError = dialog.findViewById(R.id.txt_content_error);
         Button btnTryAgainError = dialog.findViewById(R.id.btn_try_again_error);
-
 
 
         txtTitleError.setText(title);
@@ -175,28 +174,37 @@ public class AppUtils {
         });
         dialog.show();
     }
+
     //TODO 1: Add FormatPersonName
-    public static String formatPersonName(String name){
-        if(name.length()==0) return "";
+    public static String formatPersonName(String name) {
+        if (name.length() == 0) return "";
         name = name.trim();
-        name = name.replaceAll("\\s+"," ");
+        name = name.replaceAll("\\s+", " ");
         String[] s = name.split(" ");
         name = "";
         for (String s1 : s) {
             name += s1.toUpperCase().charAt(0);
-            if(s1.length()>1) name += s1.toLowerCase().substring(1);
+            if (s1.length() > 1) name += s1.toLowerCase().substring(1);
             name += " ";
         }
         return name.trim();
     }
+
     //TODO 2: Add FormatGradeName
-    public static String formatGradeName(String name){
+    public static String formatGradeName(String name) {
         return name.trim().toUpperCase();
     }
 
     @SuppressLint("SimpleDateFormat")
-    public static String formatTimeStampToDate(Long timeStamp){
+    public static String formatTimeStampToDate(Long timeStamp) {
         return new SimpleDateFormat("dd/MM/yyyy").format(new Date(timeStamp));
     }
 
+    public static void updateAuthentication(Activity activity, boolean value){
+        SharedPreferences sharedPref = activity.
+                getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putBoolean("Authenticated",value);
+        editor.apply();
+    }
 }

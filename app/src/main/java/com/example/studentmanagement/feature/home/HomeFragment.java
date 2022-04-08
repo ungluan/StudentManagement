@@ -11,17 +11,15 @@ import androidx.navigation.Navigation;
 
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.studentmanagement.R;
 import com.example.studentmanagement.database_sqlite.DataBaseHelper;
-import com.example.studentmanagement.database_sqlite.Result;
 import com.example.studentmanagement.databinding.FragmentHomeBinding;
+import com.example.studentmanagement.utils.AppUtils;
 
-import io.reactivex.rxjava3.core.Observable;
 
 
 public class HomeFragment extends Fragment {
@@ -43,6 +41,12 @@ public class HomeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         homeViewModel = new ViewModelProvider(requireActivity()).get(HomeViewModel.class);
 
+        binding.txtSeeAll.setOnClickListener(v -> {
+            AppUtils.updateAuthentication(requireActivity(),false);
+            NavDirections action = HomeFragmentDirections.actionHomeFragmentToLoginFragment();
+            Navigation.findNavController(v).navigate(action);
+        });
+
         binding.cardViewGrade.setOnClickListener(
                 v -> {
                     NavDirections action = HomeFragmentDirections.actionHomeFragmentToGradeScreenFragment();
@@ -59,20 +63,17 @@ public class HomeFragment extends Fragment {
             NavDirections action = HomeFragmentDirections.actionHomeFragmentToSubjectScreenFragment();
             Navigation.findNavController(v).navigate(action);
         });
-
         binding.cardViewMark.setOnClickListener(v -> {
             NavDirections action = HomeFragmentDirections.actionHomeFragmentToMarkScreenFragment();
             Navigation.findNavController(v).navigate(action);
         });
         db = DataBaseHelper.getInstance(this.requireActivity().getApplication());
-
     }
 
 
     @Override
     public void onStart() {
         super.onStart();
-
         binding.txtNumberOfGrades.setText(getString(R.string.number_and_noun,homeViewModel.getNumberOfGrades(),"Lớp"));
         binding.txtNumberOfStudents.setText(getString(R.string.number_and_noun,homeViewModel.getNumberOfStudents(),"Học sinh"));
         binding.txtNumberOfSubjects.setText(getString(R.string.number_and_noun,homeViewModel.getNumberOfSubjects(),"Môn"));
