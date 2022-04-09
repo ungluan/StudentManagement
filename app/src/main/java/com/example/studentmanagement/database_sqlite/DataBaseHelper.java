@@ -122,7 +122,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
 
     private DataBaseHelper(Application application) {
-        super(application, "app_database_sqlite.db", null, 10);
+        super(application, "app_database_sqlite.db", null, 11);
 
     }
 
