@@ -19,6 +19,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_CHU_NHIEM = "CHUNHIEM";
     public static final String COLUMN_LOP = "LOP";
     public static final String COLUMN_HO = "HO";
+    public static final String COLUMN_HINH_ANH = "HINHANH";
+
 
     public static final String TABLE_MON_HOC = "MONHOC";
     public static final String COLUMN_MA_MON_HOC = "MAMONHOC";
@@ -43,6 +45,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_EMAIL = "EMAIL";
     public static final String COLUMN_MAT_KHAU = "MATKHAU";
 
+
     public static DataBaseHelper INSTANCE = null;
     private static final int NUMBER_OF_THREADS = 4;
     public static final ExecutorService databaseExecutor =
@@ -57,15 +60,19 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     private static final String createGradeTableStatement = "CREATE TABLE " + TABLE_LOP + "(\n" +
             "\t    " + COLUMN_LOP + " TEXT NOT NULL PRIMARY KEY, \n" +
             "\t    " + COLUMN_MA_CHU_NHIEM + " INTEGER, \n" +
+            "     " + COLUMN_HINH_ANH + " TEXT, \n" +
             "        FOREIGN KEY (" + COLUMN_MA_CHU_NHIEM + ") REFERENCES " + TABLE_GVCN + "(" + COLUMN_MA_CHU_NHIEM + ")\n" +
             "        ON DELETE NO ACTION\n" +
             "        ON UPDATE CASCADE" +
             "    )";
 
+    public static final String COLUMN_SO_DIEN_THOAI = "SODIENTHOAI";
     private static final String createTeacherTableStatement = "CREATE TABLE " + TABLE_GVCN + "(\n" +
             "\t    " + COLUMN_MA_CHU_NHIEM + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,\n" +
             "\t    " + COLUMN_TEN_CHU_NHIEM + " TEXT, \n" +
             "\t    " + COLUMN_MA_TAI_KHOAN + " TEXT, \n" +
+            "     " + COLUMN_HINH_ANH + " TEXT, \n" +
+            "     " + COLUMN_SO_DIEN_THOAI + " TEXT, \n" +
             "        FOREIGN KEY (" + COLUMN_MA_TAI_KHOAN + ") REFERENCES " + TABLE_TAI_KHOAN + "(" + COLUMN_MA_TAI_KHOAN + ")\n" +
             "        ON DELETE NO ACTION\n" +
             "        ON UPDATE CASCADE" +
@@ -74,13 +81,16 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     private static final String createAccountTableStatement = "CREATE TABLE " + TABLE_TAI_KHOAN + "(\n" +
             "\t    " + COLUMN_MA_TAI_KHOAN + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,\n" +
             "\t    " + COLUMN_EMAIL + " TEXT, \n" +
-            "\t    " + COLUMN_MAT_KHAU + " TEXT\n" +
+            "\t    " + COLUMN_MAT_KHAU + " TEXT,\n" +
+            "     " + COLUMN_HINH_ANH + " TEXT \n" +
             "    )";
 
     private static final String createSubjectTableStatement = "CREATE TABLE " + TABLE_MON_HOC + "(\n" +
             "\t    " + COLUMN_MA_MON_HOC + " TEXT NOT NULL PRIMARY KEY,\n" +
             "\t    " + COLUMN_TEN_MON_HOC + " TEXT,\n" +
-            "\t    " + COLUMN_HE_SO + " INTEGER\n" +
+            "\t    " + COLUMN_HE_SO + " INTEGER,\n" +
+            "     " + COLUMN_HINH_ANH + " TEXT \n" +
+
             "    )";
 
     private static final String createStudentTableStatement = "CREATE TABLE " + TABLE_HOC_SINH + "(\n" +
@@ -90,6 +100,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             "        " + COLUMN_PHAI + " TEXT,\n" +
             "        " + COLUMN_NGAY_SINH + " TEXT,\n" +
             "        " + COLUMN_LOP + " TEXT ," +
+            "     " + COLUMN_HINH_ANH + " TEXT, \n" +
             "        FOREIGN KEY (" + COLUMN_LOP + ") REFERENCES " + TABLE_LOP + "(" + COLUMN_LOP + ")\n" +
             "        ON DELETE NO ACTION\n" +
             "        ON UPDATE CASCADE" +
@@ -99,6 +110,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             "        " + COLUMN_MA_HOC_SINH + " INTEGER NOT NULL,\n" +
             "        " + COLUMN_MA_MON_HOC + " TEXT NOT NULL ,\n" +
             "        " + COLUMN_DIEM + " REAL,\n" +
+            "     " + COLUMN_HINH_ANH + " TEXT, \n" +
             "        PRIMARY KEY (" + COLUMN_MA_HOC_SINH + ", " + COLUMN_MA_MON_HOC + "),\n" +
             "        FOREIGN KEY (" + COLUMN_MA_HOC_SINH + ") REFERENCES " + TABLE_HOC_SINH + "(" + COLUMN_MA_HOC_SINH + ") \n" +
             "        ON DELETE NO ACTION\n" +
