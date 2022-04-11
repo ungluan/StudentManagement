@@ -16,7 +16,6 @@ import java.util.concurrent.Executors;
 public class DataBaseHelper extends SQLiteOpenHelper {
 
     public static final String TABLE_LOP = "LOP";
-    public static final String COLUMN_CHU_NHIEM = "CHUNHIEM";
     public static final String COLUMN_LOP = "LOP";
     public static final String COLUMN_HO = "HO";
     public static final String COLUMN_HINH_ANH = "HINHANH";
@@ -81,8 +80,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     private static final String createAccountTableStatement = "CREATE TABLE " + TABLE_TAI_KHOAN + "(\n" +
             "\t    " + COLUMN_MA_TAI_KHOAN + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,\n" +
             "\t    " + COLUMN_EMAIL + " TEXT, \n" +
-            "\t    " + COLUMN_MAT_KHAU + " TEXT,\n" +
-            "     " + COLUMN_HINH_ANH + " TEXT \n" +
+            "\t    " + COLUMN_MAT_KHAU + " TEXT " +
             "    )";
 
     private static final String createSubjectTableStatement = "CREATE TABLE " + TABLE_MON_HOC + "(\n" +
@@ -122,7 +120,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
 
     private DataBaseHelper(Application application) {
-        super(application, "app_database_sqlite.db", null, 11);
+        super(application, "app_database_sqlite.db", null, 12);
 
     }
 
@@ -190,7 +188,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.execSQL(createSubjectTableStatement);
         db.execSQL(createStudentTableStatement);
         db.execSQL(createMarkTableStatement);
-        db.rawQuery("PRAGMA foreign_keys = ON", null);
+        db.execSQL("PRAGMA foreign_keys = ON");
     }
 
     // This is called if the database version number change.
@@ -209,16 +207,16 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     //insert, delete, update, select
 
 
-
-
     public boolean insert(String tableName, ContentValues values) {
         SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("PRAGMA foreign_keys=ON");
         return db.insertOrThrow(tableName, null, values) > 0;
     }
 
     public boolean update(String tableName, String whereClause,
                           ContentValues values, String[] whereArgs) {
         SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("PRAGMA foreign_keys=ON");
         return db.update(tableName, values, whereClause, whereArgs) > 0;
     }
 

@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.example.studentmanagement.database.AppDatabase;
 import com.example.studentmanagement.database.entity.Grade;
 import com.example.studentmanagement.database_sqlite.Dao.GradeDao;
 import com.example.studentmanagement.utils.AppUtils;

@@ -9,7 +9,6 @@ import androidx.lifecycle.LiveData;
 import com.example.studentmanagement.database.daosqlite.SubjectDaoSqlite;
 import com.example.studentmanagement.database.entity.Subject;
 import com.example.studentmanagement.database_sqlite.Dao.SubjectDao;
-import com.example.studentmanagement.repository.SubjectRepository;
 
 import java.util.List;
 

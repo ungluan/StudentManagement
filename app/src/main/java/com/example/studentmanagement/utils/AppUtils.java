@@ -10,15 +10,10 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 import com.example.studentmanagement.R;
 import com.example.studentmanagement.databinding.DialogDeleteBinding;
-import com.example.studentmanagement.databinding.DialogErrorBinding;
-import com.example.studentmanagement.databinding.DialogErrorBindingImpl;
-import com.example.studentmanagement.databinding.DialogNotificationBinding;
-import com.example.studentmanagement.databinding.DialogSuccessBinding;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -206,5 +201,9 @@ public class AppUtils {
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putBoolean("Authenticated",value);
         editor.apply();
+    }
+
+    public static int getTeacherIdFromDropDown(String value){
+        return Integer.parseInt(value.substring(0,value.indexOf(" ")));
     }
 }

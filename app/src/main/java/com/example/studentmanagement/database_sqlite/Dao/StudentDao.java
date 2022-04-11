@@ -16,13 +16,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StudentDao {
-    private SQLiteDatabase db;
     private DataBaseHelper dataBaseHelper;
 
     public StudentDao(Application application) {
         // GetInstances
         this.dataBaseHelper = DataBaseHelper.getInstance(application);
-        this.db = dataBaseHelper.getWritableDatabase();
     }
 
     public Boolean insertStudent(Student student) {
