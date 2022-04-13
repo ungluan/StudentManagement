@@ -5,6 +5,11 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.net.Uri;
+import android.os.Build;
+import android.provider.DocumentsContract;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -14,6 +19,8 @@ import android.widget.TextView;
 
 import com.example.studentmanagement.R;
 import com.example.studentmanagement.databinding.DialogDeleteBinding;
+
+import org.w3c.dom.Document;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -206,4 +213,5 @@ public class AppUtils {
     public static int getTeacherIdFromDropDown(String value){
         return Integer.parseInt(value.substring(0,value.indexOf(" ")));
     }
+
 }

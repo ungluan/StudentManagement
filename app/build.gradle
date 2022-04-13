@@ -66,5 +66,6 @@ dependencies {
     implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
     // Have to it. Not this then can't use Maybe
     implementation "androidx.room:room-rxjava3:2.4.2"
-
+    // Picasso
+    implementation 'com.squareup.picasso:picasso:2.71828'
 }

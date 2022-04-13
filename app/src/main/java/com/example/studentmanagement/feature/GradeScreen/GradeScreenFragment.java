@@ -1,12 +1,25 @@
 package com.example.studentmanagement.feature.GradeScreen;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Dialog;
+import android.app.SearchManager;
+import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContract;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavDirections;
@@ -41,6 +54,7 @@ public class GradeScreenFragment extends Fragment {
     private GradeListAdapter adapter;
     private final List<String> teacherItems = new ArrayList();
     private AutoCompleteTextView editTextTeacherId;
+    private SearchView searchView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -59,7 +73,7 @@ public class GradeScreenFragment extends Fragment {
         recyclerView = binding.recyclerViewGrade;
 
         // Set data to recycler view
-        adapter = new GradeListAdapter(gradeViewModel, new GradeListAdapter.GradeDiff());
+        adapter = new GradeListAdapter(gradeViewModel, activityGalleryImageLauncher,new GradeListAdapter.GradeDiff());
         recyclerView.setAdapter(adapter);
 
         // Add margin to recycler view item
@@ -78,6 +92,59 @@ public class GradeScreenFragment extends Fragment {
                 Navigation.findNavController(v).navigate(action);
             }
         );
+        searchView = binding.searchGrade;
+        SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+        // Có dòng này ?
+        searchView.setMaxWidth(Integer.MAX_VALUE);
+
+        binding.searchGrade.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                adapter.getFilter().filter(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                adapter.getFilter().filter(newText);
+                return false;
+            }
+        });
+    }
+
+
+    public ActivityResultLauncher<Intent> activityGalleryImageLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            // This Callback will execute when it is received data return.
+            (ActivityResultCallback<ActivityResult>) result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    Intent data = result.getData();
+                    Uri uri = data.getData();
+                    System.out.println("'"+uri+"'");
+                    binding.imageGrade.setImageURI(uri);
+                }
+            });
+//    public boolean saveImageToExternalStorage(String image, Bitmap bitmap){
+//        Uri uri = Uri.parse(image);
+//        ContentResolver resolver = getContext().getContentResolver();
+//
+//    }
+
+    public class CustomActivityResultContacts extends ActivityResultContract<Integer,Intent>{
+
+        @NonNull
+        @Override
+        public Intent createIntent(@NonNull Context context, Integer input) {
+            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+            intent.putExtra("Position", input);
+            return intent;
+        }
+
+        @Override
+        public Intent parseResult(int resultCode, @Nullable Intent intent) {
+            return intent;
+        }
     }
 
     public void showToast(String message){
