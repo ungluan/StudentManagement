@@ -140,8 +140,9 @@ public class MarkScreenFragment extends Fragment {
         dropdownItemsGrade.addAll(gradeName);
 
         adapterGrade = new ArrayAdapter<Grade>(requireContext(), R.layout.dropdown_item, dropdownItemsGrade);
-
-        editTextGradeName.setText(dropdownItemsGrade.get(0).toString());
+        if(dropdownItemsGrade.size()!=0) {
+            editTextGradeName.setText(dropdownItemsGrade.get(0).toString());
+        }
         editTextGradeName.setAdapter(adapterGrade);
 
     }
@@ -151,8 +152,10 @@ public class MarkScreenFragment extends Fragment {
 
         adapterSubject = new ArrayAdapter<Subject>(requireContext(), R.layout.dropdown_item, dropdownItemsSubject);
 
+        if(dropdownItemsSubject.size()!=0) {
+            editTextSubjectName.setText(dropdownItemsSubject.get(0).toString());
+        }
 
-        editTextSubjectName.setText(dropdownItemsSubject.get(0).toString());
         editTextSubjectName.setAdapter(adapterSubject);
 
 

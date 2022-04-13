@@ -87,7 +87,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             "\t    " + COLUMN_MA_MON_HOC + " TEXT NOT NULL PRIMARY KEY,\n" +
             "\t    " + COLUMN_TEN_MON_HOC + " TEXT,\n" +
             "\t    " + COLUMN_HE_SO + " INTEGER,\n" +
-            "     " + COLUMN_HINH_ANH + " TEXT \n" +
+            "     " + COLUMN_HINH_ANH + " TEXT " +
 
             "    )";
 
@@ -120,7 +120,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
 
     private DataBaseHelper(Application application) {
-        super(application, "app_database_sqlite.db", null, 12);
+        super(application, "app_database_sqlite.db", null, 15);
 
     }
 

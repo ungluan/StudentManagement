@@ -26,6 +26,10 @@ public class SubjectViewModel extends AndroidViewModel {
         return subjectDao.insertSubject(subject);
     }
 
+    public Subject getSubjectById(String id){
+        return subjectDao.getSubject(id);
+    }
+
     public boolean updateSubject(Subject subject){
         return subjectDao.updateSubject(subject);
     }

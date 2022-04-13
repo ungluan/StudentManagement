@@ -69,8 +69,8 @@ public class SubjectDao {
                 String subjectId = cursor.getString(0);
                 String subjectName = cursor.getString(1);
                 int coefficient = cursor.getInt(2);
-
-                Subject subject = new Subject(subjectId,subjectName,coefficient);
+                String image = cursor.getString(3);
+                Subject subject = new Subject(subjectId,subjectName,coefficient, image);
                 list.add(subject);
             }while (cursor.moveToNext());
         }
@@ -121,7 +121,32 @@ public class SubjectDao {
         values.put(DataBaseHelper.COLUMN_MA_MON_HOC, subject.getId());
         values.put(DataBaseHelper.COLUMN_TEN_MON_HOC, subject.getSubjectName());
         values.put(DataBaseHelper.COLUMN_HE_SO, subject.getCoefficient());
+        values.put(DataBaseHelper.COLUMN_HINH_ANH, subject.getImage());
         return values;
     }
 
+    public Subject getSubject(String id) {
+
+        Subject subject = null;
+
+        String query = "SELECT * FROM " + DataBaseHelper.TABLE_MON_HOC
+                + " WHERE " + DataBaseHelper.COLUMN_MA_MON_HOC
+                + "=?";
+        Cursor cursor = db.rawQuery(query, new String[]{id});
+        if (cursor.moveToNext()){
+            subject = new Subject(
+                    id,
+                    cursor.getString(1),
+                    cursor.getInt(2),
+                    cursor.getString(3)
+            );
+
+
+        }
+
+        return subject;
+
+
+
+    }
 }

@@ -6,6 +6,7 @@
         <entry key="..\:/DH-CNTT/NAM 4 KI 2/ANDROID/doangiuaki2/StudentManagement/app/src/main/res/drawable/background_green.xml" value="0.2595" />
         <entry key="..\:/DH-CNTT/NAM 4 KI 2/ANDROID/doangiuaki2/StudentManagement/app/src/main/res/drawable/bg_white_color.xml" value="0.2595" />
         <entry key="..\:/DH-CNTT/NAM 4 KI 2/ANDROID/doangiuaki2/StudentManagement/app/src/main/res/drawable/ic_back_to_school.xml" value="0.2595" />
+        <entry key="..\:/DH-CNTT/NAM 4 KI 2/ANDROID/doangiuaki2/StudentManagement/app/src/main/res/drawable/ic_camera_alt_black_24dp.xml" value="0.1" />
         <entry key="..\:/DH-CNTT/NAM 4 KI 2/ANDROID/doangiuaki2/StudentManagement/app/src/main/res/drawable/ic_error.xml" value="0.1" />
         <entry key="..\:/DH-CNTT/NAM 4 KI 2/ANDROID/doangiuaki2/StudentManagement/app/src/main/res/drawable/ic_ok.xml" value="0.2595" />
         <entry key="..\:/DH-CNTT/NAM 4 KI 2/ANDROID/doangiuaki2/StudentManagement/app/src/main/res/drawable/icon_statistics.xml" value="0.2595" />
@@ -29,6 +30,7 @@
         <entry key="..\:/DH-CNTT/NAM 4 KI 2/ANDROID/doangiuaki2/StudentManagement/app/src/main/res/layout/fragment_student_screen.xml" value="0.25416666666666665" />
         <entry key="..\:/DH-CNTT/NAM 4 KI 2/ANDROID/doangiuaki2/StudentManagement/app/src/main/res/layout/fragment_subject_screen.xml" value="0.2" />
         <entry key="..\:/DH-CNTT/NAM 4 KI 2/ANDROID/doangiuaki2/StudentManagement/app/src/main/res/layout/grade_item.xml" value="0.25416666666666665" />
+        <entry key="..\:/DH-CNTT/NAM 4 KI 2/ANDROID/doangiuaki2/StudentManagement/app/src/main/res/layout/subject_item.xml" value="0.2" />
         <entry key="..\:/Users/TruongLuan/AndroidStudioProjects/AndroidJava/StudentManagement/app/src/main/res/drawable/corner_divier.xml" value="0.112" />
         <entry key="..\:/Users/TruongLuan/AndroidStudioProjects/AndroidJava/StudentManagement/app/src/main/res/drawable/custom_divier.xml" value="0.112" />
         <entry key="..\:/Users/TruongLuan/AndroidStudioProjects/AndroidJava/StudentManagement/app/src/main/res/drawable/ic_baseline_add_24.xml" value="0.112" />
@@ -40,19 +42,16 @@
         <entry key="..\:/Users/TruongLuan/AndroidStudioProjects/AndroidJava/StudentManagement/app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="..\:/Users/TruongLuan/AndroidStudioProjects/AndroidJava/StudentManagement/app/src/main/res/layout/activity_splash_screen.xml" value="0.1" />
         <entry key="..\:/Users/TruongLuan/AndroidStudioProjects/AndroidJava/StudentManagement/app/src/main/res/layout/class_item.xml" value="0.184375" />
-        <entry key="..\:/Users/TruongLuan/AndroidStudioProjects/AndroidJava/StudentManagement/app/src/main/res/layout/dialog_add_grade.xml" value="0.22" />
+        <entry key="..\:/Users/TruongLuan/AndroidStudioProjects/AndroidJava/StudentManagement/app/src/main/res/layout/dialog_add_grade.xml" value="0.1" />
         <entry key="..\:/Users/TruongLuan/AndroidStudioProjects/AndroidJava/StudentManagement/app/src/main/res/layout/dialog_add_student.xml" value="0.16666666666666666" />
         <entry key="..\:/Users/TruongLuan/AndroidStudioProjects/AndroidJava/StudentManagement/app/src/main/res/layout/dialog_add_subject.xml" value="0.184375" />
         <entry key="..\:/Users/TruongLuan/AndroidStudioProjects/AndroidJava/StudentManagement/app/src/main/res/layout/dialog_del_grade.xml" value="0.184375" />
-        <entry key="..\:/Users/TruongLuan/AndroidStudioProjects/AndroidJava/StudentManagement/app/src/main/res/layout/dialog_enter_mark.xml" value="0.16666666666666666" />
         <entry key="..\:/Users/TruongLuan/AndroidStudioProjects/AndroidJava/StudentManagement/app/src/main/res/layout/dialog_update_subject.xml" value="0.184375" />
-        <entry key="..\:/Users/TruongLuan/AndroidStudioProjects/AndroidJava/StudentManagement/app/src/main/res/layout/dropdown_item.xml" value="0.12" />
         <entry key="..\:/Users/TruongLuan/AndroidStudioProjects/AndroidJava/StudentManagement/app/src/main/res/layout/fragment_blank.xml" value="0.184375" />
         <entry key="..\:/Users/TruongLuan/AndroidStudioProjects/AndroidJava/StudentManagement/app/src/main/res/layout/fragment_class_screen.xml" value="0.184375" />
         <entry key="..\:/Users/TruongLuan/AndroidStudioProjects/AndroidJava/StudentManagement/app/src/main/res/layout/fragment_dialog_notice.xml" value="0.184375" />
         <entry key="..\:/Users/TruongLuan/AndroidStudioProjects/AndroidJava/StudentManagement/app/src/main/res/layout/fragment_grade_screen.xml" value="0.14666666666666667" />
         <entry key="..\:/Users/TruongLuan/AndroidStudioProjects/AndroidJava/StudentManagement/app/src/main/res/layout/fragment_home.xml" value="0.16666666666666666" />
-        <entry key="..\:/Users/TruongLuan/AndroidStudioProjects/AndroidJava/StudentManagement/app/src/main/res/layout/fragment_login.xml" value="0.16666666666666666" />
         <entry key="..\:/Users/TruongLuan/AndroidStudioProjects/AndroidJava/StudentManagement/app/src/main/res/layout/fragment_student_screen.xml" value="0.1" />
         <entry key="..\:/Users/TruongLuan/AndroidStudioProjects/AndroidJava/StudentManagement/app/src/main/res/layout/grade_item.xml" value="0.16666666666666666" />
         <entry key="..\:/Users/TruongLuan/AndroidStudioProjects/AndroidJava/StudentManagement/app/src/main/res/layout/item_chip_subject.xml" value="0.5" />
@@ -62,11 +61,7 @@
       </map>
     </option>
   </component>
-<<<<<<< HEAD
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
-=======
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
->>>>>>> b4ff2aa539df6a0880607680982fc835aea69723
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

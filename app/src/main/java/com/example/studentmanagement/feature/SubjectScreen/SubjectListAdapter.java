@@ -2,10 +2,13 @@ package com.example.studentmanagement.feature.SubjectScreen;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -14,10 +17,7 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 
 import com.example.studentmanagement.R;
-import com.example.studentmanagement.database.entity.Grade;
-import com.example.studentmanagement.database.entity.Student;
 import com.example.studentmanagement.database.entity.Subject;
-
 import com.example.studentmanagement.databinding.DialogAddSubjectBinding;
 import com.example.studentmanagement.utils.AppUtils;
 import com.omega_r.libs.omegarecyclerview.swipe_menu.SwipeViewHolder;
@@ -26,17 +26,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.core.Observable;
-
 public class SubjectListAdapter extends ListAdapter<Subject, SubjectListAdapter.SubjectViewHolder> {
     SubjectViewModel subjectViewModel;
+
+    interface ListenListener {
+        boolean updateSubject(Subject subject);
+    }
 
     protected SubjectListAdapter(SubjectViewModel subjectViewModel, @NonNull DiffUtil.ItemCallback<Subject> diffCallback) {
         super(diffCallback);
         this.subjectViewModel = subjectViewModel;
     }
-
 
 
     @NonNull
@@ -63,6 +63,10 @@ public class SubjectListAdapter extends ListAdapter<Subject, SubjectListAdapter.
         private TextView txtSubjectId;
         private TextView txtSubjectName;
         private TextView txtCoefficient;
+        private ImageView imgSubject;
+        private String imageString = "";
+        private final int CODE = 101;
+
 
         public SubjectViewHolder(ViewGroup parent, SubjectViewModel subjectViewModel, SubjectListAdapter subjectListAdapter) {
             super(parent, R.layout.subject_item, R.layout.item_swipe_left_menu);
@@ -74,6 +78,7 @@ public class SubjectListAdapter extends ListAdapter<Subject, SubjectListAdapter.
             txtCoefficient = findViewById(R.id.txt_subject_coefficient);
             txtEdit = findViewById(R.id.txtEdit);
             txtDel = findViewById(R.id.txtDel);
+            imgSubject = findViewById(R.id.imageview_subject_item);
 
             txtEdit.setOnClickListener(this);
             txtDel.setOnClickListener(this);
@@ -93,33 +98,70 @@ public class SubjectListAdapter extends ListAdapter<Subject, SubjectListAdapter.
             binding.btnConfirmAddSubject.setText("Cập nhật");
             binding.editTextSubjectId.setEnabled(false);
 
+
+            Subject subject = subjectViewModel.getSubjectById(txtSubjectId.getText().toString().split(":")[1].trim());
+            System.out.println("subject:" + subject.toString());
+            System.out.println("heso:" + subject.getCoefficient());
+            if (subject == null) return;
             // get data
 
-            binding.editTextSubjectId.setText(
-                    txtSubjectId.getText().toString().split(":")[1].trim());
-            binding.editTextSubjectName.setText(
-                    txtSubjectName.getText().toString().split(":")[1].trim());
-            binding.editTextSubjectCoefficient.setText(
-                    txtCoefficient.getText().toString().split(":")[1].trim());
+            binding.editTextSubjectId.setText(subject.getSubjectId());
+            binding.editTextSubjectName.setText(subject.getSubjectName());
+            System.out.println("toi day roi");
+            binding.editTextSubjectCoefficient.setText(subject.getCoefficient()+"");
+            System.out.println("toi day roi");
+            if(subject.getImage().equals("")){
+                binding.imageviewSubjectDialog.setImageResource(R.drawable.art_class2);
+            }else {
+                try {
+                    binding.imageviewSubjectDialog.setImageBitmap(MediaStore.Images.Media.getBitmap(
+                            context.getContentResolver(), Uri.parse(subject.getImage())));
+
+                } catch (Exception e) {
+                }
+            }
+
 
             binding.btnCancelAddSubject.setOnClickListener(v -> dialog.dismiss());
+
+            binding.btnChooseImageSubject.setOnClickListener(v -> {
+                AppUtils.chooseImage(context, binding.imageviewSubjectDialog, CODE);
+                imageString = AppUtils.getImageString(CODE);
+            });
+
             binding.btnConfirmAddSubject.setOnClickListener(view -> {
-                        String id = binding.editTextSubjectId.getText().toString();
-                        String name = binding.editTextSubjectName.getText().toString();
-                        int factor = Integer.parseInt(binding.editTextSubjectCoefficient
-                                .getText().toString());
 
-                    Subject subject = new Subject(id, name, factor);
 
-                        boolean success = subjectViewModel.updateSubject(subject);
-                        if(success){
-                            AppUtils.showSuccessDialog(context
-                                    , "Update subject successfully!");
+                String name = binding.editTextSubjectName.getText().toString();
+                if (name.equals("")) {
+                    binding.textInputSubjectName.setError("Subject name cannot be blank");
+                    return;
+                }
+                binding.textInputSubjectName.setErrorEnabled(false);
+                int factor;
+                try {
+                    factor = Integer.parseInt(binding.editTextSubjectCoefficient
+                            .getText().toString());
+                    binding.textInputSubjectCoefficient.setErrorEnabled(false);
+                } catch (Exception e) {
+                    binding.textInputSubjectCoefficient.setError("Subject coefficient cannot be blank or not an integer");
+                    return;
+                }
 
-                            subjectListAdapter.submitList(subjectViewModel.getAllSubject());
-                            dialog.dismiss();
-                        }else{
-                            AppUtils.showErrorDialog(context
+
+                subject.setSubjectName(name);
+                subject.setCoefficient(factor);
+                subject.setImage(AppUtils.getImageString(CODE));
+
+                boolean success = subjectViewModel.updateSubject(subject);
+                if (success) {
+                    AppUtils.showSuccessDialog(context
+                            , "Update subject successfully!");
+
+                    subjectListAdapter.submitList(subjectViewModel.getAllSubject());
+                    dialog.dismiss();
+                } else {
+                    AppUtils.showErrorDialog(context
                                     , "UPDATE ERROR"
                                     , "Update subject failed!");
                         }
@@ -145,6 +187,15 @@ public class SubjectListAdapter extends ListAdapter<Subject, SubjectListAdapter.
             txtSubjectId.setText(getString(R.string.id_of_the_subject, item.getId()));
             txtSubjectName.setText(getString(R.string.name_of_the_subject, item.getSubjectName()));
             txtCoefficient.setText(getString(R.string.coefficient_of_the_subject, item.getCoefficient()));
+            System.out.println("getImageSubject:" + item.getImage());
+            if (!item.getImage().equals("")) {
+                try {
+                    imgSubject.setImageBitmap(MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), Uri.parse(item.getImage())));
+
+                } catch (Exception e) {
+                    System.out.println("load image subject:" + e.toString());
+                }
+            }
         }
 
         @Override
@@ -197,8 +248,7 @@ public class SubjectListAdapter extends ListAdapter<Subject, SubjectListAdapter.
 
         @Override
         public boolean areContentsTheSame(@NonNull Subject oldItem, @NonNull Subject newItem) {
-            return oldItem.getSubjectName().equals(newItem.getSubjectName())
-                    && oldItem.getCoefficient()==(newItem.getCoefficient());
+            return oldItem.equals(newItem);
         }
     }
 }

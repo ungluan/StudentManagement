@@ -20,10 +20,40 @@ public class Subject {
     @ColumnInfo(name = "HESO")
     int coefficient;
 
+    @ColumnInfo(name ="HINHANH")
+    String image="";
+
+    public Subject() {
+    }
+
     public Subject(String subjectId, String subjectName, int coefficient) {
         this.subjectId = subjectId;
         this.subjectName = subjectName;
         this.coefficient = coefficient;
+    }
+
+    public Subject(@NonNull String subjectId, String subjectName, int coefficient, String image) {
+        this.subjectId = subjectId;
+        this.subjectName = subjectName;
+        this.coefficient = coefficient;
+        this.image = image;
+    }
+
+    @NonNull
+    public String getSubjectId() {
+        return subjectId;
+    }
+
+    public void setSubjectId(@NonNull String subjectId) {
+        this.subjectId = subjectId;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public String getId() {
@@ -70,7 +100,8 @@ public class Subject {
         if(obj==null || obj.getClass() != Subject.class) return false;
         return ((Subject) obj).subjectId.equals(this.subjectId)
                 && ((Subject) obj).subjectName.equals(this.subjectName)
-                && ((Subject) obj).coefficient == this.coefficient;
+                && ((Subject) obj).coefficient == this.coefficient
+                &&  ((Subject) obj).image.equals(this.image) ;
     }
 
 }

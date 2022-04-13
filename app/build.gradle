@@ -67,4 +67,9 @@ dependencies {
     // Have to it. Not this then can't use Maybe
     implementation "androidx.room:room-rxjava3:2.4.2"
 
+
+    // bottom picker image to choose
+    implementation 'io.github.ParkSangGwon:tedbottompicker:2.0.1'
+    // check permission
+    implementation 'io.github.ParkSangGwon:tedpermission-normal:3.3.0'
 }
