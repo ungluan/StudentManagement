@@ -14,6 +14,7 @@
             app:destination="@id/homeFragment"
             app:popUpTo="@id/homeFragment"
             app:popUpToInclusive="true" />
+
     </fragment>
     <fragment
         android:id="@+id/homeFragment"
@@ -32,6 +33,9 @@
         <action
             android:id="@+id/action_homeFragment_to_markScreenFragment"
             app:destination="@id/markScreenFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_mainActivity"
+            app:destination="@id/mainActivity" />
     </fragment>
     <fragment
         android:id="@+id/studentScreenFragment"
@@ -61,4 +65,8 @@
             android:id="@+id/action_markScreenFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
     </fragment>
+    <activity
+        android:id="@+id/mainActivity"
+        android:name="com.example.studentmanagement.MainActivity"
+        android:label="MainActivity" />
 </navigation>
