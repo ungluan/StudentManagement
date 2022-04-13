@@ -1,6 +1,7 @@
 package com.example.studentmanagement.database_sqlite.Dao;
 
 import android.app.Application;
+import android.app.DownloadManager;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteConstraintException;
@@ -18,13 +19,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GradeDao {
-    private SQLiteDatabase db;
     private DataBaseHelper dataBaseHelper;
 
     public GradeDao(Application application) {
         // GetInstances
         this.dataBaseHelper = DataBaseHelper.getInstance(application);
-        this.db = dataBaseHelper.getWritableDatabase();
     }
 
     public Boolean insertGrade(Grade grade) {
@@ -57,14 +56,15 @@ public class GradeDao {
     }
 
     public List<Grade> getGrades(){
-        MutableLiveData<List<Grade>> liveData = new MutableLiveData<>();
         List<Grade> grades = new ArrayList<>();
-        Cursor cursor = dataBaseHelper.query("SELECT * FROM LOP",null);
+        String query = "SELECT * FROM " + DataBaseHelper.TABLE_LOP;
+        Cursor cursor = dataBaseHelper.query(query,null);
         if(cursor.moveToFirst()){
             do{
                 String gradeId = cursor.getString(0);
-                String teacherName = cursor.getString(1);
-                Grade grade = new Grade(gradeId,teacherName);
+                int teacherId = cursor.getInt(1);
+                String image = cursor.getString(2);
+                Grade grade = new Grade(gradeId,teacherId,image);
                 grades.add(grade);
             }while (cursor.moveToNext());
         }
@@ -74,7 +74,8 @@ public class GradeDao {
     public ContentValues values(Grade grade, boolean noId) {
         ContentValues values = new ContentValues();
         if(!noId) values.put(DataBaseHelper.COLUMN_LOP, grade.getGradeId());
-        values.put(DataBaseHelper.COLUMN_CHU_NHIEM, grade.getTeacherName());
+        values.put(DataBaseHelper.COLUMN_MA_CHU_NHIEM, grade.getTeacherId());
+        values.put(DataBaseHelper.COLUMN_HINH_ANH, grade.getImage());
         return values;
     }
 }

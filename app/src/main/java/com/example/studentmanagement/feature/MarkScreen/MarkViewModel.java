@@ -14,10 +14,7 @@ import com.example.studentmanagement.database_sqlite.Dao.GradeDao;
 import com.example.studentmanagement.database_sqlite.Dao.MarkDao;
 import com.example.studentmanagement.database_sqlite.Dao.StudentDao;
 import com.example.studentmanagement.database_sqlite.Dao.SubjectDao;
-import com.example.studentmanagement.repository.GradeRepository;
-import com.example.studentmanagement.repository.MarkRepository;
-import com.example.studentmanagement.repository.StudentRepository;
-import com.example.studentmanagement.repository.SubjectRepository;
+
 
 import java.util.ArrayList;
 import java.util.List;

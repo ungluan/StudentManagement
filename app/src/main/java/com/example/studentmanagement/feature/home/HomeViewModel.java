@@ -16,9 +16,6 @@ import com.example.studentmanagement.database_sqlite.Dao.StudentDao;
 import com.example.studentmanagement.database_sqlite.Dao.SubjectDao;
 
 import com.example.studentmanagement.database_sqlite.DataBaseHelper;
-import com.example.studentmanagement.repository.GradeRepository;
-import com.example.studentmanagement.repository.StudentRepository;
-import com.example.studentmanagement.repository.SubjectRepository;
 
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -26,8 +23,6 @@ import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class HomeViewModel extends AndroidViewModel {
-
-
     private GradeDao gradeDao;
     private StudentDao studentDao;
     private SubjectDao subjectDao;

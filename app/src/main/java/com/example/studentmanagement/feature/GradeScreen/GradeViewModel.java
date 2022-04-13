@@ -4,17 +4,20 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import com.example.studentmanagement.database.entity.Grade;
+import com.example.studentmanagement.database.entity.Teacher;
 import com.example.studentmanagement.database_sqlite.Dao.GradeDao;
+import com.example.studentmanagement.database_sqlite.Dao.TeacherDao;
 
 
 import java.util.List;
 
 public class GradeViewModel extends AndroidViewModel {
     private GradeDao gradeDao;
-
+    private TeacherDao teacherDao;
     public GradeViewModel(@NonNull Application application) {
         super(application);
         gradeDao = new GradeDao(application);
+        teacherDao = new TeacherDao(application);
     }
 
     public List<Grade> getGrades() {
@@ -37,5 +40,14 @@ public class GradeViewModel extends AndroidViewModel {
         return gradeDao.checkGradeId(gradeId);
     }
 
+//    public List<Teacher> getTeachers(){
+//        return teacherDao.getTeachers();
+//    }
+    public List<Teacher> getTeacherHaveNotGrade(){
+        return teacherDao.getTeacherHaveNotGrade();
+    }
+    public Teacher getTeacherById(int teacherId){
+        return teacherDao.getTeacherById(teacherId);
+    }
 }
 

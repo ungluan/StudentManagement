@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/homeFragment">
+    app:startDestination="@id/loginFragment">
 
     <fragment
         android:id="@+id/gradeScreenFragment"
@@ -34,8 +34,13 @@
             android:id="@+id/action_homeFragment_to_markScreenFragment"
             app:destination="@id/markScreenFragment" />
         <action
+
             android:id="@+id/action_homeFragment_to_mainActivity"
             app:destination="@id/mainActivity" />
+        <action
+            android:id="@+id/action_homeFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+
     </fragment>
     <fragment
         android:id="@+id/studentScreenFragment"
@@ -65,8 +70,19 @@
             android:id="@+id/action_markScreenFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
     </fragment>
+
     <activity
         android:id="@+id/mainActivity"
         android:name="com.example.studentmanagement.MainActivity"
         android:label="MainActivity" />
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.studentmanagement.feature.loginScreen.LoginFragment"
+        android:label="LoginFragment" >
+        <action
+            android:id="@+id/action_loginFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+
 </navigation>

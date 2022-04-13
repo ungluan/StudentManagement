@@ -26,15 +26,11 @@ import android.widget.Toast;
 
 import com.example.studentmanagement.R;
 import com.example.studentmanagement.database.entity.Grade;
-import com.example.studentmanagement.database.entity.Mark;
 import com.example.studentmanagement.database.entity.Student;
-import com.example.studentmanagement.database.entity.Subject;
-import com.example.studentmanagement.database.entity.relationship.StudentWithMarks;
 import com.example.studentmanagement.databinding.DialogAddStudentBinding;
 import com.example.studentmanagement.databinding.FragmentStudentScreenBinding;
 import com.example.studentmanagement.utils.AppUtils;
-import com.google.android.material.chip.Chip;
-import com.google.android.material.chip.ChipGroup;
+
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.omega_r.libs.omegarecyclerview.OmegaRecyclerView;
 
@@ -43,11 +39,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.core.CompletableObserver;
+
 import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 
 
 public class StudentScreenFragment extends Fragment {

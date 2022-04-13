@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:hint="Lớp"
-            android:nextFocusDown="@id/edit_text_teacher_name"
+            android:nextFocusDown="@id/edit_text_first_name"
             app:boxStrokeWidth="1dp"
             app:startIconCheckable="true"
             android:enabled="false">

@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:hint="Họ và tên"
-            android:nextFocusDown="@id/edit_text_teacher_name"
+            android:nextFocusDown="@id/edit_text_student_id_mark"
             app:boxStrokeWidth="1dp"
             app:startIconCheckable="true"
             android:enabled="false">

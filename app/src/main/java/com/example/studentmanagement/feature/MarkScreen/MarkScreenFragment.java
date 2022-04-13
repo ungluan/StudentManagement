@@ -81,7 +81,6 @@ public class MarkScreenFragment extends Fragment {
                     loadRecyclerViewStudent(dropdownItemsGrade.get(position).getGradeId()
                             , editTextSubjectName.getText().toString().split("-")[0].trim());
                 }
-
             }
         });
 
@@ -112,6 +111,7 @@ public class MarkScreenFragment extends Fragment {
     }
 
     private void loadRecyclerViewStudent(String gradeId, String subjectId) {
+
         List<Mark> marks = markViewModel.getMarks(gradeId, subjectId);
         if(marks.size()>0) {
             markListAdapter.submitList(markViewModel.getMarks(gradeId, subjectId));
@@ -132,6 +132,7 @@ public class MarkScreenFragment extends Fragment {
 //                },
 //                throwable -> Log.d("MarkFragment", throwable.getLocalizedMessage())
 //        );
+
     }
 
 
