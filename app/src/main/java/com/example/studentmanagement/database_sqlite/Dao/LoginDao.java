@@ -18,10 +18,10 @@ public class LoginDao {
 
     public Boolean login(String email, String password) {
         String query = "SELECT 1 FROM "+ DataBaseHelper.TABLE_TAI_KHOAN +" WHERE "
-                + DataBaseHelper.COLUMN_MA_TAI_KHOAN +" = '" +email+"' AND "
+                + DataBaseHelper.COLUMN_EMAIL +" = '" +email+"' AND "
                 + DataBaseHelper.COLUMN_MAT_KHAU + " = '"+password+"'";
         Cursor cursor = dataBaseHelper.query(query,null);
-        cursor.moveToFirst();
-        return cursor.getColumnCount()>0;
+        if(cursor.moveToFirst()) return true;
+        return false;
     }
 }

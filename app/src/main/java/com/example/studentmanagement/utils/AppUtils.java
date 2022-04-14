@@ -18,6 +18,8 @@ import android.os.Environment;
 import android.os.ParcelFileDescriptor;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.text.TextUtils;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -49,7 +51,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Random;
+
 import java.util.concurrent.Callable;
 
 import gun0912.tedbottompicker.TedBottomPicker;
@@ -207,7 +209,6 @@ public class AppUtils {
         dialog.show();
     }
 
-    //TODO 1: Add FormatPersonName
     public static String formatPersonName(String name) {
         if (name.length() == 0) return "";
         name = name.trim();
@@ -222,7 +223,6 @@ public class AppUtils {
         return name.trim();
     }
 
-    //TODO 2: Add FormatGradeName
     public static String formatGradeName(String name) {
         return name.trim().toUpperCase();
     }
@@ -230,6 +230,10 @@ public class AppUtils {
     @SuppressLint("SimpleDateFormat")
     public static String formatTimeStampToDate(Long timeStamp) {
         return new SimpleDateFormat("dd/MM/yyyy").format(new Date(timeStamp));
+    }
+
+    public static boolean isValidEmail(CharSequence target) {
+        return (!TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches());
     }
 
     public static void updateAuthentication(Activity activity, boolean value){
