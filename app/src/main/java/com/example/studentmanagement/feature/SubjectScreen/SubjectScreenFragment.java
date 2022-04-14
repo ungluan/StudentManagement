@@ -28,16 +28,8 @@ import com.example.studentmanagement.databinding.DialogAddSubjectBinding;
 import com.example.studentmanagement.databinding.FragmentSubjectScreenBinding;
 import com.example.studentmanagement.utils.AppUtils;
 import com.example.studentmanagement.utils.ItemMargin;
-import com.gun0912.tedpermission.PermissionListener;
-import com.gun0912.tedpermission.TedPermissionUtil;
-import com.gun0912.tedpermission.normal.TedPermission;
 import com.omega_r.libs.omegarecyclerview.OmegaRecyclerView;
 
-import java.io.IOException;
-import java.util.List;
-
-import gun0912.tedbottompicker.TedBottomPicker;
-import gun0912.tedbottompicker.TedBottomSheetDialogFragment;
 
 public class SubjectScreenFragment extends Fragment {
     private FragmentSubjectScreenBinding binding;
