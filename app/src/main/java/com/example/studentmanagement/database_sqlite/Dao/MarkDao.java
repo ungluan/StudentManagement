@@ -16,6 +16,7 @@ import com.example.studentmanagement.database.entity.Subject;
 import com.example.studentmanagement.database_sqlite.DataBaseHelper;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -132,6 +133,39 @@ public class MarkDao {
         contentValues.put(colSubjectId, mark.getSubjectId());
         contentValues.put(colMark, mark.getScore());
         return contentValues;
+    }
+
+    private List<Mark> getListMarkFromCursor(Cursor cursor){
+        List<Mark> list = new ArrayList<>();
+        while (cursor.moveToNext()) {
+            int studenId = cursor.getInt(0);
+            String subjectId = cursor.getString(1);
+            Double mark = cursor.getDouble(2);
+            list.add(new Mark(studenId
+                    , subjectId, mark));
+        }
+        return list;
+    }
+
+    public List<Mark> getAllMarks(){
+        String sql = "SELECT * FROM " + DataBaseHelper.TABLE_DIEM ;
+        Cursor cursor = dataBaseHelper.query(sql, null);
+        return getListMarkFromCursor(cursor);
+
+    }
+
+    public Map<String, Integer> countRankStudent(){
+        Map<String , Integer> countRank = new HashMap<>();
+        Arrays.stream(RankStudent.values())
+                .forEach(rankStudent -> {
+                    countRank.put(rankStudent.name(), 0);
+                });
+
+        getAllMarks().forEach(mark -> {
+            String rank = mark.rankStudent();
+            countRank.put(rank, countRank.get(rank) + 1);
+        });
+        return countRank;
     }
 
 

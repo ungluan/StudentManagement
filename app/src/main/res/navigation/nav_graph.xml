@@ -40,6 +40,9 @@
         <action
             android:id="@+id/action_homeFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_fragmentReportScreen"
+            app:destination="@id/fragmentReportScreen" />
 
     </fragment>
     <fragment
@@ -83,6 +86,27 @@
         <action
             android:id="@+id/action_loginFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentReportScreen"
+        android:name="com.example.studentmanagement.feature.report.FragmentReportScreen"
+        android:label="FragmentReportScreen" >
+        <action
+            android:id="@+id/action_fragmentReportScreen_to_homeFragment"
+            app:destination="@id/homeFragment" />
+        <action
+            app:popUpTo="@id/fragmentReportScreen"
+            app:popUpToInclusive="true"
+            android:id="@+id/action_fragmentReportScreen_to_fragmentRankStudentScreen"
+            app:destination="@id/fragmentRankStudentScreen" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentRankStudentScreen"
+        android:name="com.example.studentmanagement.feature.report.rankstudent.FragmentRankStudentScreen"
+        android:label="FragmentRankStudentScreen" >
+        <action
+            android:id="@+id/action_fragmentRankStudentScreen_to_fragmentReportScreen"
+            app:destination="@id/fragmentReportScreen" />
     </fragment>
 
 </navigation>

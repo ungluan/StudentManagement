@@ -9,6 +9,10 @@ import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Index;
 
+import com.example.studentmanagement.database_sqlite.Dao.RankStudent;
+
+import java.util.Arrays;
+
 
 // onDelete = NO_ACTION is Default
 @Entity(
@@ -35,6 +39,13 @@ public class Mark {
         this.studentId = studentId;
         this.subjectId = subjectId;
         this.score = score;
+    }
+
+    public String rankStudent(){
+        return Arrays.stream(RankStudent.values())
+                .filter(rankStudent ->  score < rankStudent.getTo() && score >= rankStudent.getFrom())
+                .findFirst().get().name();
+
     }
 
     public int getStudentId() {

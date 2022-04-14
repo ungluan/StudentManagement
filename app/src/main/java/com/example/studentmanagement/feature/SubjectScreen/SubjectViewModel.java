@@ -37,4 +37,9 @@ public class SubjectViewModel extends AndroidViewModel {
     public boolean deleteSubject(String subjectId){
         return subjectDao.deleteSubject(subjectId);
     }
+
+    public List<Subject> searchSubjectBySameIdOrName(String search){
+        return subjectDao.searchSubjectBySameIdOrName(search);
+
+    }
 }

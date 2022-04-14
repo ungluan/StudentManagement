@@ -60,24 +60,77 @@
                 android:layout_marginBottom="16dp"
                 android:background="@drawable/custom_divier"/>
 
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="192dp"
-                android:layout_margin="16dp"
-                app:cardElevation="2dp"
-                android:outlineSpotShadowColor="@color/secondary_blue"
-                app:cardCornerRadius="16dp"
-                app:strokeColor="@color/secondary_orange"
-                app:strokeWidth="1dp">
+<!--            <com.google.android.material.card.MaterialCardView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="192dp"-->
+<!--                android:layout_margin="16dp"-->
+<!--                app:cardElevation="2dp"-->
+<!--                android:outlineSpotShadowColor="@color/secondary_blue"-->
+<!--                app:cardCornerRadius="16dp"-->
+<!--                app:strokeColor="@color/secondary_orange"-->
+<!--                app:strokeWidth="1dp">-->
 
-                <ImageView
-                    android:src="@drawable/ic_students_learning"
-                    android:scaleType="fitXY"
+<!--                <ImageView-->
+<!--                    android:src="@drawable/ic_students_learning"-->
+<!--                    android:scaleType="fitXY"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:padding="8dp"/>-->
+
+<!--            </com.google.android.material.card.MaterialCardView>-->
+
+
+                <androidx.appcompat.widget.SearchView
+                    android:layout_toLeftOf="@+id/filter_subject"
+                    android:background="@drawable/shape_bg_search"
+                    app:iconifiedByDefault="false"
+                    app:queryBackground="@null"
+                    android:id="@+id/search_view_subject_list"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:padding="8dp"/>
+                    app:queryHint="Search by subject name"
+                    android:layout_height="?attr/actionBarSize"
 
-            </com.google.android.material.card.MaterialCardView>
+                    ></androidx.appcompat.widget.SearchView>
+
+            <RelativeLayout
+                android:layout_marginStart="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_filter_subject"
+                    style="@style/CustomChipStyle"
+                    app:chipIconVisible="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:chipIcon="@drawable/chip_icon_filter"
+                    android:text="Lọc"
+                    android:textSize="20dp"
+                    android:textStyle="bold">
+
+                </com.google.android.material.chip.Chip>
+
+                <com.google.android.material.chip.Chip
+                    style="@style/CustomChipStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_toRightOf="@+id/chip_filter_subject"
+                    android:text="Sắp xếp"
+                    android:textSize="20dp"
+                    android:textStyle="bold"
+                    app:chipIcon="@drawable/chip_icon_sort"
+                    app:chipIconVisible="true">
+
+                </com.google.android.material.chip.Chip>
+
+            </RelativeLayout>
+
+
+
+
 
 
             <com.omega_r.libs.omegarecyclerview.OmegaRecyclerView

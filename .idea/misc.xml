@@ -3,14 +3,18 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/DH-CNTT/NAM 4 KI 2/ANDROID/doangiuaki2/StudentManagement/app/src/main/res/drawable-v24/chip_icon_sort.xml" value="0.1825" />
         <entry key="..\:/DH-CNTT/NAM 4 KI 2/ANDROID/doangiuaki2/StudentManagement/app/src/main/res/drawable/background_green.xml" value="0.2595" />
+        <entry key="..\:/DH-CNTT/NAM 4 KI 2/ANDROID/doangiuaki2/StudentManagement/app/src/main/res/drawable/bg_chip.xml" value="0.132" />
         <entry key="..\:/DH-CNTT/NAM 4 KI 2/ANDROID/doangiuaki2/StudentManagement/app/src/main/res/drawable/bg_white_color.xml" value="0.2595" />
+        <entry key="..\:/DH-CNTT/NAM 4 KI 2/ANDROID/doangiuaki2/StudentManagement/app/src/main/res/drawable/chip_icon.xml" value="0.1" />
         <entry key="..\:/DH-CNTT/NAM 4 KI 2/ANDROID/doangiuaki2/StudentManagement/app/src/main/res/drawable/ic_back_to_school.xml" value="0.2595" />
         <entry key="..\:/DH-CNTT/NAM 4 KI 2/ANDROID/doangiuaki2/StudentManagement/app/src/main/res/drawable/ic_camera_alt_black_24dp.xml" value="0.1" />
         <entry key="..\:/DH-CNTT/NAM 4 KI 2/ANDROID/doangiuaki2/StudentManagement/app/src/main/res/drawable/ic_error.xml" value="0.1" />
         <entry key="..\:/DH-CNTT/NAM 4 KI 2/ANDROID/doangiuaki2/StudentManagement/app/src/main/res/drawable/ic_ok.xml" value="0.2595" />
         <entry key="..\:/DH-CNTT/NAM 4 KI 2/ANDROID/doangiuaki2/StudentManagement/app/src/main/res/drawable/icon_statistics.xml" value="0.2595" />
         <entry key="..\:/DH-CNTT/NAM 4 KI 2/ANDROID/doangiuaki2/StudentManagement/app/src/main/res/drawable/icon_success.xml" value="0.1" />
+        <entry key="..\:/DH-CNTT/NAM 4 KI 2/ANDROID/doangiuaki2/StudentManagement/app/src/main/res/drawable/shape_bg_search.xml" value="0.2075" />
         <entry key="..\:/DH-CNTT/NAM 4 KI 2/ANDROID/doangiuaki2/StudentManagement/app/src/main/res/drawable/splash_background.xml" value="0.1675" />
         <entry key="..\:/DH-CNTT/NAM 4 KI 2/ANDROID/doangiuaki2/StudentManagement/app/src/main/res/layout/activity_main.xml" value="0.25416666666666665" />
         <entry key="..\:/DH-CNTT/NAM 4 KI 2/ANDROID/doangiuaki2/StudentManagement/app/src/main/res/layout/activity_splash_screen.xml" value="0.25416666666666665" />
@@ -27,7 +31,10 @@
         <entry key="..\:/DH-CNTT/NAM 4 KI 2/ANDROID/doangiuaki2/StudentManagement/app/src/main/res/layout/fragment_dialog_notice.xml" value="0.25416666666666665" />
         <entry key="..\:/DH-CNTT/NAM 4 KI 2/ANDROID/doangiuaki2/StudentManagement/app/src/main/res/layout/fragment_grade_screen.xml" value="0.25416666666666665" />
         <entry key="..\:/DH-CNTT/NAM 4 KI 2/ANDROID/doangiuaki2/StudentManagement/app/src/main/res/layout/fragment_home.xml" value="0.25025641025641027" />
+        <entry key="..\:/DH-CNTT/NAM 4 KI 2/ANDROID/doangiuaki2/StudentManagement/app/src/main/res/layout/fragment_rank_student_screen.xml" value="0.23357664233576642" />
+        <entry key="..\:/DH-CNTT/NAM 4 KI 2/ANDROID/doangiuaki2/StudentManagement/app/src/main/res/layout/fragment_report.xml" value="0.256140350877193" />
         <entry key="..\:/DH-CNTT/NAM 4 KI 2/ANDROID/doangiuaki2/StudentManagement/app/src/main/res/layout/fragment_student_screen.xml" value="0.25416666666666665" />
+        <entry key="..\:/DH-CNTT/NAM 4 KI 2/ANDROID/doangiuaki2/StudentManagement/app/src/main/res/layout/fragment_student_type_report.xml" value="0.25416666666666665" />
         <entry key="..\:/DH-CNTT/NAM 4 KI 2/ANDROID/doangiuaki2/StudentManagement/app/src/main/res/layout/fragment_subject_screen.xml" value="0.2" />
         <entry key="..\:/DH-CNTT/NAM 4 KI 2/ANDROID/doangiuaki2/StudentManagement/app/src/main/res/layout/grade_item.xml" value="0.25416666666666665" />
         <entry key="..\:/DH-CNTT/NAM 4 KI 2/ANDROID/doangiuaki2/StudentManagement/app/src/main/res/layout/subject_item.xml" value="0.2" />

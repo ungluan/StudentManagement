@@ -30,4 +30,13 @@
         <item name="android:windowMinWidthMinor">100%</item>
         <item name="colorPrimary">@color/secondary_orange</item>
     </style>
+
+<!--    Custom chip-->
+    <style name="CustomChipStyle" parent="Widget.MaterialComponents.Chip.Filter">
+        <item name="chipStartPadding">10dp</item>
+        <item name="chipBackgroundColor">@color/color_bg_chip</item>
+        <item name="android:textColor">@color/color_text_chip</item>
+    </style>
+
+
 </resources>

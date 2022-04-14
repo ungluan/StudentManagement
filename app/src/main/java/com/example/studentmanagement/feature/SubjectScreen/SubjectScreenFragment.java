@@ -17,12 +17,15 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.studentmanagement.R;
+import com.example.studentmanagement.database.entity.Mark;
 import com.example.studentmanagement.database.entity.Subject;
 import com.example.studentmanagement.databinding.DialogAddSubjectBinding;
 import com.example.studentmanagement.databinding.FragmentSubjectScreenBinding;
@@ -62,6 +65,10 @@ public class SubjectScreenFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        System.out.println("Rank student:"+new Mark(1, "a", 7).rankStudent());
+
+        setUpSearchView();
+
         subjectViewModel = new
                 ViewModelProvider(requireActivity()).get(com.example.studentmanagement.feature.SubjectScreen.SubjectViewModel.class);
 
@@ -71,6 +78,29 @@ public class SubjectScreenFragment extends Fragment {
          adapter = new
                 SubjectListAdapter(subjectViewModel, new SubjectListAdapter.SubjectDiff());
         recyclerView.setAdapter(adapter);
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            /**
+             * Callback method to be invoked when the RecyclerView has been scrolled. This will be
+             * called after the scroll has completed.
+             * <p>
+             * This callback will also be called if visible item range changes after a layout
+             * calculation. In that case, dx and dy will be 0.
+             *
+             * @param recyclerView The RecyclerView which scrolled.
+             * @param dx           The amount of horizontal scroll.
+             * @param dy           The amount of vertical scroll.
+             */
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if(dy>0){
+                    binding.btnAddSubject.setVisibility(View.GONE);
+                }else{
+                    binding.btnAddSubject.setVisibility(View.VISIBLE);
+                }
+            }
+        });
 
         // add margin to recyccler view item
 
@@ -85,6 +115,24 @@ public class SubjectScreenFragment extends Fragment {
             Navigation.findNavController(v).navigate(action);
         });
 
+
+    }
+
+    // get data from search view & query api to get the results
+    private void setUpSearchView() {
+        binding.searchViewSubjectList.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                adapter.submitList(subjectViewModel.searchSubjectBySameIdOrName(query));
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                adapter.submitList(subjectViewModel.searchSubjectBySameIdOrName(newText));
+                return false;
+            }
+        });
 
     }
 

@@ -149,4 +149,26 @@ public class SubjectDao {
 
 
     }
+
+    public List<Subject> searchSubjectBySameIdOrName(String search) {
+        String query = "SELECT * FROM " + DataBaseHelper.TABLE_MON_HOC +
+                " WHERE " + DataBaseHelper.COLUMN_MA_MON_HOC +
+                " LIKE ? OR " + DataBaseHelper.COLUMN_TEN_MON_HOC + " LIKE ?";
+        Cursor cursor = db.rawQuery(query, new String[]{"%"+search+"%", "%"+search+"%"});
+
+        return getSubjectFromCursor(cursor);
+    }
+
+    private List<Subject> getSubjectFromCursor(Cursor cursor){
+        List<Subject> list = new ArrayList<>();
+        while (cursor.moveToNext()){
+            list.add(
+                    new Subject(cursor.getString(0),
+                            cursor.getString(1),
+                            cursor.getInt(2),
+                            cursor.getString(3)));
+
+        }
+        return list;
+    }
 }

@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
@@ -23,6 +24,10 @@ import com.example.studentmanagement.utils.AppUtils;
 
 
 public class HomeFragment extends Fragment {
+
+    //save state
+
+    public static final String TAG = HomeFragment.class.getName();
     // HomeViewModel initial in onCreateView
     private FragmentHomeBinding binding;
     private HomeViewModel homeViewModel;
@@ -68,6 +73,10 @@ public class HomeFragment extends Fragment {
             Navigation.findNavController(v).navigate(action);
         });
         db = DataBaseHelper.getInstance(this.requireActivity().getApplication());
+
+        binding.cardViewQuery.setOnClickListener(v -> {
+            Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_fragmentReportScreen);
+        });
     }
 
 
