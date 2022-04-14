@@ -29,6 +29,7 @@
                 android:textStyle="bold" />
 
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/button_avatar"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_alignParentTop="true"

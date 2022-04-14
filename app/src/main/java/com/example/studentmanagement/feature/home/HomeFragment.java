@@ -47,18 +47,14 @@ public class HomeFragment extends Fragment {
             Navigation.findNavController(v).navigate(action);
         });
 
-        binding.cardViewGrade.setOnClickListener(
-                v -> {
-                    NavDirections action = HomeFragmentDirections.actionHomeFragmentToGradeScreenFragment();
-                    Navigation.findNavController(v).navigate(action);
-                }
-        );
-        binding.cardViewStudent.setOnClickListener(
-                v -> {
-                    NavDirections action = HomeFragmentDirections.actionHomeFragmentToStudentScreenFragment();
-                    Navigation.findNavController(v).navigate(action);
-                }
-        );
+        binding.cardViewGrade.setOnClickListener(v -> {
+            NavDirections action = HomeFragmentDirections.actionHomeFragmentToGradeScreenFragment();
+            Navigation.findNavController(v).navigate(action);
+        });
+        binding.cardViewStudent.setOnClickListener(v -> {
+            NavDirections action = HomeFragmentDirections.actionHomeFragmentToStudentScreenFragment();
+            Navigation.findNavController(v).navigate(action);
+        });
         binding.cardViewSubject.setOnClickListener(v -> {
             NavDirections action = HomeFragmentDirections.actionHomeFragmentToSubjectScreenFragment();
             Navigation.findNavController(v).navigate(action);
@@ -67,7 +63,11 @@ public class HomeFragment extends Fragment {
             NavDirections action = HomeFragmentDirections.actionHomeFragmentToMarkScreenFragment();
             Navigation.findNavController(v).navigate(action);
         });
-        db = DataBaseHelper.getInstance(this.requireActivity().getApplication());
+
+        binding.buttonAvatar.setOnClickListener(v -> {
+            NavDirections action = HomeFragmentDirections.actionHomeFragmentToProfileFragment();
+            Navigation.findNavController(v).navigate(action);
+        });
     }
 
 

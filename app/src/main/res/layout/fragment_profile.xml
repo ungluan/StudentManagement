@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".feature.ProfileScreen.ProfileFragment"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_marginTop="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="31dp"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <ImageButton
+                    android:id="@+id/btn_back"
+                    android:layout_marginStart="16dp"
+                    android:src="@drawable/ic_baseline_arrow_back_ios_24"
+                    android:background="@android:color/transparent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="Hồ sơ cá nhân"
+                    android:textColor="@android:color/black"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_gravity="top"
+            android:elevation="12dp"
+            android:outlineSpotShadowColor="@color/color_secondary_blue_variant_lighter"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/custom_divier" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
+
+            <TextView
+                android:text="Tài khoản"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp" />
+
+            <LinearLayout
+                android:id="@+id/button_profile"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:orientation="horizontal"
+                android:layout_marginBottom="16dp">
+
+                <ImageView
+                    android:background="@drawable/profile"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_gravity="center_vertical" />
+
+                <TextView
+                    android:text="Thông tin cá nhân"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/button_change_password"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:orientation="horizontal"
+            android:layout_marginBottom="16dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
+
+            <ImageView
+                android:background="@drawable/padlock"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center_vertical" />
+
+            <TextView
+                android:text="Đổi mật khẩu"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/button_create_account"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:orientation="horizontal"
+            android:layout_marginBottom="16dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
+
+            <ImageView
+                android:background="@drawable/add_user"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center_vertical" />
+
+            <TextView
+                android:text="Tạo mới tài khoản"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+</layout>
