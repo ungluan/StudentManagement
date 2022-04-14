@@ -36,7 +36,8 @@ public class ProfileFragment extends Fragment {
             Navigation.findNavController(v).navigate(action);
         });
         binding.buttonProfile.setOnClickListener(v -> {
-
+            NavDirections action = ProfileFragmentDirections.actionProfileFragmentToInformationFragment();
+            Navigation.findNavController(v).navigate(action);
         });
         binding.buttonChangePassword.setOnClickListener(v -> {
 
