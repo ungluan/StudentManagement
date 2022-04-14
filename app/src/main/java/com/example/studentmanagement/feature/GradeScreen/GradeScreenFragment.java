@@ -148,37 +148,6 @@ public class GradeScreenFragment extends Fragment {
 //        ContentResolver resolver = getContext().getContentResolver();
 //
 //    }
-    public void requestPermission(){
-        boolean minSDK = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q;
-        boolean isReadExternalGranted = ContextCompat.checkSelfPermission(
-                requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE)
-                == PackageManager.PERMISSION_GRANTED;
-        boolean isWriteExternalGranted = ContextCompat.checkSelfPermission(
-                    requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                == PackageManager.PERMISSION_GRANTED;
-        List<String> permissionRequest = new ArrayList<>();
-        if(!isReadExternalGranted) permissionRequest.add(Manifest.permission.READ_EXTERNAL_STORAGE);
-        if(!isWriteExternalGranted) permissionRequest.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        ActivityCompat.requestPermissions(requireActivity(),
-                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                2);
-    }
-    public class CustomActivityResultContacts extends ActivityResultContract<Integer,Intent>{
-
-        @NonNull
-        @Override
-        public Intent createIntent(@NonNull Context context, Integer input) {
-            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-            intent.putExtra("Position", input);
-            return intent;
-        }
-
-        @Override
-        public Intent parseResult(int resultCode, @Nullable Intent intent) {
-            return intent;
-        }
-    }
 
     public void showToast(String message){
         Toast.makeText(this.requireContext(), message, Toast.LENGTH_SHORT).show();
