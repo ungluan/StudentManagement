@@ -38,5 +38,18 @@
         <item name="android:textColor">@color/color_text_chip</item>
     </style>
 
+<!--    custom textview-->
+    <style name="CustomTextStyleH1" parent="Widget.MaterialComponents.TextView">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="CustomTextStyleH2" parent="Widget.MaterialComponents.TextView">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/gray</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
 
 </resources>

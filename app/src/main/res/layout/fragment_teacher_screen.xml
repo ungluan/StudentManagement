@@ -15,7 +15,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             android:orientation="vertical"
             android:layout_width="match_parent"
-            tools:context=".feature.SubjectScreen.SubjectScreenFragment"
+            tools:context=".feature.teacher.TeacherScreenFragment"
             android:layout_height="wrap_content">
 
             <LinearLayout
@@ -29,7 +29,7 @@
                     android:orientation="horizontal"
                     android:layout_height="34dp">
                     <ImageButton
-                        android:id="@+id/btnBackSubjectScreen"
+                        android:id="@+id/btnBackTeacherScreen"
                         android:src="@drawable/ic_baseline_arrow_back_ios_24"
                         android:background="@android:color/transparent"
                         android:layout_width="wrap_content"
@@ -42,7 +42,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:text="Danh sách môn học"
+                        android:text="Danh sách giáo viên"
                         android:textColor="#000000"
                         android:textSize="26sp"
                         android:textStyle="bold">
@@ -86,10 +86,10 @@
                     android:background="@drawable/shape_bg_search"
                     app:iconifiedByDefault="false"
                     app:queryBackground="@null"
-                    android:id="@+id/search_view_subject_list"
+                    android:id="@+id/search_view_teacher_list"
                     android:layout_width="match_parent"
-                    app:queryHint="Search by subject name"
-                    android:layout_height="?attr/actionBarSize"
+                    app:queryHint="Search by teacher name"
+                    android:layout_height="wrap_content"
 
                     ></androidx.appcompat.widget.SearchView>
 
@@ -99,24 +99,25 @@
                 android:layout_height="wrap_content">
 
                 <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_filter_subject"
+                    android:id="@+id/chip_filter_teacher"
                     style="@style/CustomChipStyle"
-                    app:chipIconVisible="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:chipIcon="@drawable/chip_icon_filter"
                     android:text="Lọc"
                     android:textSize="20dp"
-                    android:textStyle="bold">
+                    android:textStyle="bold"
+                    app:chipIcon="@drawable/chip_icon_filter"
+                    app:chipIconVisible="true">
 
                 </com.google.android.material.chip.Chip>
 
                 <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_sort_teacher"
                     style="@style/CustomChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
-                    android:layout_toRightOf="@+id/chip_filter_subject"
+                    android:layout_toRightOf="@+id/chip_filter_teacher"
                     android:text="Sắp xếp"
                     android:textSize="20dp"
                     android:textStyle="bold"
@@ -133,7 +134,7 @@
 
 
             <com.omega_r.libs.omegarecyclerview.OmegaRecyclerView
-                android:id="@+id/recycler_view_subject"
+                android:id="@+id/recycler_view_teacher"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="12dp"
@@ -141,12 +142,12 @@
                 android:divider="@color/secondary_blue"
                 android:orientation="vertical"
                 app:dividerHeight="2dp"
-                tools:listitem="@layout/subject_item"
+                tools:listitem="@layout/teacher_item"
                 app:itemSpace="4dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
         </LinearLayout>
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/btn_add_subject"
+            android:id="@+id/btn_add_teacher"
             android:layout_margin="24dp"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"

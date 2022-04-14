@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+    <data>
+
+    </data>
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp"
+        >
+
+        <TextView
+            android:id="@+id/dialog_title_add_teacher"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:textColor="@color/color_secondary_blue_variant_darker"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Thêm giáo vien"
+            android:layout_marginTop="18dp"
+            android:layout_marginBottom="18dp"
+            >
+
+        </TextView>
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <RelativeLayout
+
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/imageview_teacher_dialog"
+                android:layout_width="200dp"
+                android:layout_height="150dp"
+                android:layout_centerHorizontal="true"
+                android:background="@color/blue_200"
+                android:scaleType="centerCrop"
+                android:src="@drawable/back_to_school">
+
+            </ImageView>
+
+            <!--            <RelativeLayout-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="100dp"-->
+            <!--                android:layout_centerInParent="true">-->
+
+            <!--                <androidx.cardview.widget.CardView-->
+            <!--                    android:layout_width="wrap_content"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:layout_alignParentBottom="true"-->
+            <!--                    android:layout_marginStart="80dp"-->
+            <!--                    app:cardCornerRadius="20dp">-->
+
+            <!--                    <ImageView-->
+            <!--                        android:layout_width="70dp"-->
+            <!--                        android:layout_height="40dp"-->
+            <!--                        android:layout_centerHorizontal="true"-->
+            <!--                        android:layout_centerVertical="true"-->
+            <!--                        android:background="@color/primary_color"-->
+            <!--                        android:paddingStart="10dp"-->
+            <!--                        android:paddingEnd="10dp"-->
+            <!--                        android:src="@drawable/ic_camera_alt_black_24dp">-->
+
+            <!--                    </ImageView>-->
+            <!--                </androidx.cardview.widget.CardView>-->
+            <!--            </RelativeLayout>-->
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/imageview_teacher_dialog"
+                android:layout_alignStart="@id/imageview_teacher_dialog"
+                android:layout_alignEnd="@+id/imageview_teacher_dialog">
+
+                <ImageView
+                    android:id="@+id/btn_choose_image_teacher"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_camera_alt_black_24dp">
+
+                </ImageView>
+            </androidx.cardview.widget.CardView>
+
+        </RelativeLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:enabled="false"
+            android:id="@+id/text_input_teacher_id"
+            android:layout_width="match_parent"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_marginTop="10dp"
+            android:hint="Mã giáo viên"
+            app:boxStrokeWidth="1dp"
+            app:hintEnabled="true"
+            app:startIconCheckable="true"
+            android:layout_height="wrap_content">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_text_teacher_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number">
+
+            </com.google.android.material.textfield.TextInputEditText>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/text_input_teacher_name"
+            android:layout_width="match_parent"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_marginTop="10dp"
+            android:hint="Tên giáo viên"
+            app:boxStrokeWidth="1dp"
+            app:hintEnabled="true"
+            app:startIconCheckable="true"
+            android:layout_height="wrap_content">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_text_teacher_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress">
+
+            </com.google.android.material.textfield.TextInputEditText>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/text_input_teacher_phone"
+            android:layout_width="match_parent"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_marginTop="10dp"
+            android:hint="Số điện thoại"
+            app:boxStrokeWidth="1dp"
+            app:hintEnabled="true"
+            app:startIconCheckable="true"
+            android:layout_height="wrap_content">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_text_teacher_phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number">
+
+            </com.google.android.material.textfield.TextInputEditText>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:enabled="false"
+            android:id="@+id/text_input_teacher_account"
+            android:layout_width="match_parent"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_marginTop="10dp"
+            android:hint="Account"
+            app:boxStrokeWidth="1dp"
+            app:hintEnabled="true"
+            app:startIconCheckable="true"
+            android:layout_height="wrap_content">
+            <com.google.android.material.textfield.TextInputEditText
+               android:enabled="false"
+                android:id="@+id/edit_text_teacher_account"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number">
+
+            </com.google.android.material.textfield.TextInputEditText>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <LinearLayout
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/btn_cancel_add_teacher"
+                android:text="HỦY"
+                android:layout_weight="1"
+                android:layout_marginRight="16dp"
+                android:textStyle="bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </Button>
+
+            <Button
+                android:textStyle="bold"
+                android:layout_marginLeft="16dp"
+                android:id="@+id/btn_confirm_add_teacher"
+                android:text="THÊM"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </Button>
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>
+
+    </LinearLayout>
+</layout>

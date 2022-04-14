@@ -77,6 +77,10 @@ public class HomeFragment extends Fragment {
         binding.cardViewQuery.setOnClickListener(v -> {
             Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_fragmentReportScreen);
         });
+
+        binding.cardViewTeacher.setOnClickListener(v -> {
+            Navigation.findNavController(v).navigate(R.id.action_homeFragment_to_teacherScreenFragment);
+        });
     }
 
 

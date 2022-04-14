@@ -261,6 +261,48 @@
                                 android:src="@drawable/icon_statistics" />
 
                         </com.google.android.material.card.MaterialCardView>
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_marginTop="24dp"
+                            android:id="@+id/card_view_teacher"
+                            android:layout_width="match_parent"
+                            android:layout_height="216dp"
+                            android:layout_marginEnd="12dp"
+                            android:backgroundTint="@color/secondary_blue"
+                            app:cardCornerRadius="16dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="16dp"
+                                android:layout_marginTop="24dp"
+                                android:layout_marginEnd="16dp"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Giáo viên"
+                                    android:textColor="@color/white"
+                                    android:textSize="24sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/txt_number_of_teacher"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="20 giáo viên"
+                                    android:textColor="@color/white"
+                                    android:textSize="16sp" />
+
+                            </LinearLayout>
+
+                            <ImageView
+                                android:layout_width="match_parent"
+                                android:layout_height="132dp"
+                                android:layout_gravity="bottom|center"
+                                android:src="@drawable/icon_grade_class" />
+
+                        </com.google.android.material.card.MaterialCardView>
 
                     </LinearLayout>
 
@@ -375,7 +417,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:orientation="vertical">
+                        android:orientation="horizontal">
 
                         <com.google.android.material.card.MaterialCardView
                             android:id="@+id/card_view_query"

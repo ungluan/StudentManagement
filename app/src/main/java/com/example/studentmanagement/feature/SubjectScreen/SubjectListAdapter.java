@@ -115,9 +115,9 @@ public class SubjectListAdapter extends ListAdapter<Subject, SubjectListAdapter.
                 binding.imageviewSubjectDialog.setImageResource(R.drawable.art_class2);
             }else {
                 try {
-//                    binding.imageviewSubjectDialog.setImageBitmap(MediaStore.Images.Media.getBitmap(
-//                            context.getContentResolver(), Uri.parse(subject.getImage())));
-                    Picasso.get().load(subject.getImage()).into(binding.imageviewSubjectDialog);
+                    binding.imageviewSubjectDialog.setImageBitmap(MediaStore.Images.Media.getBitmap(
+                            context.getContentResolver(), Uri.parse(subject.getImage())));
+//                    Picasso.get().load(subject.getImage()).into(binding.imageviewSubjectDialog);
                 } catch (Exception e) {
                 }
             }
@@ -153,9 +153,10 @@ public class SubjectListAdapter extends ListAdapter<Subject, SubjectListAdapter.
                 subject.setSubjectName(name);
                 subject.setCoefficient(factor);
                 subject.setImage(AppUtils.getImageString(CODE));
-
+                AppUtils.deleteCode(CODE);
                 boolean success = subjectViewModel.updateSubject(subject);
                 if (success) {
+
                     AppUtils.showSuccessDialog(context
                             , "Update subject successfully!");
 

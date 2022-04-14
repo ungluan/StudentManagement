@@ -43,6 +43,9 @@
         <action
             android:id="@+id/action_homeFragment_to_fragmentReportScreen"
             app:destination="@id/fragmentReportScreen" />
+        <action
+            android:id="@+id/action_homeFragment_to_teacherScreenFragment"
+            app:destination="@id/teacherScreenFragment" />
 
     </fragment>
     <fragment
@@ -107,6 +110,14 @@
         <action
             android:id="@+id/action_fragmentRankStudentScreen_to_fragmentReportScreen"
             app:destination="@id/fragmentReportScreen" />
+    </fragment>
+    <fragment
+        android:id="@+id/teacherScreenFragment"
+        android:name="com.example.studentmanagement.feature.teacher.TeacherScreenFragment"
+        android:label="TeacherScreenFragment" >
+        <action
+            android:id="@+id/action_teacherScreenFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
     </fragment>
 
 </navigation>
