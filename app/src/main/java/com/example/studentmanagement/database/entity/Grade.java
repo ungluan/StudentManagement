@@ -1,10 +1,8 @@
 package com.example.studentmanagement.database.entity;
 
-import androidx.annotation.NonNull;
+import android.net.Uri;
+
 import androidx.annotation.Nullable;
-import androidx.room.ColumnInfo;
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
 
 //@Entity(tableName = "LOP")
 public class Grade {

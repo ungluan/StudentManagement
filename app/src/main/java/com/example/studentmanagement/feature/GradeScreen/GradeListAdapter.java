@@ -3,14 +3,20 @@ package com.example.studentmanagement.feature.GradeScreen;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ArrayAdapter;
+import android.widget.Filter;
+import android.widget.Filterable;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
@@ -23,43 +29,81 @@ import com.example.studentmanagement.databinding.DialogDelGradeBinding;
 
 import com.example.studentmanagement.utils.AppUtils;
 import com.omega_r.libs.omegarecyclerview.swipe_menu.SwipeViewHolder;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 
-public class GradeListAdapter extends ListAdapter<Grade, GradeListAdapter.GradeViewHolder> {
+public class GradeListAdapter extends ListAdapter<Grade, GradeListAdapter.GradeViewHolder> implements Filterable {
     private final GradeViewModel gradeViewModel;
-
-    public GradeListAdapter(GradeViewModel gradeViewModel, @NonNull DiffUtil.ItemCallback<Grade> diffCallback) {
-        super(diffCallback);
-        this.gradeViewModel = gradeViewModel;
+    private final ActivityResultLauncher<Intent> activityGalleryImageLauncher;
+    private int positionImageOnClicked = -1;
+    private final List<Grade> gradeList = new ArrayList<>();
+    public int getPositionImageOnClicked(){
+        return positionImageOnClicked;
     }
 
-    @NonNull
-    @Override
-    public List<Grade> getCurrentList() {
-        return super.getCurrentList();
+    public GradeListAdapter(
+            GradeViewModel gradeViewModel,
+            ActivityResultLauncher<Intent> activityGalleryImageLauncher
+            ,@NonNull DiffUtil.ItemCallback<Grade> diffCallback) {
+        super(diffCallback);
+        this.gradeViewModel = gradeViewModel;
+        this.activityGalleryImageLauncher = activityGalleryImageLauncher;
     }
 
     @NonNull
     @Override
     public GradeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        if(gradeList.size()==0) gradeList.addAll(getCurrentList());
         return new GradeViewHolder(
                 parent,
                 gradeViewModel,
                 this
         );
     }
-//
-//    public void notiDatasetChange(){
-//        this.notifyItemChanged();
-//    }
 
     @Override
     public void onBindViewHolder(@NonNull GradeViewHolder holder, int position) {
         holder.bind(getItem(position));
+        holder.gradeImage.setOnClickListener(v ->{
+            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+            intent.setType("image/*");
+            activityGalleryImageLauncher.launch(intent);
+            positionImageOnClicked = holder.getAdapterPosition();
+        });
+
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                String strSearch = constraint.toString();
+                List<Grade> list = gradeList;
+                if(!strSearch.isEmpty()){
+                    List<Grade> grades = new ArrayList<>();
+                    for(Grade grade : list){
+                        if(grade.getGradeId().toLowerCase().contains(strSearch.toLowerCase())){
+                            grades.add(grade);
+                        }
+                    }
+                    list = grades;
+                }
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = list;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                submitList((List<Grade>) results.values);
+                notifyDataSetChanged();
+            }
+        };
     }
 
     static class GradeViewHolder extends SwipeViewHolder implements View.OnClickListener {
@@ -70,8 +114,10 @@ public class GradeListAdapter extends ListAdapter<Grade, GradeListAdapter.GradeV
         private final TextView txtDel;
         private final TextView txtGradeName;
         private final TextView txtTeacherInfo;
+        private final ImageView gradeImage;
         private Teacher teacher;
         private final List<String> teacherItems = new ArrayList();
+        private Grade grade;
 
         public GradeViewHolder(
                 ViewGroup parent,
@@ -83,6 +129,7 @@ public class GradeListAdapter extends ListAdapter<Grade, GradeListAdapter.GradeV
             this.gradeListAdapter = gradeListAdapter;
             txtGradeName = findViewById(R.id.txt_grade_name);
             txtTeacherInfo = findViewById(R.id.txt_teacher_info);
+            gradeImage = findViewById(R.id.grade_image);
             txtEdit = findViewById(R.id.txtEdit);
             txtDel = findViewById(R.id.txtDel);
             txtEdit.setOnClickListener(this);
@@ -91,10 +138,14 @@ public class GradeListAdapter extends ListAdapter<Grade, GradeListAdapter.GradeV
 
         @SuppressLint("SetTextI18n")
         public void bind(Grade grade) {
+            this.grade = grade;
             teacher = gradeViewModel.getTeacherById(grade.getTeacherId());
             txtGradeName.setText(getString(R.string.name_of_the_grade, grade.getGradeId()));
             txtTeacherInfo.setText(getString(R.string.teacher_of_the_grade,teacher.getTeacherName()));
+            Picasso.get().load(Uri.parse(grade.getImage()))
+                    .placeholder(R.drawable.no_image).into(gradeImage);
         }
+
 
         public void showToast(String message) {
             Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
@@ -134,10 +185,10 @@ public class GradeListAdapter extends ListAdapter<Grade, GradeListAdapter.GradeV
             int teacherId = AppUtils.getTeacherIdFromDropDown(binding.editTextTeacherId.getText().toString());
 
                 // Chưa cập nhật Image
-                Grade grade = new Grade(gradeId, teacherId,"");
-                if (gradeViewModel.updateGrade(grade)) {
+                Grade gradeEdit = new Grade(gradeId, teacherId, grade.getImage());
+                if (gradeViewModel.updateGrade(gradeEdit)) {
                     showToast("Cập nhật lớp thành công!");
-                    gradeListAdapter.submitList(updateGradeInList(grade));
+                    gradeListAdapter.submitList(updateGradeInList(gradeEdit));
                     gradeListAdapter.notifyItemChanged(getAdapterPosition());
                     dialog.dismiss();
                 } else {
@@ -149,7 +200,6 @@ public class GradeListAdapter extends ListAdapter<Grade, GradeListAdapter.GradeV
         }
 
         private List<Grade> updateGradeInList(Grade grade) {
-
             List<Grade> grades = new ArrayList(gradeListAdapter.getCurrentList());
             System.out.println(grades);
             grades.get(getAdapterPosition()).setTeacherId(grade.getTeacherId());
@@ -190,10 +240,11 @@ public class GradeListAdapter extends ListAdapter<Grade, GradeListAdapter.GradeV
                 Grade grade = new Grade(gradeId, teacher.getId(), "");
                 // Kiem tra co hs trong lop khong
                 if (gradeViewModel.deleteGrade(grade.getGradeId())) {
-                    showToast("Xóa lớp thành công!");
                     List<Grade> grades = new ArrayList<Grade>(gradeListAdapter.getCurrentList());
                     grades.remove(grade);
                     gradeListAdapter.submitList(grades);
+                    gradeListAdapter.notifyItemRemoved(getAdapterPosition());
+                    showToast("Xóa lớp thành công!");
                     dialog.dismiss();
                 } else {
                     AppUtils.showNotificationDialog(

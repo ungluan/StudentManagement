@@ -26,27 +26,12 @@
             android:textSize="24sp"
             android:textStyle="bold" />
 
-<!--
-        <FrameLayout
-            android:id="@+id/avatar_grade"
+        <ImageView
+            android:id="@+id/image_garde"
             android:layout_gravity="center"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="16dp">
-
-            <ImageView
-                android:id="@+id/image_garde"
-                android:gravity="center"
-                android:layout_width="112dp"
-                android:layout_height="112dp"
-                android:background="@drawable/ic_baseline_person_24" />
-
-            <ImageView
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:background="@drawable/ic_photo_camera" />
-        </FrameLayout>
--->
+            android:layout_width="112dp"
+            android:layout_height="112dp"
+            android:layout_marginBottom="16dp"/>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/text_input_layout_grade_name"

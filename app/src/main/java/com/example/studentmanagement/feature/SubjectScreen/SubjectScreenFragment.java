@@ -1,19 +1,13 @@
 package com.example.studentmanagement.feature.SubjectScreen;
 
-import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.net.ParseException;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
