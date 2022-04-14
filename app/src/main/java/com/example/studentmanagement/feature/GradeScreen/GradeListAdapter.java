@@ -44,6 +44,7 @@ public class GradeListAdapter extends ListAdapter<Grade, GradeListAdapter.GradeV
     public int getPositionImageOnClicked(){
         return positionImageOnClicked;
     }
+
     public GradeListAdapter(
             GradeViewModel gradeViewModel,
             ActivityResultLauncher<Intent> activityGalleryImageLauncher
@@ -74,7 +75,6 @@ public class GradeListAdapter extends ListAdapter<Grade, GradeListAdapter.GradeV
             positionImageOnClicked = holder.getAdapterPosition();
         });
 
-        Picasso.get().load(Uri.parse(getItem(position).getImage())).into(holder.gradeImage);
     }
 
     @Override
@@ -84,10 +84,7 @@ public class GradeListAdapter extends ListAdapter<Grade, GradeListAdapter.GradeV
             protected FilterResults performFiltering(CharSequence constraint) {
                 String strSearch = constraint.toString();
                 List<Grade> list = gradeList;
-                if(strSearch.isEmpty()){
-//                    submitList(oldList);
-//                    list = gradeList;
-                }else{
+                if(!strSearch.isEmpty()){
                     List<Grade> grades = new ArrayList<>();
                     for(Grade grade : list){
                         if(grade.getGradeId().toLowerCase().contains(strSearch.toLowerCase())){
@@ -120,6 +117,7 @@ public class GradeListAdapter extends ListAdapter<Grade, GradeListAdapter.GradeV
         private final ImageView gradeImage;
         private Teacher teacher;
         private final List<String> teacherItems = new ArrayList();
+        private Grade grade;
 
         public GradeViewHolder(
                 ViewGroup parent,
@@ -140,29 +138,13 @@ public class GradeListAdapter extends ListAdapter<Grade, GradeListAdapter.GradeV
 
         @SuppressLint("SetTextI18n")
         public void bind(Grade grade) {
+            this.grade = grade;
             teacher = gradeViewModel.getTeacherById(grade.getTeacherId());
             txtGradeName.setText(getString(R.string.name_of_the_grade, grade.getGradeId()));
             txtTeacherInfo.setText(getString(R.string.teacher_of_the_grade,teacher.getTeacherName()));
-//            Uri selectedImageURI = Uri.parse("content://com.android.providers.media.documents/document/image%3A77467");
-//            File imageFile = new File(getRealPathFromURI(selectedImageURI));
-//            gradeImage.setImageURI(Uri.parse(""));
-//            Uri uri = MediaStore.Images.Media.getContentUri(grade.getImage());
-//            Picasso.get().load(grade.getImage()).into(gradeImage);
-
+            Picasso.get().load(Uri.parse(grade.getImage()))
+                    .placeholder(R.drawable.place_holder).into(gradeImage);
         }
-//        private String getRealPathFromURI(Uri contentURI) {
-//            String result;
-//            Cursor cursor = getContext().getContentResolver().query(contentURI, null, null, null, null);
-//            if (cursor == null) { // Source is Dropbox or other similar local file path
-//                result = contentURI.getPath();
-//            } else {
-//                cursor.moveToFirst();
-//                int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
-//                result = cursor.getString(idx);
-//                cursor.close();
-//            }
-//            return result;
-//        }
 
 
         public void showToast(String message) {
@@ -203,10 +185,10 @@ public class GradeListAdapter extends ListAdapter<Grade, GradeListAdapter.GradeV
             int teacherId = AppUtils.getTeacherIdFromDropDown(binding.editTextTeacherId.getText().toString());
 
                 // Chưa cập nhật Image
-                Grade grade = new Grade(gradeId, teacherId,"");
-                if (gradeViewModel.updateGrade(grade)) {
+                Grade gradeEdit = new Grade(gradeId, teacherId, grade.getImage());
+                if (gradeViewModel.updateGrade(gradeEdit)) {
                     showToast("Cập nhật lớp thành công!");
-                    gradeListAdapter.submitList(updateGradeInList(grade));
+                    gradeListAdapter.submitList(updateGradeInList(gradeEdit));
                     gradeListAdapter.notifyItemChanged(getAdapterPosition());
                     dialog.dismiss();
                 } else {
@@ -218,7 +200,6 @@ public class GradeListAdapter extends ListAdapter<Grade, GradeListAdapter.GradeV
         }
 
         private List<Grade> updateGradeInList(Grade grade) {
-
             List<Grade> grades = new ArrayList(gradeListAdapter.getCurrentList());
             System.out.println(grades);
             grades.get(getAdapterPosition()).setTeacherId(grade.getTeacherId());
@@ -259,10 +240,11 @@ public class GradeListAdapter extends ListAdapter<Grade, GradeListAdapter.GradeV
                 Grade grade = new Grade(gradeId, teacher.getId(), "");
                 // Kiem tra co hs trong lop khong
                 if (gradeViewModel.deleteGrade(grade.getGradeId())) {
-                    showToast("Xóa lớp thành công!");
                     List<Grade> grades = new ArrayList<Grade>(gradeListAdapter.getCurrentList());
                     grades.remove(grade);
                     gradeListAdapter.submitList(grades);
+                    gradeListAdapter.notifyItemRemoved(getAdapterPosition());
+                    showToast("Xóa lớp thành công!");
                     dialog.dismiss();
                 } else {
                     AppUtils.showNotificationDialog(

@@ -124,7 +124,6 @@ public class GradeScreenFragment extends Fragment {
             // This Callback will execute when it is received data return.
             (ActivityResultCallback<ActivityResult>) result -> {
                 if (result.getResultCode() == Activity.RESULT_OK) {
-
                     Intent intent = result.getData();
                     Uri uri = intent.getData();
                     Bitmap bitmap = AppUtils.uriToBitmap(getContext(),uri);
@@ -139,8 +138,6 @@ public class GradeScreenFragment extends Fragment {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-
-
                 }
             });
 //    public boolean saveImageToExternalStorage(String image, Bitmap bitmap){
@@ -169,17 +166,19 @@ public class GradeScreenFragment extends Fragment {
                 LayoutInflater.from(context)
         );
         dialog.setContentView(binding.getRoot());
+        dialog.getWindow().setBackgroundDrawableResource(R.drawable.bg_white_color);
 
+        // SetUp TeacherList
         List<String> teacherList = gradeViewModel.getTeacherHaveNotGrade().stream()
                 .map(item -> item.getId() +" - "+item.getTeacherName())
                 .collect(Collectors.toList());
         teacherItems.clear();
         teacherItems.addAll(teacherList);
-
         editTextTeacherId = binding.editTextTeacherId;
         initialDropdown();
+
+
         binding.btnCancel.setOnClickListener(v -> dialog.dismiss());
-        dialog.getWindow().setBackgroundDrawableResource(R.drawable.bg_white_color);
 
         if(teacherItems.size()>0){
             binding.btnAdd.setOnClickListener(v -> {
