@@ -143,7 +143,7 @@ public class GradeListAdapter extends ListAdapter<Grade, GradeListAdapter.GradeV
             txtGradeName.setText(getString(R.string.name_of_the_grade, grade.getGradeId()));
             txtTeacherInfo.setText(getString(R.string.teacher_of_the_grade,teacher.getTeacherName()));
             Picasso.get().load(Uri.parse(grade.getImage()))
-                    .placeholder(R.drawable.place_holder).into(gradeImage);
+                    .placeholder(R.drawable.no_image).into(gradeImage);
         }
 
 
