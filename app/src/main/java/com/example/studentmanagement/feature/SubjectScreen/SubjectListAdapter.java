@@ -21,6 +21,7 @@ import com.example.studentmanagement.database.entity.Subject;
 import com.example.studentmanagement.databinding.DialogAddSubjectBinding;
 import com.example.studentmanagement.utils.AppUtils;
 import com.omega_r.libs.omegarecyclerview.swipe_menu.SwipeViewHolder;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -114,9 +115,9 @@ public class SubjectListAdapter extends ListAdapter<Subject, SubjectListAdapter.
                 binding.imageviewSubjectDialog.setImageResource(R.drawable.art_class2);
             }else {
                 try {
-                    binding.imageviewSubjectDialog.setImageBitmap(MediaStore.Images.Media.getBitmap(
-                            context.getContentResolver(), Uri.parse(subject.getImage())));
-
+//                    binding.imageviewSubjectDialog.setImageBitmap(MediaStore.Images.Media.getBitmap(
+//                            context.getContentResolver(), Uri.parse(subject.getImage())));
+                    Picasso.get().load(subject.getImage()).into(binding.imageviewSubjectDialog);
                 } catch (Exception e) {
                 }
             }

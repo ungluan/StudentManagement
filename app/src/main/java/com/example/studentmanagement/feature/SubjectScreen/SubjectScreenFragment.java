@@ -1,19 +1,13 @@
 package com.example.studentmanagement.feature.SubjectScreen;
 
-import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.net.ParseException;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -31,16 +25,8 @@ import com.example.studentmanagement.databinding.DialogAddSubjectBinding;
 import com.example.studentmanagement.databinding.FragmentSubjectScreenBinding;
 import com.example.studentmanagement.utils.AppUtils;
 import com.example.studentmanagement.utils.ItemMargin;
-import com.gun0912.tedpermission.PermissionListener;
-import com.gun0912.tedpermission.TedPermissionUtil;
-import com.gun0912.tedpermission.normal.TedPermission;
 import com.omega_r.libs.omegarecyclerview.OmegaRecyclerView;
 
-import java.io.IOException;
-import java.util.List;
-
-import gun0912.tedbottompicker.TedBottomPicker;
-import gun0912.tedbottompicker.TedBottomSheetDialogFragment;
 
 public class SubjectScreenFragment extends Fragment {
     private FragmentSubjectScreenBinding binding;

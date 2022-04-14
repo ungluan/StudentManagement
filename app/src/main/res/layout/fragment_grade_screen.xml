@@ -59,11 +59,24 @@
                 android:layout_height="1dp"
                 android:layout_gravity="top"
                 android:elevation="12dp"
-                android:outlineSpotShadowColor="@color/color_secondary_blue_variant_lighter"
+                android:outlineSpotShadowColor=
+                    "@color/color_secondary_blue_variant_lighter"
                 android:layout_marginBottom="16dp"
-                android:background="@drawable/custom_divier"/>
+                android:background="@drawable/custom_divier" />
 
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/search_grade"
+                android:background="@drawable/shape_bg_search"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                app:iconifiedByDefault="false"
+                app:queryBackground="@null" />
 
+<!--
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="192dp"
@@ -74,7 +87,9 @@
                 app:strokeColor="@color/secondary_orange"
                 app:strokeWidth="1dp">
 
+
                 <ImageView
+                    android:id="@+id/image_grade"
                     android:src="@drawable/ic_students_learning"
                     android:scaleType="fitXY"
                     android:layout_width="match_parent"
@@ -82,19 +97,20 @@
                     android:padding="8dp"/>
 
             </com.google.android.material.card.MaterialCardView>
+-->
 
 
             <com.omega_r.libs.omegarecyclerview.OmegaRecyclerView
                 android:id="@+id/recycler_view_grade"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="12dp"
-                android:layout_marginRight="12dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
                 android:divider="@color/secondary_blue"
                 android:orientation="vertical"
                 app:dividerHeight="2dp"
                 tools:listitem="@layout/grade_item"
-                app:itemSpace="4dp"
+                app:itemSpace="16dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
         </LinearLayout>
