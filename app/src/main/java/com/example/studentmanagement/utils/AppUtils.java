@@ -3,18 +3,26 @@ package com.example.studentmanagement.utils;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
+import android.os.ParcelFileDescriptor;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.Filterable;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.example.studentmanagement.R;
@@ -22,8 +30,16 @@ import com.example.studentmanagement.databinding.DialogDeleteBinding;
 
 import org.w3c.dom.Document;
 
+import java.io.File;
+import java.io.FileDescriptor;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Objects;
+import java.util.Random;
 import java.util.concurrent.Callable;
 
 public class AppUtils {
@@ -208,6 +224,44 @@ public class AppUtils {
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putBoolean("Authenticated",value);
         editor.apply();
+    }
+
+    public static String saveImage(Context context, Bitmap bitmap) throws IOException {
+        OutputStream fos;
+        String name = String.valueOf(System.currentTimeMillis());
+        String imaUri = "";
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            ContentResolver resolver = context.getContentResolver();
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, name + ".jpg");
+            contentValues.put(MediaStore.MediaColumns.MIME_TYPE, "image/jpg");
+            contentValues.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_PICTURES);
+            Uri imageUri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
+            imaUri = imageUri.toString();
+            fos = resolver.openOutputStream(Objects.requireNonNull(imageUri));
+        } else {
+            String imagesDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).toString();
+            File image = new File(imagesDir, name + ".jpg");
+            imaUri = image.getAbsolutePath();
+            fos = new FileOutputStream(image);
+        }
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+        Objects.requireNonNull(fos).close();
+        return imaUri;
+    }
+
+    public static Bitmap uriToBitmap(Context context ,Uri selectedFileUri) {
+        try {
+            ParcelFileDescriptor parcelFileDescriptor =
+                    context.getContentResolver().openFileDescriptor(selectedFileUri, "r");
+            FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
+            Bitmap image = BitmapFactory.decodeFileDescriptor(fileDescriptor);
+            parcelFileDescriptor.close();
+            return image;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public static int getTeacherIdFromDropDown(String value){

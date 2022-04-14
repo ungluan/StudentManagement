@@ -1,12 +1,13 @@
 package com.example.studentmanagement.feature.GradeScreen;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.SearchManager;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
@@ -20,12 +21,15 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,6 +46,7 @@ import com.example.studentmanagement.utils.AppUtils;
 import com.example.studentmanagement.utils.ItemMargin;
 import com.omega_r.libs.omegarecyclerview.OmegaRecyclerView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -119,10 +124,23 @@ public class GradeScreenFragment extends Fragment {
             // This Callback will execute when it is received data return.
             (ActivityResultCallback<ActivityResult>) result -> {
                 if (result.getResultCode() == Activity.RESULT_OK) {
-                    Intent data = result.getData();
-                    Uri uri = data.getData();
-                    System.out.println("'"+uri+"'");
-                    binding.imageGrade.setImageURI(uri);
+
+                    Intent intent = result.getData();
+                    Uri uri = intent.getData();
+                    Bitmap bitmap = AppUtils.uriToBitmap(getContext(),uri);
+                    try {
+                        String imageUri = AppUtils.saveImage(requireContext(),bitmap);
+                        Grade grade = adapter.getCurrentList()
+                                .get(adapter.getPositionImageOnClicked());
+                        grade.setImage(imageUri);
+                        gradeViewModel.updateGrade(grade);
+                        adapter.notifyItemChanged(adapter.getPositionImageOnClicked());
+                        showToast("Update Image Successful");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+
                 }
             });
 //    public boolean saveImageToExternalStorage(String image, Bitmap bitmap){
@@ -130,7 +148,22 @@ public class GradeScreenFragment extends Fragment {
 //        ContentResolver resolver = getContext().getContentResolver();
 //
 //    }
-
+    public void requestPermission(){
+        boolean minSDK = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q;
+        boolean isReadExternalGranted = ContextCompat.checkSelfPermission(
+                requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_GRANTED;
+        boolean isWriteExternalGranted = ContextCompat.checkSelfPermission(
+                    requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_GRANTED;
+        List<String> permissionRequest = new ArrayList<>();
+        if(!isReadExternalGranted) permissionRequest.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+        if(!isWriteExternalGranted) permissionRequest.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        ActivityCompat.requestPermissions(requireActivity(),
+                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                2);
+    }
     public class CustomActivityResultContacts extends ActivityResultContract<Integer,Intent>{
 
         @NonNull

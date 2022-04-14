@@ -26,6 +26,13 @@
             android:textSize="24sp"
             android:textStyle="bold" />
 
+        <ImageView
+            android:id="@+id/image_garde"
+            android:layout_gravity="center"
+            android:layout_width="112dp"
+            android:layout_height="112dp"
+            android:layout_marginBottom="16dp"/>
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/text_input_layout_grade_name"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
