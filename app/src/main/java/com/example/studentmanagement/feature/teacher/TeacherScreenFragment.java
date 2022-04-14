@@ -28,6 +28,8 @@ import com.example.studentmanagement.utils.AppUtils;
 import com.example.studentmanagement.utils.ItemMargin;
 import com.omega_r.libs.omegarecyclerview.OmegaRecyclerView;
 
+import java.util.regex.Pattern;
+
 
 public class TeacherScreenFragment extends Fragment {
     private FragmentTeacherScreenBinding binding;
@@ -150,13 +152,22 @@ public class TeacherScreenFragment extends Fragment {
             if(name.equals("")){
                 binding.textInputTeacherName.setError("Teacher name cannot be blank");
                 return;
-            }binding.textInputTeacherName.setErrorEnabled(false);
+            }else binding.textInputTeacherName.setErrorEnabled(false);
 
             String phone = binding.editTextTeacherPhone.getText().toString();
-            if(name.equals("")){
-                binding.textInputTeacherName.setError("Teacher phone cannot be blank");
+            if(phone.equals("")){
+                binding.textInputTeacherPhone.setError("Teacher phone cannot be blank");
                 return;
-            }binding.textInputTeacherName.setErrorEnabled(false);
+            }else{
+
+                if(!phone.matches("0[0-9]{9}")){
+                    binding.textInputTeacherPhone.setError("Teacher phone dont match format");
+                    return;
+                }
+
+                binding.textInputTeacherPhone.setErrorEnabled(false);
+            }
+
 
 
 
