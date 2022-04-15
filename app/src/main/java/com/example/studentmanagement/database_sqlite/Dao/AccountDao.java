@@ -70,6 +70,29 @@ public class AccountDao {
         return account;
     }
 
+    public int checkExistedPhone(String phone){
+        int accountId = -2;
+        String query = "SELECT " + DataBaseHelper.COLUMN_MA_TAI_KHOAN +" FROM "
+            + DataBaseHelper.TABLE_GVCN + " WHERE "+
+            DataBaseHelper.COLUMN_SO_DIEN_THOAI + " = '" +phone+"'";
+        Cursor cursor = dataBaseHelper.query(query,null);
+        if(cursor.moveToFirst()){
+            accountId = cursor.getInt(0);
+        }
+        return accountId;
+    }
+    public boolean checkExistedEmail(String email){
+        int accountId = -1;
+        String query = "SELECT " + DataBaseHelper.COLUMN_MA_TAI_KHOAN +" FROM "
+                + DataBaseHelper.TABLE_TAI_KHOAN + " WHERE "+
+                DataBaseHelper.COLUMN_EMAIL + " = '" +email+"'";
+        Cursor cursor = dataBaseHelper.query(query,null);
+        if(cursor.moveToFirst()){
+            accountId = cursor.getInt(0);
+        }
+        return accountId != -1 ;
+    }
+
     public ContentValues values(Account account, boolean noId) {
         ContentValues values = new ContentValues();
         if(!noId) values.put(DataBaseHelper.COLUMN_MA_TAI_KHOAN, account.getId());

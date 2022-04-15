@@ -117,6 +117,10 @@ public class LoginFragment extends Fragment {
         binding.btnLogin.setOnClickListener(v -> {
             Navigation.findNavController(v).navigate(R.id.action_loginFragment_to_homeFragment);
         });
+        binding.txtRegister.setOnClickListener(v -> {
+            NavDirections action = LoginFragmentDirections.actionLoginFragmentToRegisterFragment();
+            Navigation.findNavController(v).navigate(action);
+        });
     }
 
 }

@@ -11,8 +11,8 @@
     <string name="name_of_the_subject">Tên: %s</string>
     <string name="coefficient_of_the_subject">Hệ số: %d</string>
     <string name="login">Login</string>
-    <string name="forgot_password">Forgot password?</string>
-    <string name="password">Password</string>
+    <string name="forgot_password">Quên mật khẩu?</string>
+    <string name="password">Mật khẩu</string>
     <string name="email_address">Email Address</string>
 
 <!--Teacher-->
@@ -23,5 +23,7 @@
 
 
     <string name="id_teacher">Id: %d</string>
+    <string name="register">Đăng ký</string>
+    <string name="otp_string_01">Mã OTP đã được gửi về số điện thoại:</string>
 
 </resources>

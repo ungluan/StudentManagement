@@ -196,21 +196,41 @@ public class MarkScreenFragment extends Fragment {
                         "STUDENT INFORMATION",
                         Element.ALIGN_CENTER,
                         pdf.bfBold12);
+
+//                pdf.addNewItem(document,"ID:" + student.getId()+
+//                                "GENDER:" + (student.getGender()),
+//                        Element.ALIGN_LEFT,
+//                        pdf.bf12);
+
                 pdf.addNewItem(document,
-                        String.format("%10s %-50s %-50s", "",
+                        String.format("%10s %-50s %-30s", "",
                                 "ID:" + student.getId(),
                                 "GENDER:" + (student.getGender())),
                         Element.ALIGN_LEFT,
                         pdf.bf12);
 
                 pdf.addNewItem(document,
-                        String.format("%10s %-37s %-50s", "",
+                        String.format("%10s %-37s %-30s", "",
                                 "NAME:" + student.getFirstName() + " " + student.getLastName(),
                                 "BIRTHDAY:" + student.getBirthday()),
                         Element.ALIGN_LEFT,
                         pdf.bf12);
                 // list mark of student
+
+                pdf.addNewItem(document,
+                        "TABLE SUBJECT MARK",
+                        Element.ALIGN_CENTER,
+                        pdf.bfBold12);
+                pdf.addNewItem(document,
+                        "                ",
+                        Element.ALIGN_CENTER,
+                        pdf.bfBold12);
                 createTable(pdf, document, student);
+
+                pdf.addNewItem(document,
+                        "-------------------------------------------------------------",
+                        Element.ALIGN_CENTER,
+                        pdf.bfBold12);
             }
 
             //print
