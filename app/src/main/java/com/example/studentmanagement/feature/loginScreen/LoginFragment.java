@@ -2,7 +2,7 @@ package com.example.studentmanagement.feature.loginScreen;
 
 import static com.example.studentmanagement.utils.AppUtils.isValidEmail;
 import static com.example.studentmanagement.utils.AppUtils.showNotificationDialog;
-import static com.example.studentmanagement.utils.AppUtils.updateAuthentication;
+import static com.example.studentmanagement.utils.AppUtils.updateTeacherId;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -24,6 +24,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.studentmanagement.databinding.FragmentLoginBinding;
+import com.example.studentmanagement.utils.AppUtils;
 
 public class LoginFragment extends Fragment {
     private FragmentLoginBinding binding ;
@@ -31,8 +32,7 @@ public class LoginFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
-        if(sharedPref.getBoolean("Authenticated", false)){
+        if(AppUtils.getTeacherId(requireActivity()) != -1){
             navigateToHomePage();
         }
     }
@@ -64,7 +64,7 @@ public class LoginFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if(!isValidEmail(s)) binding.textInputLayoutEmail.setError("Email không hợp lệ.");
-                else binding.textInputLayoutEmail.setError(null);
+                else binding.textInputLayoutEmail.setErrorEnabled(false);
             }
 
             @Override
@@ -81,7 +81,7 @@ public class LoginFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if(s.length()<6) binding.textInputLayoutPassword.setError("Mật khẩu phải có ít nhất 6 ký tự");
-                else binding.textInputLayoutPassword.setError(null);
+                else binding.textInputLayoutPassword.setErrorEnabled(false);
             }
 
             @Override
@@ -93,16 +93,17 @@ public class LoginFragment extends Fragment {
             String email = String.valueOf(binding.editTextEmail.getText());
             String password = String.valueOf(binding.editTextPassword.getText());
             if(!email.isEmpty() && !password.isEmpty()
-                && binding.textInputLayoutEmail.isErrorEnabled()
-                && binding.textInputLayoutPassword.isErrorEnabled()
+                && !binding.textInputLayoutEmail.isErrorEnabled()
+                && !binding.textInputLayoutPassword.isErrorEnabled()
             ){
                 if(loginViewModel.login(email,password)){
                     Toast.makeText(getContext(), "Login Thành công", Toast.LENGTH_SHORT).show();
-                    updateAuthentication(requireActivity(),true);
+                    int teacherId = loginViewModel.getTeacherIdByEmail(email);
+                    updateTeacherId(requireActivity(),teacherId);
                     navigateToHomePage();
                 }else{
                     showNotificationDialog(requireContext(),"Đăng nhập thất bại",
-                            "Tài khoản hoặc mật khẩu không chính xác. Vui lòng kiểm tra lại.");
+                            "Tài khoản hoặc mật khẩu không chính xác. Vui lòng kiểm tra lại.",null);
                 }
             }else{
                 if(email.isEmpty()) binding.textInputLayoutEmail.setError("Email không được trống.");

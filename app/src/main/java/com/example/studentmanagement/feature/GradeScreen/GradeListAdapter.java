@@ -193,7 +193,8 @@ public class GradeListAdapter extends ListAdapter<Grade, GradeListAdapter.GradeV
                     dialog.dismiss();
                 } else {
                     AppUtils.showNotificationDialog(
-                            getContext(), "Thông báo", "Cập nhật lớp thất bại!");
+                            getContext(), "Thông báo", "Cập nhật lớp thất bại!"
+                            ,null);
                 }
             });
             dialog.show();
@@ -248,7 +249,7 @@ public class GradeListAdapter extends ListAdapter<Grade, GradeListAdapter.GradeV
                     dialog.dismiss();
                 } else {
                     AppUtils.showNotificationDialog(
-                            getContext(), "Thông báo", "Xóa lớp thất bại!");
+                            getContext(), "Thông báo", "Xóa lớp thất bại!",null);
                 }
             });
             dialog.show();

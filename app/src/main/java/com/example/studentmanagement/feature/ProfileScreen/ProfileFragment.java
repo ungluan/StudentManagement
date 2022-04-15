@@ -40,7 +40,8 @@ public class ProfileFragment extends Fragment {
             Navigation.findNavController(v).navigate(action);
         });
         binding.buttonChangePassword.setOnClickListener(v -> {
-
+            NavDirections action = ProfileFragmentDirections.actionProfileFragmentToChangePasswordFragment();
+            Navigation.findNavController(v).navigate(action);
         });
         binding.buttonCreateAccount.setOnClickListener(v -> {
 

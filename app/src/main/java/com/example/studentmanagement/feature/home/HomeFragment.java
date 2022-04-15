@@ -1,5 +1,7 @@
 package com.example.studentmanagement.feature.home;
 
+import static com.example.studentmanagement.utils.AppUtils.updateTeacherId;
+
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -42,7 +44,7 @@ public class HomeFragment extends Fragment {
         homeViewModel = new ViewModelProvider(requireActivity()).get(HomeViewModel.class);
 
         binding.txtSeeAll.setOnClickListener(v -> {
-            AppUtils.updateAuthentication(requireActivity(),false);
+            updateTeacherId(requireActivity(),-1);
             NavDirections action = HomeFragmentDirections.actionHomeFragmentToLoginFragment();
             Navigation.findNavController(v).navigate(action);
         });

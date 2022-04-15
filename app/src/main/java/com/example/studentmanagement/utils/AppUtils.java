@@ -64,7 +64,8 @@ public class AppUtils {
     public static void showNotificationDialog(
             Context context,
             String title,
-            String content
+            String content,
+            Callable<Void> callback
     ) {
         Dialog dialog = new Dialog(context, R.style.DialogStyle);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -79,7 +80,14 @@ public class AppUtils {
         dialog.getWindow().setBackgroundDrawableResource(R.drawable.bg_white_color);
         dialog.show();
 
-        btnConfirm.setOnClickListener(v -> dialog.dismiss());
+        btnConfirm.setOnClickListener(v -> {
+            dialog.dismiss();
+            try {
+                if(callback!=null) callback.call();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     public static boolean showDialogDelete(
@@ -236,14 +244,17 @@ public class AppUtils {
         return (!TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches());
     }
 
-    public static void updateAuthentication(Activity activity, boolean value){
+    public static void updateTeacherId(Activity activity, int userId){
         SharedPreferences sharedPref = activity.
                 getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putBoolean("Authenticated",value);
+        editor.putInt("teacherId",userId);
         editor.apply();
     }
-
+    public static int getTeacherId(Activity activity){
+        SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
+        return sharedPref.getInt("teacherId", -1);
+    }
     public static String saveImage(Context context, Bitmap bitmap) throws IOException {
         OutputStream fos;
         String name = String.valueOf(System.currentTimeMillis());
