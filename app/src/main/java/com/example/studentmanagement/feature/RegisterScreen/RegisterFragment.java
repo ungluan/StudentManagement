@@ -128,7 +128,7 @@ public class RegisterFragment extends Fragment {
             String phone = binding.editTextPhone.getText().toString();
 
             if(email.isEmpty()) binding.textInputLayoutEmail.setError("Email không được trống.");
-            if(password.isEmpty()) binding.textInputLayoutEmail.setError("Mật khẩu không được trống.");
+            if(password.isEmpty()) binding.textInputLayoutPassword.setError("Mật khẩu không được trống.");
             if(repeatPassword.isEmpty()) binding.textInputLayoutRepeatPassword.setError("Nhập lại mật khẩu không được trống.");
             if(phone.isEmpty()) binding.textInputLayoutPhone.setError("Số điện thoại không được trống");
             // Check email existed?
@@ -154,8 +154,8 @@ public class RegisterFragment extends Fragment {
                 // TH1: gv này đã có đầy đủ thông tin chưa ? Chưa thì cập nhật : Nhảy vào Home
 
                 // Logic - SendOTP -> Navigate to OTP_Page
-
-                NavDirections action = OtpFragmentDirections.actionOtpFragmentToRegisterFragment();
+                registerViewModel.saveInformationRegister(phone,email,password);
+                NavDirections action = RegisterFragmentDirections.actionRegisterFragmentToOtpFragment();
                 Navigation.findNavController(v).navigate(action);
             }
         });

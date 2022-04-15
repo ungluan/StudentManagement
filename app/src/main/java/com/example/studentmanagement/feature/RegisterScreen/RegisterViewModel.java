@@ -14,6 +14,14 @@ import com.example.studentmanagement.databinding.FragmentRegisterBinding;
 // => Vào HomePage
 public class RegisterViewModel extends AndroidViewModel {
     private AccountDao accountDao;
+    private String phone ;
+    private String email ;
+    private String password;
+
+    public String getEmail() { return email; }
+    public String getPhone() { return phone; }
+    public String getPassword() { return password; }
+
     public RegisterViewModel(@NonNull Application application) {
         super(application);
         accountDao = new AccountDao(application);
@@ -24,5 +32,10 @@ public class RegisterViewModel extends AndroidViewModel {
     }
     public boolean checkExistedEmail(String email){
         return accountDao.checkExistedEmail(email) ;
+    }
+    public void saveInformationRegister(String phone, String email, String password){
+        this.phone = phone;
+        this.email = email;
+        this.password = password;
     }
 }
