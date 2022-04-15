@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
 import android.text.Editable;
@@ -109,6 +110,10 @@ public class LoginFragment extends Fragment {
                 if(email.isEmpty()) binding.textInputLayoutEmail.setError("Email không được trống.");
                 if(password.isEmpty()) binding.textInputLayoutPassword.setError("Mật khẩu không được trống.");
             }
+        });
+        binding.txtRegister.setOnClickListener(v -> {
+            NavDirections action = LoginFragmentDirections.actionLoginFragmentToRegisterFragment();
+            Navigation.findNavController(v).navigate(action);
         });
     }
 

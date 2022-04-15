@@ -2,7 +2,7 @@ plugins {
     id 'com.android.application'
     id "androidx.navigation.safeargs"
 }
-
+apply plugin: 'com.google.gms.google-services'
 android {
     compileSdk 31
 
@@ -72,4 +72,7 @@ dependencies {
     // check permission
     implementation 'io.github.ParkSangGwon:tedpermission-normal:3.3.0'
     implementation 'com.squareup.picasso:picasso:2.71828'
+
+    implementation platform('com.google.firebase:firebase-bom:29.3.0')
+    implementation 'com.google.firebase:firebase-auth'
 }
