@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
@@ -15,11 +16,12 @@ import android.view.ViewGroup;
 import com.example.studentmanagement.R;
 import com.example.studentmanagement.databinding.FragmentInfomationBinding;
 import com.example.studentmanagement.feature.home.HomeFragmentDirections;
+import com.example.studentmanagement.utils.AppUtils;
 
 
 public class InformationFragment extends Fragment {
-    FragmentInfomationBinding binding;
-
+    private FragmentInfomationBinding binding;
+    private InformationViewModel informationViewModel;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -31,9 +33,14 @@ public class InformationFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        informationViewModel = new ViewModelProvider(requireActivity()).get(InformationViewModel.class);
         binding.btnBack.setOnClickListener(v -> {
             NavDirections action = InformationFragmentDirections.actionInformationFragmentToProfileFragment();
             Navigation.findNavController(v).navigate(action);
         });
+        binding.setTeacher(informationViewModel.getTeacherById(
+                AppUtils.getTeacherId(requireActivity())));
+        int accountId = binding.getTeacher().getIdAccount();
+        binding.txtEmail.setText(informationViewModel.getAccountById(accountId).getEmail());
     }
 }

@@ -57,6 +57,19 @@ public class AccountDao {
         return studentId;
     }
 
+    public Account getAccountById(int accountId){
+        Account account = new Account();
+        String query = "SELECT * FROM "+DataBaseHelper.TABLE_TAI_KHOAN+" WHERE "
+                + DataBaseHelper.COLUMN_MA_TAI_KHOAN +" = " +accountId;
+        Cursor cursor = dataBaseHelper.query(query,null);
+        if(cursor.moveToFirst()){
+            account.setId(cursor.getInt(0));
+            account.setEmail(cursor.getString(1));
+            account.setPassword(cursor.getString(2));
+        }
+        return account;
+    }
+
     public ContentValues values(Account account, boolean noId) {
         ContentValues values = new ContentValues();
         if(!noId) values.put(DataBaseHelper.COLUMN_MA_TAI_KHOAN, account.getId());

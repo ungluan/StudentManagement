@@ -4,7 +4,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
+        <variable
+            name="teacher"
+            type="com.example.studentmanagement.database.entity.Teacher" />
     </data>
 
     <LinearLayout
@@ -71,7 +73,6 @@
                 android:paddingRight="16dp">
 
                 <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/button_avatar"
                     android:layout_width="64dp"
                     android:layout_height="64dp"
                     android:layout_marginTop="8dp"
@@ -82,6 +83,7 @@
                     app:strokeWidth="1dp">
 
                     <com.makeramen.roundedimageview.RoundedImageView
+                        android:id="@+id/image_avatar"
                         android:layout_width="64dp"
                         android:layout_height="64dp"
                         android:scaleType="centerInside"
@@ -95,13 +97,13 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical">
                     <TextView
-                        android:text="Ung Nguyễn Trường Luân"
+                        android:text="@{teacher.teacherName}"
                         android:textSize="20sp"
                         android:textColor="@color/black"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
                     <TextView
-                        android:text="ID: 1"
+                        android:text="@{@string/id_teacher(teacher.id)}"
                         android:textSize="16sp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
@@ -124,7 +126,7 @@
                     android:layout_gravity="center_vertical" />
 
                 <TextView
-                    android:text="ungluan@gmail.com"
+                    android:id="@+id/txt_email"
                     android:layout_marginStart="8dp"
                     android:textSize="16sp"
                     android:gravity="center_vertical"
@@ -148,7 +150,7 @@
                     android:layout_gravity="center_vertical" />
 
                 <TextView
-                    android:text="0382916020"
+                    android:text="@{teacher.phone}"
                     android:layout_marginStart="8dp"
                     android:textSize="16sp"
                     android:gravity="center_vertical"
