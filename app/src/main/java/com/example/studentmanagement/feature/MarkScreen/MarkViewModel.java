@@ -5,37 +5,34 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 
-import com.example.studentmanagement.database.daosqlite.MarkDaoSqlite;
 import com.example.studentmanagement.database.entity.Grade;
 import com.example.studentmanagement.database.entity.Mark;
 import com.example.studentmanagement.database.entity.Student;
 import com.example.studentmanagement.database.entity.Subject;
+import com.example.studentmanagement.database.entity.Teacher;
 import com.example.studentmanagement.database_sqlite.Dao.GradeDao;
 import com.example.studentmanagement.database_sqlite.Dao.MarkDao;
 import com.example.studentmanagement.database_sqlite.Dao.StudentDao;
 import com.example.studentmanagement.database_sqlite.Dao.SubjectDao;
+import com.example.studentmanagement.database_sqlite.Dao.TeacherDao;
 
 
 import java.util.ArrayList;
 import java.util.List;
-
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.core.Completable;
-import io.reactivex.rxjava3.core.Flowable;
-import io.reactivex.rxjava3.core.Maybe;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class MarkViewModel extends AndroidViewModel {
     private MarkDao markDao;
     private GradeDao gradeDao;
     private SubjectDao subjectDao;
     private StudentDao studentDao;
+    private TeacherDao teacherDao;
     public MarkViewModel(@NonNull Application application) {
         super(application);
         this.markDao = new MarkDao(application);
         this.gradeDao = new GradeDao(application);
         this.subjectDao = new SubjectDao(application);
         this.studentDao = new StudentDao(application);
+        this.teacherDao = new TeacherDao(application);
     }
 
     public Student getStudent(int studentId){
@@ -44,6 +41,11 @@ public class MarkViewModel extends AndroidViewModel {
     public Student getStudentByMark(int studentId, String subjectId){
         return markDao.getStudentByMark(studentId, subjectId);
     }
+
+    public List<Student> getStudentsByGradeId(String gradeId){
+        return studentDao.getStudentsByGradeId(gradeId);
+    }
+
 
     public boolean updateMark(Mark mark){
         return markDao.update(mark);
@@ -59,6 +61,14 @@ public class MarkViewModel extends AndroidViewModel {
 
     public List<Mark> getMarks(String gradeId, String subjectId){
         return markDao.getMarkByGradeAndSubject(gradeId, subjectId);
+    }
+
+    public Teacher findTeacherById(int id){
+        return teacherDao.findById(id);
+    }
+
+    public ArrayList<Mark> getListMarkOfStudent(int studentId) {
+        return markDao.getListMarkOfStudent(studentId);
     }
 
 //    private MarkDaoSqlite markDaoSqlite;

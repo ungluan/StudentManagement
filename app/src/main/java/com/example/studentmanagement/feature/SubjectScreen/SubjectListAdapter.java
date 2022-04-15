@@ -65,7 +65,6 @@ public class SubjectListAdapter extends ListAdapter<Subject, SubjectListAdapter.
         private TextView txtSubjectName;
         private TextView txtCoefficient;
         private ImageView imgSubject;
-        private String imageString = "";
         private final int CODE = 101;
 
 
@@ -101,16 +100,12 @@ public class SubjectListAdapter extends ListAdapter<Subject, SubjectListAdapter.
 
 
             Subject subject = subjectViewModel.getSubjectById(txtSubjectId.getText().toString().split(":")[1].trim());
-            System.out.println("subject:" + subject.toString());
-            System.out.println("heso:" + subject.getCoefficient());
             if (subject == null) return;
             // get data
 
             binding.editTextSubjectId.setText(subject.getSubjectId());
             binding.editTextSubjectName.setText(subject.getSubjectName());
-            System.out.println("toi day roi");
             binding.editTextSubjectCoefficient.setText(subject.getCoefficient()+"");
-            System.out.println("toi day roi");
             if(subject.getImage().equals("")){
                 binding.imageviewSubjectDialog.setImageResource(R.drawable.art_class2);
             }else {
@@ -127,7 +122,6 @@ public class SubjectListAdapter extends ListAdapter<Subject, SubjectListAdapter.
 
             binding.btnChooseImageSubject.setOnClickListener(v -> {
                 AppUtils.chooseImage(context, binding.imageviewSubjectDialog, CODE);
-                imageString = AppUtils.getImageString(CODE);
             });
 
             binding.btnConfirmAddSubject.setOnClickListener(view -> {

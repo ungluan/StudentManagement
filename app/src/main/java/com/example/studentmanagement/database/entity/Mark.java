@@ -35,6 +35,16 @@ public class Mark {
     @ColumnInfo(name = "DIEM")
     double score;
 
+    Subject subject;
+
+
+    public Mark(int studentId, @NonNull String subjectId, double score, Subject subject) {
+        this.studentId = studentId;
+        this.subjectId = subjectId;
+        this.score = score;
+        this.subject = subject;
+    }
+
     public Mark(int studentId, @NonNull String subjectId, double score) {
         this.studentId = studentId;
         this.subjectId = subjectId;
@@ -46,6 +56,23 @@ public class Mark {
                 .filter(rankStudent ->  score < rankStudent.getTo() && score >= rankStudent.getFrom())
                 .findFirst().get().name();
 
+    }
+
+
+    public void setStudentId(int studentId) {
+        this.studentId = studentId;
+    }
+
+    public void setSubjectId(@NonNull String subjectId) {
+        this.subjectId = subjectId;
+    }
+
+    public Subject getSubject() {
+        return subject;
+    }
+
+    public void setSubject(Subject subject) {
+        this.subject = subject;
     }
 
     public int getStudentId() {

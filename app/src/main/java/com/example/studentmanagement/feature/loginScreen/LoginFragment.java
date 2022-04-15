@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
 import android.text.Editable;
@@ -23,6 +24,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.studentmanagement.R;
 import com.example.studentmanagement.databinding.FragmentLoginBinding;
 import com.example.studentmanagement.utils.AppUtils;
 
@@ -89,26 +91,31 @@ public class LoginFragment extends Fragment {
 
             }
         });
+//        binding.btnLogin.setOnClickListener(v -> {
+//            String email = String.valueOf(binding.editTextEmail.getText());
+//            String password = String.valueOf(binding.editTextPassword.getText());
+//            if(!email.isEmpty() && !password.isEmpty()
+//                && !binding.textInputLayoutEmail.isErrorEnabled()
+//                && !binding.textInputLayoutPassword.isErrorEnabled()
+//            ){
+//                if(loginViewModel.login(email,password)){
+//                    Toast.makeText(getContext(), "Login Thành công", Toast.LENGTH_SHORT).show();
+//                    int teacherId = loginViewModel.getTeacherIdByEmail(email);
+//                    updateTeacherId(requireActivity(),teacherId);
+//                    navigateToHomePage();
+//                }else{
+//                    showNotificationDialog(requireContext(),"Đăng nhập thất bại",
+//                            "Tài khoản hoặc mật khẩu không chính xác. Vui lòng kiểm tra lại.",null);
+//                }
+//            }else{
+//                if(email.isEmpty()) binding.textInputLayoutEmail.setError("Email không được trống.");
+//                if(password.isEmpty()) binding.textInputLayoutPassword.setError("Mật khẩu không được trống.");
+//            }
+//        });
+
+        //pass login
         binding.btnLogin.setOnClickListener(v -> {
-            String email = String.valueOf(binding.editTextEmail.getText());
-            String password = String.valueOf(binding.editTextPassword.getText());
-            if(!email.isEmpty() && !password.isEmpty()
-                && !binding.textInputLayoutEmail.isErrorEnabled()
-                && !binding.textInputLayoutPassword.isErrorEnabled()
-            ){
-                if(loginViewModel.login(email,password)){
-                    Toast.makeText(getContext(), "Login Thành công", Toast.LENGTH_SHORT).show();
-                    int teacherId = loginViewModel.getTeacherIdByEmail(email);
-                    updateTeacherId(requireActivity(),teacherId);
-                    navigateToHomePage();
-                }else{
-                    showNotificationDialog(requireContext(),"Đăng nhập thất bại",
-                            "Tài khoản hoặc mật khẩu không chính xác. Vui lòng kiểm tra lại.",null);
-                }
-            }else{
-                if(email.isEmpty()) binding.textInputLayoutEmail.setError("Email không được trống.");
-                if(password.isEmpty()) binding.textInputLayoutPassword.setError("Mật khẩu không được trống.");
-            }
+            Navigation.findNavController(v).navigate(R.id.action_loginFragment_to_homeFragment);
         });
     }
 

@@ -25,6 +25,7 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.function.BiConsumer;
@@ -92,17 +93,18 @@ public class FragmentRankStudentScreen extends Fragment {
 
 
 
-//        ArrayList<PieEntry> ranks =new ArrayList<>();
-//        Map<String, Integer> map = markDao.countRankStudent();
-//        for(String key: map.keySet()){
-//            ranks.add(new PieEntry(map.get(key), key));
-//        }
+        ArrayList<PieEntry> ranks =new ArrayList<>();
+        Map<String, Integer> map = markDao.countRankStudent();
+        for(String key: map.keySet()){
+            ranks.add(new PieEntry((int)map.get(key), key));
+            System.out.println("value:" + map.get(key));
+        }
 
-        ArrayList<PieEntry> visitors = new ArrayList<>();
-        visitors.add(new PieEntry(508, "Excellent"));
-        visitors.add(new PieEntry(600, "Good"));
-        visitors.add(new PieEntry(750, "Average"));
-        PieDataSet pieDataSet = new PieDataSet(visitors, "Rank student");
+//        ArrayList<PieEntry> visitors = new ArrayList<>();
+//        visitors.add(new PieEntry(508, "Excellent"));
+//        visitors.add(new PieEntry(600, "Good"));
+//        visitors.add(new PieEntry(750, "Average"));
+        PieDataSet pieDataSet = new PieDataSet(ranks, "Rank student");
         pieDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
         pieDataSet.setValueTextColor(Color.BLACK);
         pieDataSet.setValueTextSize(16f);

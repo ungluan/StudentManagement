@@ -60,4 +60,5 @@ public class Grade {
                 ", image='" + image + '\'' +
                 '}';
     }
+
 }

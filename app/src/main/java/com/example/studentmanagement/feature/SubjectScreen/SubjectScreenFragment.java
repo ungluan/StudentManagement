@@ -34,7 +34,6 @@ public class SubjectScreenFragment extends Fragment {
     private SubjectViewModel subjectViewModel;
     private  SubjectListAdapter adapter;
     private ImageView imageViewSubject;
-    private String imageString="";
     private int CODE=100;
     public SubjectScreenFragment() {
 
@@ -196,7 +195,6 @@ public class SubjectScreenFragment extends Fragment {
             @Override
             public void onClick(View v) {
                     AppUtils.chooseImage(requireContext(), imageViewSubject, CODE);
-                imageString = AppUtils.getImageString(CODE);
             }
 
 

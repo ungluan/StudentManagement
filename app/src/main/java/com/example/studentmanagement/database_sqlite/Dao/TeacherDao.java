@@ -140,4 +140,19 @@ public class TeacherDao {
         }
         return list;
     }
+
+    public Teacher findById(int id) {
+        String query = "SELECT * FROM " + DataBaseHelper.TABLE_GVCN +
+                " WHERE " + DataBaseHelper.COLUMN_MA_CHU_NHIEM +
+                " = ?";
+        Cursor cursor = dataBaseHelper.query(query, new String[]{Integer.toString(id)});
+        if (cursor.moveToNext())
+            return new Teacher(cursor.getInt(0),
+                    cursor.getString(1),
+                    cursor.getInt(2),
+                    cursor.getString(3),
+                    cursor.getString(4));
+        else return null;
+
+    }
 }

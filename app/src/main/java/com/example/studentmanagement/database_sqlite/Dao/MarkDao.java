@@ -7,9 +7,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import androidx.lifecycle.MutableLiveData;
-
-import com.example.studentmanagement.database.entity.Grade;
 import com.example.studentmanagement.database.entity.Mark;
 import com.example.studentmanagement.database.entity.Student;
 import com.example.studentmanagement.database.entity.Subject;
@@ -127,6 +124,33 @@ public class MarkDao {
                         , mark.getSubjectId()});
     }
 
+    public ArrayList<Mark> getListMarkOfStudent(int studentId) {
+        ArrayList<Mark> list = new ArrayList<>();
+//        String sql = "SELECT MAHOCSINH, DIEM.MAMH, TENMH, HESO, DIEM FROM DIEM, Subject WHERE DIEM.MAMH=Subject.MAMH" +
+//                " AND MAHOCSINH='" + studentId + "'";
+        String sql = "SELECT " + DataBaseHelper.COLUMN_MA_HOC_SINH +
+                ", " + DataBaseHelper.TABLE_MON_HOC + "." + DataBaseHelper.COLUMN_MA_MON_HOC +
+                ", " + DataBaseHelper.COLUMN_TEN_MON_HOC +
+                ", "+DataBaseHelper.COLUMN_HE_SO+
+                ", " + DataBaseHelper.COLUMN_DIEM+
+                " FROM "+DataBaseHelper.TABLE_DIEM +", " + DataBaseHelper.TABLE_MON_HOC +
+                " WHERE "+ DataBaseHelper.TABLE_DIEM+"."+DataBaseHelper.COLUMN_MA_MON_HOC+
+                "="+DataBaseHelper.TABLE_MON_HOC+"." + DataBaseHelper.COLUMN_MA_MON_HOC+
+                " AND MAHOCSINH='" + studentId + "'";
+        Cursor cursor = dataBaseHelper.query(sql, null);
+        while (cursor.moveToNext()) {
+            Subject subject = new Subject(cursor.getString(1),
+                    cursor.getString(2),
+                    cursor.getInt(3));
+
+            list.add(new Mark(cursor.getInt(0),
+                    cursor.getString(1),
+                    cursor.getDouble(4),
+                    subject));
+        }
+        return list;
+    }
+
     private ContentValues values(Mark mark) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(colStudentId, mark.getStudentId());
@@ -135,7 +159,7 @@ public class MarkDao {
         return contentValues;
     }
 
-    private List<Mark> getListMarkFromCursor(Cursor cursor){
+    private List<Mark> getListMarkFromCursor(Cursor cursor) {
         List<Mark> list = new ArrayList<>();
         while (cursor.moveToNext()) {
             int studenId = cursor.getInt(0);

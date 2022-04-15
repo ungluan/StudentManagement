@@ -320,6 +320,8 @@ public class AppUtils {
 
     private static void openImagePicker(Context context, ImageView img, int requestCode) {
 
+
+
         TedBottomPicker.with((FragmentActivity) context)
                 .show(new TedBottomSheetDialogFragment.OnImageSelectedListener() {
                     @Override
@@ -327,7 +329,6 @@ public class AppUtils {
                         // here is selected image uri
                         imageString.put(requestCode,uri.toString());
                         System.out.println("uri:" +imageString);
-
                         try {
                             img.setImageBitmap(
                                     MediaStore.Images.Media.getBitmap(context.getContentResolver()
