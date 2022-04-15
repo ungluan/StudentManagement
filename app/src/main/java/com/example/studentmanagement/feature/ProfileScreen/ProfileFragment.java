@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import com.example.studentmanagement.R;
 import com.example.studentmanagement.databinding.FragmentProfileBinding;
 import com.example.studentmanagement.feature.home.HomeFragmentDirections;
+import com.example.studentmanagement.utils.AppUtils;
 
 public class ProfileFragment extends Fragment {
     private FragmentProfileBinding binding;
@@ -45,6 +46,11 @@ public class ProfileFragment extends Fragment {
         });
         binding.buttonCreateAccount.setOnClickListener(v -> {
 
+        });
+        binding.buttonLogout.setOnClickListener(v -> {
+            AppUtils.updateTeacherId(requireActivity(),-1);
+            NavDirections action = ProfileFragmentDirections.actionProfileFragmentToLoginFragment();
+            Navigation.findNavController(v).navigate(action);
         });
     }
 }
