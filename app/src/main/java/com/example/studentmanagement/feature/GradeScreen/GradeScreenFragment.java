@@ -201,11 +201,11 @@ public class GradeScreenFragment extends Fragment {
                         adapter.submitList(gradeList);
                         adapter.notifyDataSetChanged();
                     }else{
-                        AppUtils.showNotificationDialog(context,"Thông báo","Thêm lớp thất bại!");
+                        AppUtils.showNotificationDialog(context,"Thông báo","Thêm lớp thất bại!",null);
                     }
                     dialog.dismiss();
                 }else{
-                    AppUtils.showNotificationDialog(context,"Thông báo","Lớp "+gradeId+" đã tồn tại!");
+                    AppUtils.showNotificationDialog(context,"Thông báo","Lớp "+gradeId+" đã tồn tại!",null);
                 }
             });
         }else{

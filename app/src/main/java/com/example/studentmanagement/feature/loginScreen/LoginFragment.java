@@ -1,6 +1,8 @@
 package com.example.studentmanagement.feature.loginScreen;
 
-import static com.example.studentmanagement.utils.AppUtils.updateAuthentication;
+import static com.example.studentmanagement.utils.AppUtils.isValidEmail;
+import static com.example.studentmanagement.utils.AppUtils.showNotificationDialog;
+import static com.example.studentmanagement.utils.AppUtils.updateTeacherId;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -14,12 +16,15 @@ import androidx.navigation.NavController;
 import androidx.navigation.NavDirections;
 import androidx.navigation.fragment.NavHostFragment;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.studentmanagement.databinding.FragmentLoginBinding;
+import com.example.studentmanagement.utils.AppUtils;
 
 public class LoginFragment extends Fragment {
     private FragmentLoginBinding binding ;
@@ -27,8 +32,7 @@ public class LoginFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
-        if(sharedPref.getBoolean("Authenticated", false)){
+        if(AppUtils.getTeacherId(requireActivity()) != -1){
             navigateToHomePage();
         }
     }
@@ -51,16 +55,59 @@ public class LoginFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         LoginViewModel loginViewModel = 
                 new ViewModelProvider(requireActivity()).get(LoginViewModel.class);
+        binding.editTextEmail.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(!isValidEmail(s)) binding.textInputLayoutEmail.setError("Email không hợp lệ.");
+                else binding.textInputLayoutEmail.setErrorEnabled(false);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        binding.editTextPassword.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(s.length()<6) binding.textInputLayoutPassword.setError("Mật khẩu phải có ít nhất 6 ký tự");
+                else binding.textInputLayoutPassword.setErrorEnabled(false);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
         binding.btnLogin.setOnClickListener(v -> {
             String email = String.valueOf(binding.editTextEmail.getText());
             String password = String.valueOf(binding.editTextPassword.getText());
-            if(loginViewModel.login(email,password)){
-                Toast.makeText(getContext(), "Login Thành công", Toast.LENGTH_SHORT).show();
-                updateAuthentication(requireActivity(),true);
-                navigateToHomePage();
+            if(!email.isEmpty() && !password.isEmpty()
+                && !binding.textInputLayoutEmail.isErrorEnabled()
+                && !binding.textInputLayoutPassword.isErrorEnabled()
+            ){
+                if(loginViewModel.login(email,password)){
+                    Toast.makeText(getContext(), "Login Thành công", Toast.LENGTH_SHORT).show();
+                    int teacherId = loginViewModel.getTeacherIdByEmail(email);
+                    updateTeacherId(requireActivity(),teacherId);
+                    navigateToHomePage();
+                }else{
+                    showNotificationDialog(requireContext(),"Đăng nhập thất bại",
+                            "Tài khoản hoặc mật khẩu không chính xác. Vui lòng kiểm tra lại.",null);
+                }
             }else{
-                Toast.makeText(getContext(), 
-                "Tài khoản hoặc mật khẩu không chính xác!", Toast.LENGTH_SHORT).show();
+                if(email.isEmpty()) binding.textInputLayoutEmail.setError("Email không được trống.");
+                if(password.isEmpty()) binding.textInputLayoutPassword.setError("Mật khẩu không được trống.");
             }
         });
     }

@@ -169,7 +169,7 @@ public class StudentScreenFragment extends Fragment {
                 studentListAdapter.submitList(students);
                 dialog.dismiss();
             }else{
-                AppUtils.showNotificationDialog(context,"Thông báo","Thêm học sinh thất bại!");
+                AppUtils.showNotificationDialog(context,"Thông báo","Thêm học sinh thất bại!",null);
                 dialog.dismiss();
             }
         });

@@ -234,5 +234,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public Cursor query(String query, String[] selectionArgs) {
         return this.getReadableDatabase().rawQuery(query, selectionArgs, null);
     }
+
+    public void execSql(String query){
+        this.getWritableDatabase().execSQL(query);
+    }
 }
 

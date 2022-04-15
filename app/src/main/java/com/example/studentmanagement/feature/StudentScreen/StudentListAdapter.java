@@ -183,7 +183,7 @@ public class StudentListAdapter extends ListAdapter<Student, StudentListAdapter.
                     dialog.dismiss();
                 }else{
                     AppUtils.showNotificationDialog(
-                            getContext(), "Thông báo", "Cập nhật học sinh thất bại!");
+                            getContext(), "Thông báo", "Cập nhật học sinh thất bại!",null);
                 }
 
             });
@@ -216,7 +216,7 @@ public class StudentListAdapter extends ListAdapter<Student, StudentListAdapter.
                     dialog.dismiss();
                 } else {
                     AppUtils.showNotificationDialog(
-                            getContext(), "Thông báo", "Xóa lớp thất bại!");
+                            getContext(), "Thông báo", "Xóa lớp thất bại!",null);
                 }
             });
             dialog.show();

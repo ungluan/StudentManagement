@@ -14,11 +14,14 @@
     <string name="forgot_password">Forgot password?</string>
     <string name="password">Password</string>
     <string name="email_address">Email Address</string>
+
 <!--Teacher-->
     <string name="id_of_the_teacher">MGV: %d</string>
     <string name="name_of_the_teacher">Tên: %s</string>
     <string name="phone_of_the_teacher">SDT: %s</string>
     <string name="account_of_the_teacher">Account: %s</string>
 
+
+    <string name="id_teacher">Id: %d</string>
 
 </resources>

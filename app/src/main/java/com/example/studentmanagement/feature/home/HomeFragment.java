@@ -1,5 +1,7 @@
 package com.example.studentmanagement.feature.home;
 
+import static com.example.studentmanagement.utils.AppUtils.updateTeacherId;
+
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -47,23 +49,19 @@ public class HomeFragment extends Fragment {
         homeViewModel = new ViewModelProvider(requireActivity()).get(HomeViewModel.class);
 
         binding.txtSeeAll.setOnClickListener(v -> {
-            AppUtils.updateAuthentication(requireActivity(),false);
+            updateTeacherId(requireActivity(),-1);
             NavDirections action = HomeFragmentDirections.actionHomeFragmentToLoginFragment();
             Navigation.findNavController(v).navigate(action);
         });
 
-        binding.cardViewGrade.setOnClickListener(
-                v -> {
-                    NavDirections action = HomeFragmentDirections.actionHomeFragmentToGradeScreenFragment();
-                    Navigation.findNavController(v).navigate(action);
-                }
-        );
-        binding.cardViewStudent.setOnClickListener(
-                v -> {
-                    NavDirections action = HomeFragmentDirections.actionHomeFragmentToStudentScreenFragment();
-                    Navigation.findNavController(v).navigate(action);
-                }
-        );
+        binding.cardViewGrade.setOnClickListener(v -> {
+            NavDirections action = HomeFragmentDirections.actionHomeFragmentToGradeScreenFragment();
+            Navigation.findNavController(v).navigate(action);
+        });
+        binding.cardViewStudent.setOnClickListener(v -> {
+            NavDirections action = HomeFragmentDirections.actionHomeFragmentToStudentScreenFragment();
+            Navigation.findNavController(v).navigate(action);
+        });
         binding.cardViewSubject.setOnClickListener(v -> {
             NavDirections action = HomeFragmentDirections.actionHomeFragmentToSubjectScreenFragment();
             Navigation.findNavController(v).navigate(action);
@@ -72,6 +70,7 @@ public class HomeFragment extends Fragment {
             NavDirections action = HomeFragmentDirections.actionHomeFragmentToMarkScreenFragment();
             Navigation.findNavController(v).navigate(action);
         });
+
         db = DataBaseHelper.getInstance(this.requireActivity().getApplication());
 
         binding.cardViewQuery.setOnClickListener(v -> {
@@ -79,7 +78,14 @@ public class HomeFragment extends Fragment {
         });
 
         binding.cardViewTeacher.setOnClickListener(v -> {
-            Navigation.findNavController(v).navigate(R.id.action_homeFragment_to_teacherScreenFragment);
+                    Navigation.findNavController(v).navigate(R.id.action_homeFragment_to_teacherScreenFragment);
+                });
+
+
+        binding.buttonAvatar.setOnClickListener(v -> {
+            NavDirections action = HomeFragmentDirections.actionHomeFragmentToProfileFragment();
+            Navigation.findNavController(v).navigate(action);
+
         });
     }
 
