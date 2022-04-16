@@ -75,4 +75,7 @@ dependencies {
 
     implementation platform('com.google.firebase:firebase-bom:29.3.0')
     implementation 'com.google.firebase:firebase-auth'
+    // Send mail
+    implementation 'com.github.1902shubh:SendMail:1.0.0'
+
 }

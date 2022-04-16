@@ -4,8 +4,8 @@ import static com.example.studentmanagement.utils.AppUtils.isValidEmail;
 import static com.example.studentmanagement.utils.AppUtils.showNotificationDialog;
 import static com.example.studentmanagement.utils.AppUtils.updateTeacherId;
 
-import android.content.Context;
-import android.content.SharedPreferences;
+
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -17,8 +17,10 @@ import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
+import android.os.StrictMode;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +28,22 @@ import android.widget.Toast;
 
 import com.example.studentmanagement.databinding.FragmentLoginBinding;
 import com.example.studentmanagement.utils.AppUtils;
+
+import java.util.Properties;
+
+import javax.mail.Authenticator;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+import papaya.in.sendmail.SendMail;
+
 
 public class LoginFragment extends Fragment {
     private FragmentLoginBinding binding ;
@@ -103,6 +121,7 @@ public class LoginFragment extends Fragment {
                     Toast.makeText(getContext(), "Login Thành công", Toast.LENGTH_SHORT).show();
                     int teacherId = loginViewModel.getTeacherIdByEmail(email);
                     updateTeacherId(requireActivity(),teacherId);
+                    sendEmail();
                     navigateToHomePage();
                 }else{
                     showNotificationDialog(requireContext(),"Đăng nhập thất bại",
@@ -118,5 +137,63 @@ public class LoginFragment extends Fragment {
             Navigation.findNavController(v).navigate(action);
         });
     }
+    private void sendEmail(){
+//        Properties properties = new Properties();
+//        properties.put("mail.smtp.auth","true");
+//        properties.put("mail.smtp.starttls.enable","true");
+//        properties.put("mail.smtp.host","smtp.gmail.com");
+//        properties.put("mail.smtp.port","587");
+//        String email = "ungluan01@gmail.com ";
+//        String password = "testingapp";
+//        String content = "Tài khoản của bạn vừa mới đăng nhập trên thiết bị "+getDeviceName();
+//        String receiver = "truongluan8102000@gmail.com";
+//        Session session = Session.getInstance(properties, new Authenticator() {
+//            @Override
+//            protected PasswordAuthentication getPasswordAuthentication() {
+//                return new PasswordAuthentication(email,password);
+//            }
+//        });
+//        try{
+//            Message message = new MimeMessage(session);
+//            message.setFrom(new InternetAddress(email));
+//            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(receiver));
+//            message.setSubject("Cảnh báo đăng nhập ứng dụng StudentManagerment.");
+//            message.setText(content);
+//            Observable.empty().subscribeOn(Schedulers.computation()).doOnComplete(() -> Transport.send(message)).subscribe();
+//            Log.d("LoginFragment","Send Email Successful");
+//        } catch (MessagingException e) {
+//            e.printStackTrace();
+//        }
+//        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+//        StrictMode.setThreadPolicy(policy);
+        SendMail mail = new SendMail("ungluan01@gmail.com", "testingapp",
+                "truongluan8102000@gmail.com",
+                "Cảnh báo đăng nhập.",
+                "Tài khoản của bạn vừa mới đăng nhập trên thiết bị "+getDeviceName());
+        mail.execute();
+    }
+    public String getLocation(){
 
+        return "";
+    }
+    public String getDeviceName() {
+        String manufacturer = Build.MANUFACTURER;
+        String model = Build.MODEL;
+        if (model.startsWith(manufacturer)) {
+            return capitalize(model);
+        } else {
+            return capitalize(manufacturer) + " " + model;
+        }
+    }
+    private String capitalize(String s) {
+        if (s == null || s.length() == 0) {
+            return "";
+        }
+        char first = s.charAt(0);
+        if (Character.isUpperCase(first)) {
+            return s;
+        } else {
+            return Character.toUpperCase(first) + s.substring(1);
+        }
+    }
 }
