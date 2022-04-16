@@ -23,10 +23,18 @@ public class RegisterViewModel extends AndroidViewModel {
     private String phone ;
     private String email ;
     private String password;
+    private boolean isRegisterPage = false;
 
     public String getEmail() { return email; }
     public String getPhone() { return phone; }
     public String getPassword() { return password; }
+
+    public boolean isRegisterPage() {
+        return isRegisterPage;
+    }
+    public void setIsRegisterPage(boolean value){
+        this.isRegisterPage = value;
+    }
 
     public RegisterViewModel(@NonNull Application application) {
         super(application);
@@ -44,6 +52,9 @@ public class RegisterViewModel extends AndroidViewModel {
         this.phone = phone;
         this.email = email;
         this.password = password;
+    }
+    public String getEmailByPhone(String phone){
+        return accountDao.getEmailByPhone(phone);
     }
     public void insertAccount() {
         accountDao.insertAccount(new Account(1,email,password));

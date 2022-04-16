@@ -24,6 +24,7 @@ import com.example.studentmanagement.utils.AppUtils;
 public class ChangePasswordFragment extends Fragment {
     private FragmentChangePasswordBinding binding;
     private ChangePasswordViewModel changePasswordViewModel;
+    private boolean isForgetPassword;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -36,7 +37,11 @@ public class ChangePasswordFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         changePasswordViewModel = new ViewModelProvider(requireActivity()).get(ChangePasswordViewModel.class);
-        binding.editTextOldPassword.addTextChangedListener(new TextWatcher() {
+        isForgetPassword = changePasswordViewModel.isForgotPassword();
+        if(!isForgetPassword) binding.editTextOldPassword.setVisibility(View.VISIBLE);
+        else binding.editTextOldPassword.setVisibility(View.INVISIBLE);
+
+        if(!isForgetPassword) binding.editTextOldPassword.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -103,8 +108,14 @@ public class ChangePasswordFragment extends Fragment {
             }
         });
         binding.btnBack.setOnClickListener(v -> {
-            NavDirections action = ChangePasswordFragmentDirections.actionChangePasswordFragmentToProfileFragment();
-            Navigation.findNavController(v).navigate(action);
+            if(!isForgetPassword){
+                NavDirections action = ChangePasswordFragmentDirections.actionChangePasswordFragmentToProfileFragment();
+                Navigation.findNavController(v).navigate(action);
+            }
+            else{
+                NavDirections action = ChangePasswordFragmentDirections.actionChangePasswordFragmentToForgotPasswordFragment();
+                Navigation.findNavController(v).navigate(action);
+            }
         });
         binding.buttonChangePassword.setOnClickListener(v -> {
             String oldPassword = binding.editTextOldPassword.getText().toString();
@@ -122,7 +133,6 @@ public class ChangePasswordFragment extends Fragment {
             boolean b2 = !binding.textInputLayoutNewPassword.isErrorEnabled();
             boolean b3 = !binding.textInputLayoutRepeatPassword.isErrorEnabled();
             if (b1 && b2 && b3) {
-                boolean r = changePasswordViewModel.checkPassword(AppUtils.getTeacherId(requireActivity()), oldPassword);
                 if (!changePasswordViewModel.checkPassword(AppUtils.getTeacherId(requireActivity()), oldPassword))
                     binding.textInputLayoutOldPassword.setError("Mật khẩu không trùng khớp với mật khẩu hiện tại.");
                 else {

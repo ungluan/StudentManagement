@@ -35,6 +35,7 @@ public class RegisterFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         registerViewModel = new ViewModelProvider(requireActivity()).get(RegisterViewModel.class);
+        registerViewModel.setIsRegisterPage(true);
         binding.btnBack.setOnClickListener(v -> {
             NavDirections action = RegisterFragmentDirections.actionRegisterFragmentToLoginFragment();
             Navigation.findNavController(v).navigate(action);

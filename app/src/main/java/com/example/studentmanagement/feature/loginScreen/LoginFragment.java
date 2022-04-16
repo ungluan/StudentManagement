@@ -5,6 +5,8 @@ import static com.example.studentmanagement.utils.AppUtils.showNotificationDialo
 import static com.example.studentmanagement.utils.AppUtils.updateTeacherId;
 
 
+import android.content.Context;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -47,7 +49,7 @@ import papaya.in.sendmail.SendMail;
 
 public class LoginFragment extends Fragment {
     private FragmentLoginBinding binding ;
-
+    private LoginViewModel loginViewModel;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,7 +74,7 @@ public class LoginFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        LoginViewModel loginViewModel = 
+        loginViewModel =
                 new ViewModelProvider(requireActivity()).get(LoginViewModel.class);
         if(loginViewModel.getEmail()!=null) binding.editTextEmail.setText(loginViewModel.getEmail());
         if(loginViewModel.getPassword()!=null) binding.editTextPassword.setText(loginViewModel.getPassword());
@@ -136,46 +138,19 @@ public class LoginFragment extends Fragment {
             NavDirections action = LoginFragmentDirections.actionLoginFragmentToRegisterFragment();
             Navigation.findNavController(v).navigate(action);
         });
+        binding.txtForgotPassword.setOnClickListener(v -> {
+            NavDirections action = LoginFragmentDirections.actionLoginFragmentToForgotPasswordFragment();
+            Navigation.findNavController(v).navigate(action);
+        });
     }
     private void sendEmail(){
-//        Properties properties = new Properties();
-//        properties.put("mail.smtp.auth","true");
-//        properties.put("mail.smtp.starttls.enable","true");
-//        properties.put("mail.smtp.host","smtp.gmail.com");
-//        properties.put("mail.smtp.port","587");
-//        String email = "ungluan01@gmail.com ";
-//        String password = "testingapp";
-//        String content = "Tài khoản của bạn vừa mới đăng nhập trên thiết bị "+getDeviceName();
-//        String receiver = "truongluan8102000@gmail.com";
-//        Session session = Session.getInstance(properties, new Authenticator() {
-//            @Override
-//            protected PasswordAuthentication getPasswordAuthentication() {
-//                return new PasswordAuthentication(email,password);
-//            }
-//        });
-//        try{
-//            Message message = new MimeMessage(session);
-//            message.setFrom(new InternetAddress(email));
-//            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(receiver));
-//            message.setSubject("Cảnh báo đăng nhập ứng dụng StudentManagerment.");
-//            message.setText(content);
-//            Observable.empty().subscribeOn(Schedulers.computation()).doOnComplete(() -> Transport.send(message)).subscribe();
-//            Log.d("LoginFragment","Send Email Successful");
-//        } catch (MessagingException e) {
-//            e.printStackTrace();
-//        }
-//        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-//        StrictMode.setThreadPolicy(policy);
         SendMail mail = new SendMail("ungluan01@gmail.com", "testingapp",
-                "truongluan8102000@gmail.com",
+                String.valueOf(binding.editTextEmail.getText()).trim(),
                 "Cảnh báo đăng nhập.",
                 "Tài khoản của bạn vừa mới đăng nhập trên thiết bị "+getDeviceName());
         mail.execute();
     }
-    public String getLocation(){
 
-        return "";
-    }
     public String getDeviceName() {
         String manufacturer = Build.MANUFACTURER;
         String model = Build.MODEL;

@@ -71,6 +71,20 @@ public class AccountDao {
         }
         return accountId;
     }
+    public String getEmailByPhone(String phone){
+        String query = "SELECT "+DataBaseHelper.TABLE_TAI_KHOAN +"."+ DataBaseHelper.COLUMN_EMAIL +
+                " FROM "+DataBaseHelper.TABLE_TAI_KHOAN + ", "+ DataBaseHelper.TABLE_GVCN +
+                " WHERE "+ DataBaseHelper.TABLE_GVCN +"."+ DataBaseHelper.COLUMN_MA_TAI_KHOAN +" = "+
+                DataBaseHelper.TABLE_TAI_KHOAN +"."+ DataBaseHelper.COLUMN_MA_TAI_KHOAN +" AND "+
+                DataBaseHelper.COLUMN_SO_DIEN_THOAI + " = '" + phone+"'";
+        Cursor cursor = dataBaseHelper.query(query,null);
+        String email="";
+        if(cursor.moveToFirst()){
+            email = cursor.getString(0);
+        }
+        return email;
+    }
+
     public Account getAccountById(int accountId){
         Account account = new Account();
         String query = "SELECT * FROM "+DataBaseHelper.TABLE_TAI_KHOAN+" WHERE "
