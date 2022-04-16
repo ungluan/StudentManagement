@@ -1,9 +1,11 @@
 package com.example.studentmanagement.database_sqlite.Dao;
 
 import android.app.Application;
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.view.contentcapture.DataRemovalRequest;
 
+import com.example.studentmanagement.database.entity.Account;
 import com.example.studentmanagement.database.entity.Teacher;
 import com.example.studentmanagement.database_sqlite.DataBaseHelper;
 
@@ -17,7 +19,9 @@ public class TeacherDao {
         // GetInstances
         this.dataBaseHelper = DataBaseHelper.getInstance(application);
     }
-
+    public Boolean insertTeacher(Teacher teacher) {
+        return dataBaseHelper.insert(DataBaseHelper.TABLE_GVCN, values(teacher,true));
+    }
     public List<Teacher> getTeachers(){
         String query = "SELECT * from " + DataBaseHelper.TABLE_GVCN;
         Cursor cursor = dataBaseHelper.query(query,null);
@@ -83,5 +87,14 @@ public class TeacherDao {
             }while (cursor.moveToNext());
         }
         return list;
+    }
+    public ContentValues values(Teacher teacher, boolean noId) {
+        ContentValues values = new ContentValues();
+        if(!noId) values.put(DataBaseHelper.COLUMN_MA_CHU_NHIEM, teacher.getId());
+        values.put(DataBaseHelper.COLUMN_TEN_CHU_NHIEM, teacher.getTeacherName());
+        values.put(DataBaseHelper.COLUMN_HINH_ANH, teacher.getImageUrl());
+        values.put(DataBaseHelper.COLUMN_MA_TAI_KHOAN, teacher.getIdAccount());
+        values.put(DataBaseHelper.COLUMN_SO_DIEN_THOAI,teacher.getPhone());
+        return values;
     }
 }

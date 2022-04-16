@@ -56,6 +56,8 @@ public class LoginFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         LoginViewModel loginViewModel = 
                 new ViewModelProvider(requireActivity()).get(LoginViewModel.class);
+        if(loginViewModel.getEmail()!=null) binding.editTextEmail.setText(loginViewModel.getEmail());
+        if(loginViewModel.getPassword()!=null) binding.editTextPassword.setText(loginViewModel.getPassword());
         binding.editTextEmail.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

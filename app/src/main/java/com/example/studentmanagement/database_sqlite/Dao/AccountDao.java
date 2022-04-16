@@ -7,6 +7,7 @@ import android.database.Cursor;
 import com.example.studentmanagement.database.entity.Account;
 import com.example.studentmanagement.database.entity.Mark;
 import com.example.studentmanagement.database.entity.Student;
+import com.example.studentmanagement.database.entity.Teacher;
 import com.example.studentmanagement.database_sqlite.DataBaseHelper;
 
 import java.util.ArrayList;
@@ -20,6 +21,9 @@ public class AccountDao {
         this.dataBaseHelper = DataBaseHelper.getInstance(application);
     }
 
+    public Boolean insertAccount(Account account) {
+        return dataBaseHelper.insert(DataBaseHelper.TABLE_TAI_KHOAN, values(account,true));
+    }
     public void updatePassword(int accountId, String newPassword) {
         String query = "UPDATE " + DataBaseHelper.TABLE_TAI_KHOAN + " SET " +
                 DataBaseHelper.COLUMN_MAT_KHAU + " = '"+ newPassword +"'" + " WHERE "+
@@ -56,7 +60,17 @@ public class AccountDao {
         }
         return studentId;
     }
-
+    public int getAccountIdByEmail(String email){
+        String query = "SELECT "+ DataBaseHelper.COLUMN_MA_TAI_KHOAN + " FROM "+
+                DataBaseHelper.TABLE_TAI_KHOAN + " WHERE "+
+                DataBaseHelper.COLUMN_EMAIL + " = '" + email + "'";
+        Cursor cursor = dataBaseHelper.query(query,null);
+        int accountId = -1;
+        if(cursor.moveToFirst()){
+            accountId = cursor.getInt(0);
+        }
+        return accountId;
+    }
     public Account getAccountById(int accountId){
         Account account = new Account();
         String query = "SELECT * FROM "+DataBaseHelper.TABLE_TAI_KHOAN+" WHERE "

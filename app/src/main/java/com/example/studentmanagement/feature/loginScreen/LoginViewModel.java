@@ -11,12 +11,26 @@ import com.example.studentmanagement.database_sqlite.Dao.TeacherDao;
 public class LoginViewModel extends AndroidViewModel {
     final LoginDao loginDao;
     final TeacherDao teacherDao;
+    private String email;
+    private String password;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
     public LoginViewModel(@NonNull Application application) {
         super(application);
         loginDao = new LoginDao(application);
         teacherDao = new TeacherDao(application);
     }
-
+    public void saveInformation(String email,String password){
+        this.email = email;
+        this.password = password;
+    }
     public boolean login(String email, String password){
         return loginDao.login(email,password);
     }

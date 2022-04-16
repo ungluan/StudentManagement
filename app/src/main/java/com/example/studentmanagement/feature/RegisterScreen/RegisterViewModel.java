@@ -5,7 +5,12 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 
+import com.example.studentmanagement.database.entity.Account;
+import com.example.studentmanagement.database.entity.Student;
+import com.example.studentmanagement.database.entity.Teacher;
 import com.example.studentmanagement.database_sqlite.Dao.AccountDao;
+import com.example.studentmanagement.database_sqlite.Dao.TeacherDao;
+import com.example.studentmanagement.database_sqlite.DataBaseHelper;
 import com.example.studentmanagement.databinding.FragmentRegisterBinding;
 
 // Đăng ký thành công -> Vào 1 Trang hỏi ? Đã được đăng ký thông tin - Chưa đăng ký thông tin.
@@ -14,6 +19,7 @@ import com.example.studentmanagement.databinding.FragmentRegisterBinding;
 // => Vào HomePage
 public class RegisterViewModel extends AndroidViewModel {
     private AccountDao accountDao;
+    private TeacherDao teacherDao;
     private String phone ;
     private String email ;
     private String password;
@@ -25,6 +31,7 @@ public class RegisterViewModel extends AndroidViewModel {
     public RegisterViewModel(@NonNull Application application) {
         super(application);
         accountDao = new AccountDao(application);
+        teacherDao = new TeacherDao(application);
     }
 
     public boolean checkExistedPhone(String phone){
@@ -37,5 +44,10 @@ public class RegisterViewModel extends AndroidViewModel {
         this.phone = phone;
         this.email = email;
         this.password = password;
+    }
+    public void insertAccount() {
+        accountDao.insertAccount(new Account(1,email,password));
+        int accountId = accountDao.getAccountIdByEmail(email);
+        teacherDao.insertTeacher(new Teacher(1,"",accountId,"",phone));
     }
 }
