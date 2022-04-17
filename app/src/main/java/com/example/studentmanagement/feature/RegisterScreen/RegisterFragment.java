@@ -28,7 +28,7 @@ public class RegisterFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentRegisterBinding.inflate(inflater);
-        mockData();
+//        mockData();
         return binding.getRoot();
     }
     private void mockData(){
