@@ -70,10 +70,13 @@ public class ForgotPasswordFragment extends Fragment {
                 String phone = binding.editTextPhone.getText().toString();
                 String email = registerViewModel.getEmailByPhone(phone);
                 registerViewModel.saveInformationRegister(phone,email,"");
-                NavDirections action = ForgotPasswordFragmentDirections
-                        .actionForgotPasswordFragmentToOtpFragment();
-                Navigation.findNavController(v).navigate(action);
+                navigateToOtpPage(v);
             }
         });
+    }
+    private void navigateToOtpPage(View view){
+        NavDirections action = ForgotPasswordFragmentDirections
+                .actionForgotPasswordFragmentToOtpFragment();
+        Navigation.findNavController(view).navigate(action);
     }
 }

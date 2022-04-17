@@ -38,20 +38,12 @@ public class HomeFragment extends Fragment {
     // HomeViewModel initial in onCreateView
     private FragmentHomeBinding binding;
     private HomeViewModel homeViewModel;
-    private DataBaseHelper db;
-    private Handler handler = new Handler(Looper.getMainLooper());
-
-//    drawer
-
-
-
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentHomeBinding.inflate(inflater);
-
         return binding.getRoot();
     }
 
@@ -59,16 +51,10 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-//        createDrawer();
-
         homeViewModel = new ViewModelProvider(requireActivity()).get(HomeViewModel.class);
 
-        binding.txtSeeAll.setOnClickListener(v -> {
-            updateTeacherId(requireActivity(),-1);
-            NavDirections action = HomeFragmentDirections.actionHomeFragmentToLoginFragment();
-            Navigation.findNavController(v).navigate(action);
-        });
-
+        binding.txtName.setText(getString(R.string.str_teacher_name,homeViewModel.getFullNameTeacher(
+                AppUtils.getTeacherId(requireActivity()))));
         binding.cardViewGrade.setOnClickListener(v -> {
             NavDirections action = HomeFragmentDirections.actionHomeFragmentToGradeScreenFragment();
             Navigation.findNavController(v).navigate(action);
@@ -86,8 +72,6 @@ public class HomeFragment extends Fragment {
             Navigation.findNavController(v).navigate(action);
         });
 
-        db = DataBaseHelper.getInstance(this.requireActivity().getApplication());
-
         binding.cardViewQuery.setOnClickListener(v -> {
             Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_fragmentReportScreen);
         });
@@ -100,14 +84,8 @@ public class HomeFragment extends Fragment {
         binding.buttonAvatar.setOnClickListener(v -> {
             NavDirections action = HomeFragmentDirections.actionHomeFragmentToProfileFragment();
             Navigation.findNavController(v).navigate(action);
-
         });
     }
-
-    private void createDrawer() {
-
-    }
-
 
     @Override
     public void onStart() {
@@ -115,6 +93,5 @@ public class HomeFragment extends Fragment {
         binding.txtNumberOfGrades.setText(getString(R.string.number_and_noun,homeViewModel.getNumberOfGrades(),"Lớp"));
         binding.txtNumberOfStudents.setText(getString(R.string.number_and_noun,homeViewModel.getNumberOfStudents(),"Học sinh"));
         binding.txtNumberOfSubjects.setText(getString(R.string.number_and_noun,homeViewModel.getNumberOfSubjects(),"Môn"));
-
     }
 }

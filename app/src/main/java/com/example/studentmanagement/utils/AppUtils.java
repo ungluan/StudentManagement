@@ -244,6 +244,11 @@ public class AppUtils {
         return (!TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches());
     }
 
+    public static String getLastName(String fullName){
+        String[] tokens = fullName.split(" ");
+        return tokens[tokens.length-1];
+    }
+
     public static void updateTeacherId(Activity activity, int userId){
         SharedPreferences sharedPref = activity.
                 getPreferences(Context.MODE_PRIVATE);
@@ -254,6 +259,17 @@ public class AppUtils {
     public static int getTeacherId(Activity activity){
         SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
         return sharedPref.getInt("teacherId", -1);
+    }
+    public static void updateInformation(Activity activity,boolean value){
+        SharedPreferences sharedPref = activity.
+                getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putBoolean("hasInformation",value);
+        editor.apply();
+    }
+    public static boolean getInformation(Activity activity){
+        SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
+        return sharedPref.getBoolean("hasInformation", true);
     }
     public static String saveImage(Context context, Bitmap bitmap) throws IOException {
         OutputStream fos;

@@ -20,10 +20,10 @@
             android:gravity="center">
 
             <TextView
+                android:id="@+id/txt_name"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:text="Hi! Bjergsen"
                 android:textColor="@android:color/black"
                 android:textSize="24sp"
                 android:textStyle="bold" />
@@ -155,7 +155,6 @@
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/txt_see_all"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="right"

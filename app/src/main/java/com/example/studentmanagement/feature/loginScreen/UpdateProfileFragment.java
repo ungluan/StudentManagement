@@ -54,7 +54,7 @@ public class UpdateProfileFragment extends Fragment {
     private void updateTeacher(){
         Teacher teacher = loginViewModel.getTeacherById(AppUtils.getTeacherId(requireActivity()));
         teacher.setTeacherName(binding.editTextFullName.getText().toString());
-        teacher.setImageUrl(imageString);
+        teacher.setImageUrl(AppUtils.getImageString(CODE));
         loginViewModel.updateTeacher(teacher);
     }
     private void navigateToHomePage(View view){

@@ -98,6 +98,17 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
+            <TextView
+                android:id="@+id/txt_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:layout_marginTop="4dp"
+                android:text="00:59"
+                android:textSize="18sp"
+                android:textColor="@color/secondary_orange"
+                android:textStyle="bold" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -111,17 +122,18 @@
                     android:textStyle="bold" />
                 <TextView
                     android:id="@+id/txt_resend_otp"
+                    android:enabled="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:layout_marginTop="4dp"
-                    android:textColor="@color/purple_500"
                     android:text=" Gửi lại OTP."
                     android:textStyle="bold" />
             </LinearLayout>
 
             <Button
                 android:id="@+id/btn_confirm"
+                android:enabled="false"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginTop="16dp"

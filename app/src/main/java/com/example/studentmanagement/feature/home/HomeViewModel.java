@@ -11,10 +11,12 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.studentmanagement.database.daosqlite.SubjectDaoSqlite;
 
+import com.example.studentmanagement.database.entity.Teacher;
 import com.example.studentmanagement.database_sqlite.Dao.GradeDao;
 import com.example.studentmanagement.database_sqlite.Dao.StudentDao;
 import com.example.studentmanagement.database_sqlite.Dao.SubjectDao;
 
+import com.example.studentmanagement.database_sqlite.Dao.TeacherDao;
 import com.example.studentmanagement.database_sqlite.DataBaseHelper;
 
 
@@ -26,7 +28,7 @@ public class HomeViewModel extends AndroidViewModel {
     private GradeDao gradeDao;
     private StudentDao studentDao;
     private SubjectDao subjectDao;
-
+    private TeacherDao teacherDao;
 
 
     public HomeViewModel(@NonNull Application application) {
@@ -35,6 +37,11 @@ public class HomeViewModel extends AndroidViewModel {
         gradeDao = new GradeDao(application);
         subjectDao = new SubjectDao(application);
         studentDao = new StudentDao(application);
+        teacherDao = new TeacherDao(application);
+    }
+
+    public String getFullNameTeacher(int teacherId){
+        return teacherDao.getTeacherById(teacherId).getTeacherName();
     }
 
     public int getNumberOfGrades(){

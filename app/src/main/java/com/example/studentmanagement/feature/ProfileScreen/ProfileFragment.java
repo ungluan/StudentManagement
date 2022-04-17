@@ -32,12 +32,6 @@ public class ProfileFragment extends Fragment {
     private FragmentProfileBinding binding;
 
 
-    private NavController navController;
-    private NavHostFragment navHostFragment;
-    private NavigationView navigationView;
-
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -50,40 +44,26 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        setUpNavigationController();
         binding.btnBack.setOnClickListener(v -> {
             NavDirections action = ProfileFragmentDirections.actionProfileFragmentToHomeFragment();
             Navigation.findNavController(v).navigate(action);
         });
 
-
-//        getActivity().findViewById(R.id.btn_infor).setOnClickListener(v -> {
-//            NavDirections action = ProfileFragmentDirections.actionProfileFragmentToInformationFragment();
-//            Navigation.findNavController(v).navigate(action);
-//        });
-//        binding.buttonChangePassword.setOnClickListener(v -> {
-//            NavDirections action = ProfileFragmentDirections.actionProfileFragmentToChangePasswordFragment();
-//            Navigation.findNavController(v).navigate(action);
-//        });
-//        binding.buttonCreateAccount.setOnClickListener(v -> {
-//
-//        });
-//        binding.buttonLogout.setOnClickListener(v -> {
-//            AppUtils.updateTeacherId(requireActivity(),-1);
-//            NavDirections action = ProfileFragmentDirections.actionProfileFragmentToLoginFragment();
-//            Navigation.findNavController(v).navigate(action);
-//        });
+        binding.buttonProfile.setOnClickListener(v -> {
+            NavDirections action = ProfileFragmentDirections.actionProfileFragmentToInformationFragment();
+            Navigation.findNavController(v).navigate(action);
+        });
+        binding.buttonChangePassword.setOnClickListener(v -> {
+            NavDirections action = ProfileFragmentDirections.actionProfileFragmentToChangePasswordFragment();
+            Navigation.findNavController(v).navigate(action);
+        });
+        binding.buttonLogout.setOnClickListener(v -> {
+            AppUtils.updateTeacherId(requireActivity(), -1);
+            NavDirections action = ProfileFragmentDirections.actionProfileFragmentToLoginFragment();
+            Navigation.findNavController(v).navigate(action);
+        });
     }
-
-
-    public void setUpNavigationController(){
-        navHostFragment = (NavHostFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.fragmentContainerView);
-        navigationView = getActivity().findViewById(R.id.nav_view);
-
-        navController = navHostFragment.getNavController();
-
-        NavigationUI.setupWithNavController(navigationView, navController);
-    }
+}
 
 
 
@@ -174,4 +154,3 @@ public class ProfileFragment extends Fragment {
 //        return super.onOptionsItemSelected(item);
 //
 //    }
-}

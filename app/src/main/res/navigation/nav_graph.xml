@@ -109,7 +109,8 @@
         <action
             android:id="@+id/action_loginFragment_to_updateProfileFragment"
             app:destination="@id/updateProfileFragment"
-            app:popUpToInclusive="false" />
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
@@ -160,6 +161,11 @@
             android:id="@+id/action_changePasswordFragment_to_forgotPasswordFragment"
             app:destination="@id/forgotPasswordFragment"
             app:popUpTo="@id/forgotPasswordFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_changePasswordFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/loginFragment"
             app:popUpToInclusive="true" />
     </fragment>
     <fragment
@@ -221,6 +227,9 @@
         <action
             android:id="@+id/action_otpFragment_to_changePasswordFragment2"
             app:destination="@id/changePasswordFragment" />
+        <action
+            android:id="@+id/action_otpFragment_to_forgotPasswordFragment"
+            app:destination="@id/forgotPasswordFragment" />
     </fragment>
     <fragment
         android:id="@+id/forgotPasswordFragment"
@@ -232,6 +241,7 @@
         <action
             android:id="@+id/action_forgotPasswordFragment_to_loginFragment"
             app:destination="@id/loginFragment"
+            app:popUpTo="@id/loginFragment"
             app:popUpToInclusive="true" />
     </fragment>
     <fragment
@@ -243,11 +253,6 @@
             app:destination="@id/homeFragment"
             app:popUpTo="@id/loginFragment"
             app:popUpToInclusive="true" />
-        <action
-            android:id="@+id/action_updateProfileFragment_to_loginFragment2"
-            app:destination="@id/loginFragment"
-            app:popUpToInclusive="true" />
-
     </fragment>
 
 </navigation>
