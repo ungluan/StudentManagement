@@ -7,7 +7,7 @@ android {
     compileSdk 31
 
     defaultConfig {
-        applicationId "com.example.studentmanagement1"
+        applicationId "com.example.studentmanagement2"
         minSdk 28
         targetSdk 31
         versionCode 1
@@ -77,5 +77,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth'
     // Send mail
     implementation 'com.github.1902shubh:SendMail:1.0.0'
+    // CountDown Timer
+    implementation 'in.xiandan:count-down-timer:1.0.3'
 
 }

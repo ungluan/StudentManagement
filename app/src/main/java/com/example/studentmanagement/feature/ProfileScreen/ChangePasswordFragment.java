@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 
 import com.example.studentmanagement.R;
 import com.example.studentmanagement.databinding.FragmentChangePasswordBinding;
+import com.example.studentmanagement.feature.loginScreen.LoginViewModel;
 import com.example.studentmanagement.utils.AppUtils;
 
 
@@ -25,7 +26,7 @@ public class ChangePasswordFragment extends Fragment {
     private FragmentChangePasswordBinding binding;
     private ChangePasswordViewModel changePasswordViewModel;
     private boolean isForgetPassword;
-
+    private LoginViewModel loginViewModel;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -142,12 +143,24 @@ public class ChangePasswordFragment extends Fragment {
                     AppUtils.showNotificationDialog(requireContext(),
                             "Đổi mật khẩu thành công",
                             "", () -> {
-                                NavDirections action = ChangePasswordFragmentDirections.actionChangePasswordFragmentToProfileFragment();
-                                Navigation.findNavController(v).navigate(action);
+                                if(!isForgetPassword) navigateToProfilePage(view);
+                                else {
+                                    loginViewModel = new ViewModelProvider(requireActivity()).get(LoginViewModel.class);
+                                    loginViewModel.saveInformation(loginViewModel.getEmail(), binding.editTextNewPassword.getText().toString());
+                                    navigateToLoginPage(view);
+                                }
                                 return null;
                             });
                 }
             }
         });
+    }
+    private void navigateToLoginPage(View view){
+        NavDirections action = ChangePasswordFragmentDirections.actionChangePasswordFragmentToLoginFragment();
+        Navigation.findNavController(view).navigate(action);
+    }
+    private void navigateToProfilePage(View view){
+        NavDirections action = ChangePasswordFragmentDirections.actionChangePasswordFragmentToProfileFragment();
+        Navigation.findNavController(view).navigate(action);
     }
 }
