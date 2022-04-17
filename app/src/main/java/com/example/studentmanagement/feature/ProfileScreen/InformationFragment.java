@@ -34,13 +34,15 @@ public class InformationFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         informationViewModel = new ViewModelProvider(requireActivity()).get(InformationViewModel.class);
-        binding.btnBack.setOnClickListener(v -> {
-            NavDirections action = InformationFragmentDirections.actionInformationFragmentToProfileFragment();
-            Navigation.findNavController(v).navigate(action);
-        });
-        binding.setTeacher(informationViewModel.getTeacherById(
-                AppUtils.getTeacherId(requireActivity())));
+
+        binding.setTeacher(informationViewModel.getTeacherById(AppUtils.getTeacherId(requireActivity())));
         int accountId = binding.getTeacher().getIdAccount();
         binding.txtEmail.setText(informationViewModel.getAccountById(accountId).getEmail());
+
+        binding.btnBack.setOnClickListener(this::navigateToProfilePage);
+    }
+    private void navigateToProfilePage(View view){
+        NavDirections action = InformationFragmentDirections.actionInformationFragmentToProfileFragment();
+        Navigation.findNavController(view).navigate(action);
     }
 }

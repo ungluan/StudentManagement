@@ -44,24 +44,30 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        binding.btnBack.setOnClickListener(v -> {
-            NavDirections action = ProfileFragmentDirections.actionProfileFragmentToHomeFragment();
-            Navigation.findNavController(v).navigate(action);
-        });
+        binding.btnBack.setOnClickListener(this::navigateToHomePage);
 
-        binding.buttonProfile.setOnClickListener(v -> {
-            NavDirections action = ProfileFragmentDirections.actionProfileFragmentToInformationFragment();
-            Navigation.findNavController(v).navigate(action);
-        });
-        binding.buttonChangePassword.setOnClickListener(v -> {
-            NavDirections action = ProfileFragmentDirections.actionProfileFragmentToChangePasswordFragment();
-            Navigation.findNavController(v).navigate(action);
-        });
+        binding.buttonProfile.setOnClickListener(this::navigateToInformationPage);
+        binding.buttonChangePassword.setOnClickListener(this::navigateToChangePasswordPage);
         binding.buttonLogout.setOnClickListener(v -> {
             AppUtils.updateTeacherId(requireActivity(), -1);
-            NavDirections action = ProfileFragmentDirections.actionProfileFragmentToLoginFragment();
-            Navigation.findNavController(v).navigate(action);
+            navigateToLoginPage(v);
         });
+    }
+    private void navigateToHomePage(View view){
+        NavDirections action = ProfileFragmentDirections.actionProfileFragmentToHomeFragment();
+        Navigation.findNavController(view).navigate(action);
+    }
+    private void navigateToInformationPage(View view){
+        NavDirections action = ProfileFragmentDirections.actionProfileFragmentToInformationFragment();
+        Navigation.findNavController(view).navigate(action);
+    }
+    private void navigateToChangePasswordPage(View view){
+        NavDirections action = ProfileFragmentDirections.actionProfileFragmentToChangePasswordFragment();
+        Navigation.findNavController(view).navigate(action);
+    }
+    private void navigateToLoginPage(View view){
+        NavDirections action = ProfileFragmentDirections.actionProfileFragmentToLoginFragment();
+        Navigation.findNavController(view).navigate(action);
     }
 }
 

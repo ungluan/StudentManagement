@@ -34,6 +34,11 @@
     <string name="validate_repeat_password_02">Mật khẩu phải trùng với mật khẩu mới.</string>
     <string name="validate_email_01">Email không hợp lệ.</string>
     <string name="validate_phone_01">Số điện thoại không hợp lệ.</string>
+    <string name="profile_01">Thông tin cá nhân</string>
+    <string name="profile_02">Đổi mật khẩu</string>
+    <string name="profile_03">Đăng xuất</string>
+    <string name="profile_title_02">Tài khoản</string>
+    <string name="profile_title_01">Hồ sơ cá nhân</string>
 
 
 </resources>
