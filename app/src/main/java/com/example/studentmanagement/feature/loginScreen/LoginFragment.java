@@ -29,26 +29,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+<<<<<<< HEAD
+import com.example.studentmanagement.database.entity.Teacher;
+=======
 
 import com.example.studentmanagement.R;
 import com.example.studentmanagement.database.entity.Teacher;
 
+>>>>>>> e98ce0ef10d1ed91894b476dac53cc0d55cf816b
 import com.example.studentmanagement.databinding.FragmentLoginBinding;
 import com.example.studentmanagement.utils.AppUtils;
 
-import java.util.Properties;
 
-import javax.mail.Authenticator;
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
-
-import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 import papaya.in.sendmail.SendMail;
 
 
@@ -125,6 +117,8 @@ public class LoginFragment extends Fragment {
 
             }
         });
+<<<<<<< HEAD
+=======
 
         setEvents();
 //        binding.btnLogin.setOnClickListener(v -> {
@@ -155,6 +149,7 @@ public class LoginFragment extends Fragment {
 //        });
 
 
+>>>>>>> e98ce0ef10d1ed91894b476dac53cc0d55cf816b
         binding.btnLogin.setOnClickListener(v -> {
             String email = String.valueOf(binding.editTextEmail.getText());
             String password = String.valueOf(binding.editTextPassword.getText());
@@ -182,7 +177,10 @@ public class LoginFragment extends Fragment {
                 if(email.isEmpty()) binding.textInputLayoutEmail.setError("Email không được trống.");
                 if(password.isEmpty()) binding.textInputLayoutPassword.setError("Mật khẩu không được trống.");
             }
+<<<<<<< HEAD
+=======
 
+>>>>>>> e98ce0ef10d1ed91894b476dac53cc0d55cf816b
         });
         //pass login
 //        binding.btnLogin.setOnClickListener(v -> {
@@ -231,7 +229,6 @@ public class LoginFragment extends Fragment {
                 "Tài khoản của bạn vừa mới đăng nhập trên thiết bị "+getDeviceName());
         mail.execute();
     }
-
     public String getDeviceName() {
         String manufacturer = Build.MANUFACTURER;
         String model = Build.MODEL;

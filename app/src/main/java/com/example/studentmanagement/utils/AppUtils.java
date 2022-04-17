@@ -244,6 +244,11 @@ public class AppUtils {
         return (!TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches());
     }
 
+    public static String getLastName(String fullName){
+        String[] tokens = fullName.split(" ");
+        return tokens[tokens.length-1];
+    }
+
     public static void updateTeacherId(Activity activity, int userId){
         SharedPreferences sharedPref = activity.
                 getPreferences(Context.MODE_PRIVATE);

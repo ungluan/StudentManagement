@@ -1,113 +1,52 @@
 package com.example.studentmanagement.feature.home;
 
-import static com.example.studentmanagement.utils.AppUtils.updateTeacherId;
-
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.Toolbar;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
-
-import android.os.Handler;
-import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.studentmanagement.R;
-import com.example.studentmanagement.database_sqlite.DataBaseHelper;
+import com.example.studentmanagement.database.entity.Teacher;
 import com.example.studentmanagement.databinding.FragmentHomeBinding;
 import com.example.studentmanagement.utils.AppUtils;
-import com.google.android.material.navigation.NavigationView;
+import com.squareup.picasso.Picasso;
 
 
 public class HomeFragment extends Fragment {
-
-    //save state
-
-    public static final String TAG = HomeFragment.class.getName();
-    // HomeViewModel initial in onCreateView
     private FragmentHomeBinding binding;
     private HomeViewModel homeViewModel;
-    private DataBaseHelper db;
-    private Handler handler = new Handler(Looper.getMainLooper());
-
-//    drawer
-
-
-
-
+    private Teacher teacher;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentHomeBinding.inflate(inflater);
-
         return binding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-//        createDrawer();
-
         homeViewModel = new ViewModelProvider(requireActivity()).get(HomeViewModel.class);
+        teacher = homeViewModel.getTeacherById(AppUtils.getTeacherId(requireActivity()));
+        binding.txtName.setText(getString(R.string.str_teacher_name,AppUtils.getLastName(teacher.getTeacherName())));
+        Picasso.get().load(teacher.getImageUrl()).into(binding.imageAvatar);
 
-        binding.txtSeeAll.setOnClickListener(v -> {
-            updateTeacherId(requireActivity(),-1);
-            NavDirections action = HomeFragmentDirections.actionHomeFragmentToLoginFragment();
-            Navigation.findNavController(v).navigate(action);
-        });
-
-        binding.cardViewGrade.setOnClickListener(v -> {
-            NavDirections action = HomeFragmentDirections.actionHomeFragmentToGradeScreenFragment();
-            Navigation.findNavController(v).navigate(action);
-        });
-        binding.cardViewStudent.setOnClickListener(v -> {
-            NavDirections action = HomeFragmentDirections.actionHomeFragmentToStudentScreenFragment();
-            Navigation.findNavController(v).navigate(action);
-        });
-        binding.cardViewSubject.setOnClickListener(v -> {
-            NavDirections action = HomeFragmentDirections.actionHomeFragmentToSubjectScreenFragment();
-            Navigation.findNavController(v).navigate(action);
-        });
-        binding.cardViewMark.setOnClickListener(v -> {
-            NavDirections action = HomeFragmentDirections.actionHomeFragmentToMarkScreenFragment();
-            Navigation.findNavController(v).navigate(action);
-        });
-
-        db = DataBaseHelper.getInstance(this.requireActivity().getApplication());
-
-        binding.cardViewQuery.setOnClickListener(v -> {
-            Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_fragmentReportScreen);
-        });
-
-        binding.cardViewTeacher.setOnClickListener(v -> {
-                    Navigation.findNavController(v).navigate(R.id.action_homeFragment_to_teacherScreenFragment);
-                });
-
-
-        binding.buttonAvatar.setOnClickListener(v -> {
-            NavDirections action = HomeFragmentDirections.actionHomeFragmentToProfileFragment();
-            Navigation.findNavController(v).navigate(action);
-
-        });
+        binding.cardViewGrade.setOnClickListener(this::navigateToGradePage);
+        binding.cardViewStudent.setOnClickListener(this::navigateToStudentPage);
+        binding.cardViewSubject.setOnClickListener(this::navigateToSubjectPage);
+        binding.cardViewMark.setOnClickListener(this::navigateToMarkPage);
+        binding.cardViewQuery.setOnClickListener(this::navigateToReportPage);
+        binding.cardViewTeacher.setOnClickListener(this::navigateToTeacherPage);
+        binding.buttonAvatar.setOnClickListener(this::navigateToProfilePage);
     }
-
-    private void createDrawer() {
-
-    }
-
 
     @Override
     public void onStart() {
@@ -115,6 +54,34 @@ public class HomeFragment extends Fragment {
         binding.txtNumberOfGrades.setText(getString(R.string.number_and_noun,homeViewModel.getNumberOfGrades(),"Lớp"));
         binding.txtNumberOfStudents.setText(getString(R.string.number_and_noun,homeViewModel.getNumberOfStudents(),"Học sinh"));
         binding.txtNumberOfSubjects.setText(getString(R.string.number_and_noun,homeViewModel.getNumberOfSubjects(),"Môn"));
+    }
 
+    private void navigateToGradePage(View view){
+        NavDirections action = HomeFragmentDirections.actionHomeFragmentToGradeScreenFragment();
+        Navigation.findNavController(view).navigate(action);
+    }
+    private void navigateToStudentPage(View view){
+        NavDirections action = HomeFragmentDirections.actionHomeFragmentToStudentScreenFragment();
+        Navigation.findNavController(view).navigate(action);
+    }
+    private void navigateToMarkPage(View view){
+        NavDirections action = HomeFragmentDirections.actionHomeFragmentToMarkScreenFragment();
+        Navigation.findNavController(view).navigate(action);
+    }
+    private void navigateToSubjectPage(View view){
+        NavDirections action = HomeFragmentDirections.actionHomeFragmentToSubjectScreenFragment();
+        Navigation.findNavController(view).navigate(action);
+    }
+    private void navigateToReportPage(View view){
+        Navigation.findNavController(view).
+                navigate(R.id.action_homeFragment_to_fragmentReportScreen);
+    }
+    private void navigateToTeacherPage(View view){
+        Navigation.findNavController(view)
+                .navigate(R.id.action_homeFragment_to_teacherScreenFragment);
+    }
+    private void navigateToProfilePage(View view){
+        NavDirections action = HomeFragmentDirections.actionHomeFragmentToProfileFragment();
+        Navigation.findNavController(view).navigate(action);
     }
 }
