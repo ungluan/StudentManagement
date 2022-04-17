@@ -13,14 +13,16 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.studentmanagement.R;
+import com.example.studentmanagement.database.entity.Teacher;
 import com.example.studentmanagement.databinding.FragmentHomeBinding;
 import com.example.studentmanagement.utils.AppUtils;
+import com.squareup.picasso.Picasso;
 
 
 public class HomeFragment extends Fragment {
     private FragmentHomeBinding binding;
     private HomeViewModel homeViewModel;
-
+    private Teacher teacher;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -33,8 +35,9 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         homeViewModel = new ViewModelProvider(requireActivity()).get(HomeViewModel.class);
-        binding.txtName.setText(getString(R.string.str_teacher_name,homeViewModel.getFullNameTeacher(
-                AppUtils.getTeacherId(requireActivity()))));
+        teacher = homeViewModel.getTeacherById(AppUtils.getTeacherId(requireActivity()));
+        binding.txtName.setText(getString(R.string.str_teacher_name,AppUtils.getLastName(teacher.getTeacherName())));
+        Picasso.get().load(teacher.getImageUrl()).into(binding.imageAvatar);
 
         binding.cardViewGrade.setOnClickListener(this::navigateToGradePage);
         binding.cardViewStudent.setOnClickListener(this::navigateToStudentPage);
@@ -42,12 +45,7 @@ public class HomeFragment extends Fragment {
         binding.cardViewMark.setOnClickListener(this::navigateToMarkPage);
         binding.cardViewQuery.setOnClickListener(this::navigateToReportPage);
         binding.cardViewTeacher.setOnClickListener(this::navigateToTeacherPage);
-
-
-        binding.buttonAvatar.setOnClickListener(v -> {
-            NavDirections action = HomeFragmentDirections.actionHomeFragmentToProfileFragment();
-            Navigation.findNavController(v).navigate(action);
-        });
+        binding.buttonAvatar.setOnClickListener(this::navigateToProfilePage);
     }
 
     @Override
@@ -81,5 +79,9 @@ public class HomeFragment extends Fragment {
     private void navigateToTeacherPage(View view){
         Navigation.findNavController(view)
                 .navigate(R.id.action_homeFragment_to_teacherScreenFragment);
+    }
+    private void navigateToProfilePage(View view){
+        NavDirections action = HomeFragmentDirections.actionHomeFragmentToProfileFragment();
+        Navigation.findNavController(view).navigate(action);
     }
 }

@@ -40,8 +40,8 @@ public class HomeViewModel extends AndroidViewModel {
         teacherDao = new TeacherDao(application);
     }
 
-    public String getFullNameTeacher(int teacherId){
-        return teacherDao.getTeacherById(teacherId).getTeacherName();
+    public Teacher getTeacherById(int teacherId){
+        return teacherDao.getTeacherById(teacherId);
     }
 
     public int getNumberOfGrades(){
