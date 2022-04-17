@@ -38,8 +38,8 @@ public class ChangePasswordFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         changePasswordViewModel = new ViewModelProvider(requireActivity()).get(ChangePasswordViewModel.class);
         isForgetPassword = changePasswordViewModel.isForgotPassword();
-        if(!isForgetPassword) binding.editTextOldPassword.setVisibility(View.VISIBLE);
-        else binding.editTextOldPassword.setVisibility(View.INVISIBLE);
+        if(!isForgetPassword) binding.textInputLayoutOldPassword.setVisibility(View.VISIBLE);
+        else binding.textInputLayoutOldPassword.setVisibility(View.INVISIBLE);
 
         if(!isForgetPassword) binding.editTextOldPassword.addTextChangedListener(new TextWatcher() {
             @Override
@@ -122,7 +122,7 @@ public class ChangePasswordFragment extends Fragment {
             String newPassword = binding.editTextNewPassword.getText().toString();
             String repeatPassword = binding.editTextRepeatPassword.getText().toString();
 
-            if (oldPassword.isEmpty())
+            if (!isForgetPassword && oldPassword.isEmpty())
                 binding.textInputLayoutOldPassword.setError("Vui lòng nhập mật khẩu hiện tại.");
             if (newPassword.isEmpty())
                 binding.textInputLayoutNewPassword.setError("Vui lòng nhập mật khẩu mới.");
@@ -133,7 +133,7 @@ public class ChangePasswordFragment extends Fragment {
             boolean b2 = !binding.textInputLayoutNewPassword.isErrorEnabled();
             boolean b3 = !binding.textInputLayoutRepeatPassword.isErrorEnabled();
             if (b1 && b2 && b3) {
-                if (!changePasswordViewModel.checkPassword(AppUtils.getTeacherId(requireActivity()), oldPassword))
+                if (!isForgetPassword && !changePasswordViewModel.checkPassword(AppUtils.getTeacherId(requireActivity()), oldPassword))
                     binding.textInputLayoutOldPassword.setError("Mật khẩu không trùng khớp với mật khẩu hiện tại.");
                 else {
                     int accountId = changePasswordViewModel.getAccountIdByTeacherId(
