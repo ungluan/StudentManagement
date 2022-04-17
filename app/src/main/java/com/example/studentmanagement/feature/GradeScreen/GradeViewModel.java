@@ -6,6 +6,7 @@ import androidx.lifecycle.AndroidViewModel;
 import com.example.studentmanagement.database.entity.Grade;
 import com.example.studentmanagement.database.entity.Teacher;
 import com.example.studentmanagement.database_sqlite.Dao.GradeDao;
+import com.example.studentmanagement.database_sqlite.Dao.StudentDao;
 import com.example.studentmanagement.database_sqlite.Dao.TeacherDao;
 
 
@@ -14,6 +15,7 @@ import java.util.List;
 public class GradeViewModel extends AndroidViewModel {
     private GradeDao gradeDao;
     private TeacherDao teacherDao;
+    private StudentDao studentDao;
     public GradeViewModel(@NonNull Application application) {
         super(application);
         gradeDao = new GradeDao(application);
@@ -40,9 +42,9 @@ public class GradeViewModel extends AndroidViewModel {
         return gradeDao.checkGradeId(gradeId);
     }
 
-//    public List<Teacher> getTeachers(){
-//        return teacherDao.getTeachers();
-//    }
+    public int getNumberOfStudentByGrade(String gradeId){
+        return studentDao.getStudentsByGradeId(gradeId).size();
+    }
     public List<Teacher> getTeacherHaveNotGrade(){
         return teacherDao.getTeacherHaveNotGrade();
     }
