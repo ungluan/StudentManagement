@@ -260,6 +260,12 @@ public class AppUtils {
         SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
         return sharedPref.getInt("teacherId", -1);
     }
+
+    public static void deleteTeacherId(Activity activity){
+        SharedPreferences.Editor editor =activity.getPreferences(Context.MODE_PRIVATE).edit();
+        editor.remove("teacherId").apply();
+
+    }
     public static void updateInformation(Activity activity,boolean value){
         SharedPreferences sharedPref = activity.
                 getPreferences(Context.MODE_PRIVATE);

@@ -19,7 +19,7 @@
     <string name="id_of_the_teacher">MGV: %d</string>
     <string name="name_of_the_teacher">Tên: %s</string>
     <string name="phone_of_the_teacher">SDT: %s</string>
-    <string name="account_of_the_teacher">Account: %s</string>
+    <string name="account_of_the_teacher">TK: %s</string>
 
     <string name="id_of_the_account">Mã: %s</string>
     <string name="email_of_the_account"> - Email: %s</string>

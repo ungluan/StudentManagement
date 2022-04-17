@@ -112,7 +112,7 @@ public class TeacherListAdapter extends ListAdapter<Teacher, TeacherListAdapter.
             binding.editTextTeacherPhone.setText(teacher.getPhone());
             binding.editTextTeacherAccount.setText(teacher.getIdAccount() + "");
             if (teacher.getImageUrl().equals("")) {
-                binding.imageviewTeacherDialog.setImageResource(R.drawable.art_class2);
+                binding.imageviewTeacherDialog.setImageResource(R.drawable.no_image);
             } else {
                 try {
                     binding.imageviewTeacherDialog.setImageBitmap(MediaStore.Images.Media.getBitmap(
@@ -131,42 +131,63 @@ public class TeacherListAdapter extends ListAdapter<Teacher, TeacherListAdapter.
 
             });
 
+           Teacher teacherUpdated = checkInput(binding, teacher);
+           AppUtils.deleteCode(CODE);
             binding.btnConfirmAddTeacher.setOnClickListener(view -> {
-                String name = binding.editTextTeacherName.getText().toString();
-                if (name.equals("")) {
-                    binding.textInputTeacherName.setError("Teacher name cannot be blank");
-                    return;
-                }else binding.textInputTeacherName.setErrorEnabled(false);
-
-                String phone = binding.editTextTeacherPhone.getText().toString();;
-                if(name.equals("")){
-                    binding.textInputTeacherName.setError("Teacher phone cannot be blank");
-                    return;
-                }binding.textInputTeacherName.setErrorEnabled(false);
-
-
-                teacher.setTeacherName(name);
-                teacher.setPhone(phone);
-                teacher.setImageUrl(AppUtils.getImageString(CODE));
-
-                AppUtils.deleteCode(CODE);// xóa khỏi map image trong utils
-                boolean success = teacherViewModel.updateTeacher2(teacher);
+                boolean success = teacherViewModel.updateTeacher2(teacherUpdated);
                 if (success) {
-
                     AppUtils.showSuccessDialog(context
-                            , "Update teacher successfully!");
-
+                            , "Cập nhật giáo viên thành công!");
                     teacherListAdapter.submitList(teacherViewModel.getAllTeacher());
                     dialog.dismiss();
                 } else {
                     AppUtils.showErrorDialog(context
-                            , "UPDATE ERROR"
-                            , "Update teacher failed!");
+                            , "Lỗi cập nhật"
+                            , "Cập nhật dữ liệu thất bại!");
                 }
 
             });
-
             dialog.show();
+        }
+
+        public Teacher checkInput(DialogAddTeacherBinding binding, Teacher oldTeacher) {
+            String name = binding.editTextTeacherName.getText().toString();
+            Teacher teacher = new Teacher();
+            if (name.equals("")) {
+                binding.textInputTeacherName.setError("Tên giáo viên không được rỗng");
+            } else binding.textInputTeacherName.setErrorEnabled(false);
+
+            String phone = binding.editTextTeacherPhone.getText().toString();
+            if (phone.equals("")) {
+                binding.textInputTeacherPhone.setError("Số điện thoại giáo viên không được trống");
+            } else {
+
+                if (!phone.matches("0[0-9]{9}")) {
+                    binding.textInputTeacherPhone.setError("Số điện thoại không hợp lệ");
+                }
+                binding.textInputTeacherPhone.setErrorEnabled(false);
+            }
+
+            if (binding.textInputTeacherName.isErrorEnabled() || binding.textInputTeacherPhone.isErrorEnabled()) {
+                return null;
+            } else {
+                if(binding.spinnerAccount.getCount()==0){// no account
+                    String imgString = AppUtils.getImageString(CODE);
+                    if(imgString.equals("")){// dont click choose image then usse old image
+                        teacher.setImageUrl(oldTeacher.getImageUrl());
+                    } else {
+                        teacher.setImageUrl("");
+                    }
+                }else{ // have account
+                    Teacher teacher1 = (Teacher) binding.spinnerAccount.getSelectedItem();
+                    teacher.setIdAccount(teacher1.getIdAccount());
+                }
+
+            }
+
+            teacher.setTeacherName(name);
+            teacher.setPhone(phone);
+            return teacher;
         }
 
 
@@ -177,13 +198,15 @@ public class TeacherListAdapter extends ListAdapter<Teacher, TeacherListAdapter.
             txtTeacherId.setText(getString(R.string.id_of_the_teacher, item.getId()));
             txtTeacherName.setText(getString(R.string.name_of_the_teacher, item.getTeacherName()));
             txtTeacherPhone.setText(getString(R.string.phone_of_the_teacher, item.getPhone()));
-            txtTeacherAccount.setText(getString(R.string.account_of_the_teacher, item.getIdAccount()==0?"Chưa đăng ký":item.getIdAccount()+""));
+            txtTeacherAccount.setText(getString(R.string.account_of_the_teacher, item.getIdAccount()==0?"Chưa có":item.getIdAccount()+""));
             if (!item.getImageUrl().equals("")) {
                 try {
                     imgTeacher.setImageBitmap(MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), Uri.parse(item.getImageUrl())));
                 } catch (Exception e) {
-                    System.out.println("load image teacher:" + e.toString());
+                    System.out.println("load image t    eacher:" + e.toString());
                 }
+            }else{
+                imgTeacher.setImageResource(R.drawable.no_image);
             }
         }
 
@@ -200,7 +223,7 @@ public class TeacherListAdapter extends ListAdapter<Teacher, TeacherListAdapter.
         private void showDelTeacherDialog(Context context, String teacherId) {
             AppUtils.showNotiDialog(
                     context
-                    , "Are you sure delete this teacher?",
+                    , "Bạn có chắc chắc muốn xóa giáo viên"+teacherId+"?",
                     new Callable<Void>() {
                         @Override
                         public Void call() throws Exception {
@@ -214,12 +237,12 @@ public class TeacherListAdapter extends ListAdapter<Teacher, TeacherListAdapter.
                             boolean check = teacherViewModel.deleteTeacher(id);
                             if (check) {
                                 AppUtils.showSuccessDialog(context
-                                        , "Delete teacher successfully!");
+                                        , "Xóa giáo viên "+teacherId+"!");
                                 teacherListAdapter.submitList(teacherViewModel.getAllTeacher());
                             } else {
                                 AppUtils.showErrorDialog(context
-                                        , "DELETE ERROR"
-                                        , "Teacher have more student!");
+                                        , "Lỗi xóa"
+                                        , "Giáo viên đang quản lí lớp!");
                             }
                             return null;
                         }

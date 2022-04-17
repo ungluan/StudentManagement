@@ -44,7 +44,28 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+<<<<<<< HEAD
         binding.btnBack.setOnClickListener(this::navigateToHomePage);
+=======
+        setUpNavigationController();
+        binding.btnBack.setOnClickListener(v -> {
+            NavDirections action = ProfileFragmentDirections.actionProfileFragmentToHomeFragment();
+            Navigation.findNavController(v).navigate(action);
+        });
+        binding.navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.menu_item_log_out:{
+                        AppUtils.deleteTeacherId(requireActivity());
+                        Navigation.findNavController(getView()).navigate(R.id.loginFragment);
+                    }
+                }
+                return false;
+            }
+        });
+
+>>>>>>> e98ce0ef10d1ed91894b476dac53cc0d55cf816b
 
         binding.buttonProfile.setOnClickListener(this::navigateToInformationPage);
         binding.buttonChangePassword.setOnClickListener(this::navigateToChangePasswordPage);
