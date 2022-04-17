@@ -110,7 +110,7 @@ public class TeacherScreenFragment extends Fragment {
         dialog.setContentView(binding.getRoot());
         dialog.getWindow().setBackgroundDrawableResource(R.drawable.bg_white_color);
         imageViewTeacher = binding.imageviewTeacherDialog;
-        binding.dialogTitleAddTeacher.setText("Thêm môn học");
+        binding.dialogTitleAddTeacher.setText("Thêm giáo viêns");
         binding.btnConfirmAddTeacher.setText("LƯU");
         binding.editTextTeacherId.setEnabled(true);
         // load spinner
@@ -176,7 +176,6 @@ public class TeacherScreenFragment extends Fragment {
         }
         if (binding.textInputTeacherName.isErrorEnabled() || binding.textInputTeacherPhone.isErrorEnabled()) {
             return null;
-        } else return new Teacher(name, phone, AppUtils.getImageString(CODE));
-
+        } else return new Teacher(name, phone, AppUtils.getImageString(CODE).equals("")?"":AppUtils.getImageString(CODE));
     }
 }

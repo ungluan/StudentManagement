@@ -133,7 +133,7 @@ public class TeacherDao {
         values.put(DataBaseHelper.COLUMN_TEN_CHU_NHIEM, teacher.getTeacherName());
         values.put(DataBaseHelper.COLUMN_SO_DIEN_THOAI, teacher.getPhone());
         values.put(DataBaseHelper.COLUMN_HINH_ANH, teacher.getImageUrl());
-//        values.put(DataBaseHelper.COLUMN_MA_TAI_KHOAN, teacher.getIdAccount());
+        if(teacher.checkAccount()) values.put(DataBaseHelper.COLUMN_MA_TAI_KHOAN, teacher.getIdAccount());
         return values;
     }
 

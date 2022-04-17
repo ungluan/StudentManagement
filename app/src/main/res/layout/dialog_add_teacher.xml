@@ -191,7 +191,7 @@
                 android:layout_marginTop="10dp"
                 style="@style/CustomTextStyleH2"
                 android:layout_width="wrap_content"
-                android:text="Choose an account"
+                android:text="Chọn tài khoản"
                 android:layout_height="wrap_content">
 
             </TextView>

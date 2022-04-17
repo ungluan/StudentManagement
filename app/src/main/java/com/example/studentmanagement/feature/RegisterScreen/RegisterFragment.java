@@ -28,7 +28,14 @@ public class RegisterFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentRegisterBinding.inflate(inflater);
+//        mockData();
         return binding.getRoot();
+    }
+    private void mockData(){
+        binding.editTextEmail.setText("afs@gmail.com");
+        binding.editTextPhone.setText("0915837119");
+        binding.editTextPassword.setText("123456");
+        binding.editTextRepeatPassword.setText("123456");
     }
 
     @Override

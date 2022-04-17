@@ -34,6 +34,21 @@ public class Teacher {
         this.imageUrl = imageUrl;
     }
 
+    public Teacher(String teacherName, String phone, String imageUrl, int idAccount) {
+        this.teacherName = teacherName;
+        this.phone = phone;
+        this.imageUrl = imageUrl;
+        this.idAccount = idAccount;
+    }
+
+    public boolean checkAccount(){
+        try{
+            getIdAccount();
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+    }
     public int getId() {
         return id;
     }

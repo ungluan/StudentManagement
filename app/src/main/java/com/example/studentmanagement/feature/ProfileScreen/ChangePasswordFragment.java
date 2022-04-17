@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 
 import com.example.studentmanagement.R;
 import com.example.studentmanagement.databinding.FragmentChangePasswordBinding;
+import com.example.studentmanagement.feature.loginScreen.LoginViewModel;
 import com.example.studentmanagement.utils.AppUtils;
 
 
@@ -25,7 +26,7 @@ public class ChangePasswordFragment extends Fragment {
     private FragmentChangePasswordBinding binding;
     private ChangePasswordViewModel changePasswordViewModel;
     private boolean isForgetPassword;
-
+    private LoginViewModel loginViewModel;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -38,8 +39,8 @@ public class ChangePasswordFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         changePasswordViewModel = new ViewModelProvider(requireActivity()).get(ChangePasswordViewModel.class);
         isForgetPassword = changePasswordViewModel.isForgotPassword();
-        if(!isForgetPassword) binding.editTextOldPassword.setVisibility(View.VISIBLE);
-        else binding.editTextOldPassword.setVisibility(View.INVISIBLE);
+        if(!isForgetPassword) binding.textInputLayoutOldPassword.setVisibility(View.VISIBLE);
+        else binding.textInputLayoutOldPassword.setVisibility(View.INVISIBLE);
 
         if(!isForgetPassword) binding.editTextOldPassword.addTextChangedListener(new TextWatcher() {
             @Override
@@ -122,7 +123,7 @@ public class ChangePasswordFragment extends Fragment {
             String newPassword = binding.editTextNewPassword.getText().toString();
             String repeatPassword = binding.editTextRepeatPassword.getText().toString();
 
-            if (oldPassword.isEmpty())
+            if (!isForgetPassword && oldPassword.isEmpty())
                 binding.textInputLayoutOldPassword.setError("Vui lòng nhập mật khẩu hiện tại.");
             if (newPassword.isEmpty())
                 binding.textInputLayoutNewPassword.setError("Vui lòng nhập mật khẩu mới.");
@@ -133,7 +134,7 @@ public class ChangePasswordFragment extends Fragment {
             boolean b2 = !binding.textInputLayoutNewPassword.isErrorEnabled();
             boolean b3 = !binding.textInputLayoutRepeatPassword.isErrorEnabled();
             if (b1 && b2 && b3) {
-                if (!changePasswordViewModel.checkPassword(AppUtils.getTeacherId(requireActivity()), oldPassword))
+                if (!isForgetPassword && !changePasswordViewModel.checkPassword(AppUtils.getTeacherId(requireActivity()), oldPassword))
                     binding.textInputLayoutOldPassword.setError("Mật khẩu không trùng khớp với mật khẩu hiện tại.");
                 else {
                     int accountId = changePasswordViewModel.getAccountIdByTeacherId(
@@ -142,12 +143,24 @@ public class ChangePasswordFragment extends Fragment {
                     AppUtils.showNotificationDialog(requireContext(),
                             "Đổi mật khẩu thành công",
                             "", () -> {
-                                NavDirections action = ChangePasswordFragmentDirections.actionChangePasswordFragmentToProfileFragment();
-                                Navigation.findNavController(v).navigate(action);
+                                if(!isForgetPassword) navigateToProfilePage(view);
+                                else {
+                                    loginViewModel = new ViewModelProvider(requireActivity()).get(LoginViewModel.class);
+                                    loginViewModel.saveInformation(loginViewModel.getEmail(), binding.editTextNewPassword.getText().toString());
+                                    navigateToLoginPage(view);
+                                }
                                 return null;
                             });
                 }
             }
         });
+    }
+    private void navigateToLoginPage(View view){
+        NavDirections action = ChangePasswordFragmentDirections.actionChangePasswordFragmentToLoginFragment();
+        Navigation.findNavController(view).navigate(action);
+    }
+    private void navigateToProfilePage(View view){
+        NavDirections action = ChangePasswordFragmentDirections.actionChangePasswordFragmentToProfileFragment();
+        Navigation.findNavController(view).navigate(action);
     }
 }
