@@ -28,7 +28,7 @@ public class SubjectDao {
     }
 
     public Boolean insertSubject(Subject subject) {
-        return dataBaseHelper.insert(DataBaseHelper.TABLE_MON_HOC, values(subject));
+        return dataBaseHelper.insert2(DataBaseHelper.TABLE_MON_HOC, values(subject));
     }
 
     public Boolean updateSubject(Subject subject) {

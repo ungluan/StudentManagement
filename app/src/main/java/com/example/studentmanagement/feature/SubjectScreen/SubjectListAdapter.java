@@ -126,6 +126,7 @@ public class SubjectListAdapter extends ListAdapter<Subject, SubjectListAdapter.
                 String name = binding.editTextSubjectName.getText().toString();
                 if (name.equals("")) {
                     binding.textInputSubjectName.setError("Tên môn học không được để trống");
+                    binding.editTextSubjectName.requestFocus();
                     return;
                 }
                 binding.textInputSubjectName.setErrorEnabled(false);
@@ -133,12 +134,11 @@ public class SubjectListAdapter extends ListAdapter<Subject, SubjectListAdapter.
                 try {
                     factor = Integer.parseInt(binding.editTextSubjectCoefficient
                             .getText().toString());
-                    if(factor>=0 || factor >=3) {
-                        binding.textInputSubjectId.setError("Hệ số từ 1 đến 2");
+                    if(factor<=0 || factor >=3) {
+                        binding.textInputSubjectCoefficient.setError("Hệ số từ 1 đến 2");
+                        binding.editTextSubjectCoefficient.requestFocus();
                         return;
-                    }
-
-                    binding.textInputSubjectCoefficient.setErrorEnabled(false);
+                    }else  binding.textInputSubjectCoefficient.setErrorEnabled(false);
                 } catch (Exception e) {
                     binding.textInputSubjectCoefficient.setError("Hệ số phải là 1 số nguyên");
                     return;
@@ -195,6 +195,8 @@ public class SubjectListAdapter extends ListAdapter<Subject, SubjectListAdapter.
                 } catch (Exception e) {
                     System.out.println("load image subject:" + e.getMessage());
                 }
+            }else {
+                imgSubject.setImageResource(R.drawable.no_image);
             }
         }
 

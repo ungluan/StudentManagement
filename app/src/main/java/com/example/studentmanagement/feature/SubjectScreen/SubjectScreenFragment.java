@@ -147,19 +147,26 @@ public class SubjectScreenFragment extends Fragment {
             }else binding.textInputSubjectId.setErrorEnabled(false);
 
             String name = binding.editTextSubjectName.getText().toString();
-            if(name.equals("")){
-                binding.textInputSubjectName.setError("Subject name cannot be blank");
-                return;
-            }binding.textInputSubjectName.setErrorEnabled(false);
-            int factor;
-            try{
-               factor = Integer.parseInt(binding.editTextSubjectCoefficient
-                        .getText().toString());
-                binding.textInputSubjectCoefficient.setErrorEnabled(false);
-            }catch (Exception e){
-                binding.textInputSubjectCoefficient.setError("Subject coefficient cannot be blank or not an integer");
+            if (name.equals("")) {
+                binding.textInputSubjectName.setError("Tên môn học không được để trống");
+                binding.editTextSubjectName.requestFocus();
                 return;
             }
+            binding.textInputSubjectName.setErrorEnabled(false);
+            int factor;
+            try {
+                factor = Integer.parseInt(binding.editTextSubjectCoefficient
+                        .getText().toString());
+                if(factor<=0 || factor >=3) {
+                    binding.textInputSubjectCoefficient.setError("Hệ số từ 1 đến 2");
+                    binding.editTextSubjectCoefficient.requestFocus();
+                    return;
+                }else  binding.textInputSubjectCoefficient.setErrorEnabled(false);
+            } catch (Exception e) {
+                binding.textInputSubjectCoefficient.setError("Hệ số phải là 1 số nguyên");
+                return;
+            }
+
 
             // set normal
 
@@ -167,13 +174,18 @@ public class SubjectScreenFragment extends Fragment {
 
 
 
-            Subject subject = new Subject(id, name, factor, AppUtils.getImageString(CODE));
-            AppUtils.deleteCode(CODE);
+            Subject subject = new Subject(id, name, factor);
+            if(!AppUtils.getImageString(CODE).equals("")){ // have image
+                subject.setImage(AppUtils.getImageString(CODE));
+                AppUtils.deleteCode(CODE);
+
+            }
+
             // check constraint
 
 
 
-            boolean success = subjectViewModel.insertSubejct(subject);
+            boolean success = subjectViewModel.insertSubject(subject);
             if (success) {
                 AppUtils.showSuccessDialog(context
                         , "Thêm thành công");
@@ -182,8 +194,8 @@ public class SubjectScreenFragment extends Fragment {
 
             } else {
                 AppUtils.showErrorDialog(context
-                        , "INSERT FAILED",
-                        "Subject id have conflict");
+                        , "Thêm thất bại",
+                        "Mã môn học bị trùng");
             }
 
         });

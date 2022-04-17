@@ -22,7 +22,7 @@ public class SubjectViewModel extends AndroidViewModel {
 
     public List<Subject> getAllSubject(){return subjectDao.getSubjects();}
 
-    public boolean insertSubejct(Subject subject){
+    public boolean insertSubject(Subject subject){
         return subjectDao.insertSubject(subject);
     }
 

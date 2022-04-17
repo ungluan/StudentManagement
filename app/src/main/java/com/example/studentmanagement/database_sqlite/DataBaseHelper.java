@@ -213,6 +213,11 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return db.insertOrThrow(tableName, null, values) > 0;
     }
 
+    public boolean insert2(String tableName, ContentValues values) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.insert(tableName, null, values) > 0;
+    }
+
     public boolean update(String tableName, String whereClause,
                           ContentValues values, String[] whereArgs) {
         SQLiteDatabase db = this.getWritableDatabase();
