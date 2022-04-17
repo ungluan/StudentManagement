@@ -118,7 +118,7 @@ public class OtpFragment extends Fragment {
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(DataBaseHelper.databaseExecutor, new OnCompleteListener<AuthResult>() {
                     @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
+                    public void onComplete( Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
@@ -200,14 +200,14 @@ public class OtpFragment extends Fragment {
                         .setActivity(requireActivity())                 // Activity (for callback binding)
                         .setCallbacks(new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
                             @Override
-                            public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
+                            public void onVerificationCompleted( PhoneAuthCredential phoneAuthCredential) {
                                 Log.d("OtpFragment","onVerificationCompleted");
                                 if(registerViewModel.isRegisterPage()) handleCreateAccount(view);
                                 else handleForgetPassword(view);
                             }
 
                             @Override
-                            public void onVerificationFailed(@NonNull FirebaseException e) {
+                            public void onVerificationFailed( FirebaseException e) {
                                 Log.d("OtpFragment","onVerificationFailed" +e.getMessage());
                                 System.out.println("'"+e.getMessage()+"'");
                                 if(e.getMessage().equals("We have blocked all requests from this device due to unusual activity. Try again later.")
@@ -222,7 +222,7 @@ public class OtpFragment extends Fragment {
                             }
 
                             @Override
-                            public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
+                            public void onCodeSent( String s,  PhoneAuthProvider.ForceResendingToken forceResendingToken) {
                                 super.onCodeSent(s, forceResendingToken);
                                 mTimer.start();
                                 Log.d("OtpFragment","onCodeSent");
@@ -234,7 +234,7 @@ public class OtpFragment extends Fragment {
                                 binding.txtResendOtp.setTextColor(0xFF808080);
                             }
                             @Override
-                            public void onCodeAutoRetrievalTimeOut(@NonNull String s) {
+                            public void onCodeAutoRetrievalTimeOut( String s) {
                                 super.onCodeAutoRetrievalTimeOut(s);
                                 binding.btnConfirm.setEnabled(false);
                                 binding.txtResendOtp.setEnabled(true);

@@ -43,11 +43,36 @@ public class RegisterFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         registerViewModel = new ViewModelProvider(requireActivity()).get(RegisterViewModel.class);
         registerViewModel.setIsRegisterPage(true);
-        binding.btnBack.setOnClickListener(v -> {
-            NavDirections action = RegisterFragmentDirections.actionRegisterFragmentToLoginFragment();
-            Navigation.findNavController(v).navigate(action);
-        });
 
+        handleInputTextFields();
+
+        binding.btnBack.setOnClickListener(v -> navigateToLoginPage(view));
+
+
+        binding.btnRegister.setOnClickListener(v -> {
+            String email = String.valueOf(binding.editTextEmail.getText());
+            String password = String.valueOf(binding.editTextPassword.getText());
+            String repeatPassword = String.valueOf(binding.editTextRepeatPassword.getText());
+            String phone = String.valueOf(binding.editTextPhone.getText());
+
+            validator(email,password,repeatPassword,phone);
+
+           if(!binding.textInputLayoutEmail.isErrorEnabled() && !binding.textInputLayoutPassword.isErrorEnabled()
+            && !binding.textInputLayoutRepeatPassword.isErrorEnabled() && !binding.textInputLayoutPhone.isErrorEnabled()){
+                registerViewModel.saveInformationRegister(phone,email,password);
+                navigateToOTPPage(v);
+            }
+        });
+    }
+    private void navigateToLoginPage(View view){
+        NavDirections action = RegisterFragmentDirections.actionRegisterFragmentToLoginFragment();
+        Navigation.findNavController(view).navigate(action);
+    }
+    private void navigateToOTPPage(View view){
+        NavDirections action = RegisterFragmentDirections.actionRegisterFragmentToOtpFragment();
+        Navigation.findNavController(view).navigate(action);
+    }
+    private void handleInputTextFields(){
         binding.editTextEmail.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -121,7 +146,7 @@ public class RegisterFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if(s.length()!=10 || s.charAt(0) != '0' )
-                    binding.textInputLayoutPhone.setError("Số điện thoại không hợp lệ.");
+                    binding.textInputLayoutPhone.setError(getString(R.string.validate_phone_01));
                 else binding.textInputLayoutPhone.setErrorEnabled(false);
             }
 
@@ -130,44 +155,19 @@ public class RegisterFragment extends Fragment {
 
             }
         });
-
-        binding.btnRegister.setOnClickListener(v -> {
-            String email = binding.editTextEmail.getText().toString();
-            String password = binding.editTextPassword.getText().toString();
-            String repeatPassword = binding.editTextRepeatPassword.getText().toString();
-            String phone = binding.editTextPhone.getText().toString();
-
-            if(email.isEmpty()) binding.textInputLayoutEmail.setError("Email không được trống.");
-            if(password.isEmpty()) binding.textInputLayoutPassword.setError("Mật khẩu không được trống.");
-            if(repeatPassword.isEmpty()) binding.textInputLayoutRepeatPassword.setError("Nhập lại mật khẩu không được trống.");
-            if(phone.isEmpty()) binding.textInputLayoutPhone.setError("Số điện thoại không được trống");
-            // Check email existed?
-            if(!binding.textInputLayoutEmail.isErrorEnabled() &&
-                    registerViewModel.checkExistedEmail(email))
-                binding.textInputLayoutEmail.setError("Email đã tồn tại.");
-            // Check phone existed?
-            if(!binding.textInputLayoutPhone.isErrorEnabled() &&
-                    registerViewModel.checkExistedPhone(phone))
-                binding.textInputLayoutPhone.setError("Số điện thoại đã tồn tại.");
-            // Số điện thoại này đã có tài khoản nào đăng ký chưa
-            if(!binding.textInputLayoutEmail.isErrorEnabled() && !binding.textInputLayoutPassword.isErrorEnabled()
-            && !binding.textInputLayoutRepeatPassword.isErrorEnabled() && !binding.textInputLayoutPhone.isErrorEnabled()){
-                // SĐT 2 trường hợp:
-                // TH1: Đã đăng ký cho giáo viên nhưng chưa tạo tài khoản
-                // TH2: Và chưa đăng ký gì cả
-
-                // Nhảy quả OTP_page ==> Nếu TH1: Nhảy thẳng vào Home
-                // ===> TH2: Nhảy vào UpdateProfilePage "Hinh anh - Ten"
-
-                //=======> Cứ tạo Teacher Và Account như bình thường
-                //=======> Login thành công sẽ phải kiểm tra
-                // TH1: gv này đã có đầy đủ thông tin chưa ? Chưa thì cập nhật : Nhảy vào Home
-
-                // Logic - SendOTP -> Navigate to OTP_Page
-                registerViewModel.saveInformationRegister(phone,email,password);
-                NavDirections action = RegisterFragmentDirections.actionRegisterFragmentToOtpFragment();
-                Navigation.findNavController(v).navigate(action);
-            }
-        });
+    }
+    private void validator(String email, String password, String repeatPassword, String phone){
+        if(email.isEmpty()) binding.textInputLayoutEmail.setError("Email không được trống.");
+        if(password.isEmpty()) binding.textInputLayoutPassword.setError("Mật khẩu không được trống.");
+        if(repeatPassword.isEmpty()) binding.textInputLayoutRepeatPassword.setError("Nhập lại mật khẩu không được trống.");
+        if(phone.isEmpty()) binding.textInputLayoutPhone.setError("Số điện thoại không được trống");
+        // Check email existed?
+        if(!binding.textInputLayoutEmail.isErrorEnabled() &&
+                registerViewModel.checkExistedEmail(email))
+            binding.textInputLayoutEmail.setError("Email đã tồn tại.");
+        // Check phone existed?
+        if(!binding.textInputLayoutPhone.isErrorEnabled() &&
+                registerViewModel.checkExistedPhone(phone))
+            binding.textInputLayoutPhone.setError("Số điện thoại đã tồn tại.");
     }
 }
