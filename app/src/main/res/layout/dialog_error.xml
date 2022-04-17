@@ -26,39 +26,32 @@
 
 
         <TextView
+            style="@style/CustomTextStyleH1"
             android:id="@+id/txt_title_error"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:textStyle="bold"
-            android:text="Save error"
-            android:textColor="@android:color/black"
-            android:textSize="20sp" />
+            android:text="Save error" />
 
         <TextView
-
+            style="@style/CustomTextStyleH2"
             android:id="@+id/txt_content_error"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Opp! Something wrong, try one more time"
-            android:textColor="@android:color/black"
-            android:textSize="18sp" />
+            android:text="Opp! Something wrong, try one more time" />
 
         <Button
             android:id="@+id/btn_try_again_error"
-            android:layout_width="180dp"
-            android:layout_height="50dp"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            style="@style/CustomButton"
+            android:background="@drawable/background_button_red"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="15dp"
-            android:background="@drawable/background_red"
             android:layout_marginBottom="20dp"
-            android:text="Try again"
-            android:backgroundTint="@color/secondary_red"
-            android:textColor="@color/white"
-            android:textSize="20sp"
-
-            android:textStyle="bold" />
+            android:text="Đóng"
+             />
 
 
     </LinearLayout>

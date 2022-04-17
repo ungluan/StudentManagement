@@ -23,7 +23,7 @@
             android:textColor="@color/color_secondary_blue_variant_darker"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Thêm giáo vien"
+            android:text="Thêm giáo viên"
             android:layout_marginTop="18dp"
             android:layout_marginBottom="18dp"
             >
@@ -42,16 +42,24 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/imageview_teacher_dialog"
-                android:layout_width="200dp"
-                android:layout_height="150dp"
-                android:layout_centerHorizontal="true"
-                android:background="@color/blue_200"
-                android:scaleType="centerCrop"
-                android:src="@drawable/back_to_school">
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_view_image_teacher"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true">
 
-            </ImageView>
+                <ImageView
+                    android:id="@+id/imageview_teacher_dialog"
+                    android:layout_width="200dp"
+                    android:layout_height="150dp"
+
+                    android:background="@android:color/transparent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/no_image">
+
+                </ImageView>
+            </androidx.cardview.widget.CardView>
+
 
             <!--            <RelativeLayout-->
             <!--                android:layout_width="wrap_content"-->
@@ -82,9 +90,9 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/imageview_teacher_dialog"
-                android:layout_alignStart="@id/imageview_teacher_dialog"
-                android:layout_alignEnd="@+id/imageview_teacher_dialog">
+                android:layout_below="@+id/card_view_image_teacher"
+                android:layout_alignStart="@id/card_view_image_teacher"
+                android:layout_alignEnd="@+id/card_view_image_teacher">
 
                 <ImageView
                     android:id="@+id/btn_choose_image_teacher"
@@ -158,6 +166,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:enabled="false"
+            android:visibility="gone"
             android:id="@+id/text_input_teacher_account"
             android:layout_width="match_parent"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -167,15 +176,35 @@
             app:hintEnabled="true"
             app:startIconCheckable="true"
             android:layout_height="wrap_content">
+
             <com.google.android.material.textfield.TextInputEditText
-               android:enabled="false"
                 android:id="@+id/edit_text_teacher_account"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:enabled="false"
                 android:inputType="number">
 
             </com.google.android.material.textfield.TextInputEditText>
         </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:layout_marginTop="10dp"
+                style="@style/CustomTextStyleH2"
+                android:layout_width="wrap_content"
+                android:text="Choose an account"
+                android:layout_height="wrap_content">
+
+            </TextView>
+            <Spinner
+                android:id="@+id/spinner_account"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_spinner_account"
+                android:dropDownVerticalOffset="20dp">
+
+            </Spinner>
+
+
 
         <LinearLayout
             android:layout_marginTop="20dp"
@@ -183,6 +212,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+
             <Button
                 android:id="@+id/btn_cancel_add_teacher"
                 android:text="HỦY"

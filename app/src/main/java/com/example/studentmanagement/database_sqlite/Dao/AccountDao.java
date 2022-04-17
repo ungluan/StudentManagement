@@ -5,9 +5,6 @@ import android.content.ContentValues;
 import android.database.Cursor;
 
 import com.example.studentmanagement.database.entity.Account;
-import com.example.studentmanagement.database.entity.Mark;
-import com.example.studentmanagement.database.entity.Student;
-import com.example.studentmanagement.database.entity.Teacher;
 import com.example.studentmanagement.database_sqlite.DataBaseHelper;
 
 import java.util.ArrayList;
@@ -118,15 +115,32 @@ public class AccountDao {
         if(cursor.moveToFirst()){
             accountId = cursor.getInt(0);
         }
-        return accountId != -1 ;
+        return accountId != -1;
     }
 
     public ContentValues values(Account account, boolean noId) {
         ContentValues values = new ContentValues();
-        if(!noId) values.put(DataBaseHelper.COLUMN_MA_TAI_KHOAN, account.getId());
+        if (!noId) values.put(DataBaseHelper.COLUMN_MA_TAI_KHOAN, account.getId());
         values.put(DataBaseHelper.COLUMN_EMAIL, account.getEmail());
         values.put(DataBaseHelper.COLUMN_MAT_KHAU, account.getPassword());
         return values;
+    }
+
+    public List<Account> getAccountNotInTeacher() {
+        List<Account> accountList = new ArrayList<>();
+        String sql = "SELECT * FROM " + DataBaseHelper.TABLE_TAI_KHOAN +
+                " WHERE NOT EXISTS(SELECT * FROM " + DataBaseHelper.TABLE_GVCN +
+                " WHERE " + DataBaseHelper.TABLE_TAI_KHOAN + "." + DataBaseHelper.COLUMN_MA_TAI_KHOAN +
+                "=" + DataBaseHelper.TABLE_GVCN + "." + DataBaseHelper.COLUMN_MA_TAI_KHOAN + ")";
+        Cursor cursor = dataBaseHelper.query(sql, null);
+        while (cursor.moveToNext()) {
+            accountList.add(new Account(
+                    cursor.getInt(0),
+                    cursor.getString(1),
+                    cursor.getString(2)));
+        }
+
+        return accountList;
     }
 
 }

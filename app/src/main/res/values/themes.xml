@@ -44,10 +44,22 @@
         <item name="colorPrimary">@color/secondary_orange</item>
     </style>
 
-    <style name="DialogStyle2" parent="Theme.AppCompat.Dialog">
+    <style name="CustomDialogStyleNotification" parent="Theme.AppCompat.Dialog">
         <item name="android:windowMinWidthMajor">100%</item>
         <item name="android:windowMinWidthMinor">100%</item>
-        <item name="colorPrimary">@color/color_primary_variant_lighter</item>
+        <item name="colorPrimary">@color/yellow_800</item>
+    </style>
+
+    <style name="CustomDialogStyleError" parent="Theme.AppCompat.Dialog">
+        <item name="android:windowMinWidthMajor">100%</item>
+        <item name="android:windowMinWidthMinor">100%</item>
+        <item name="colorPrimary">@color/secondary_red</item>
+    </style>
+
+    <style name="CustomDialogStyleSuccess" parent="Theme.AppCompat.Dialog">
+        <item name="android:windowMinWidthMajor">100%</item>
+        <item name="android:windowMinWidthMinor">100%</item>
+        <item name="colorPrimary">@color/primary_color</item>
     </style>
 
     <!--    Custom chip-->
@@ -88,5 +100,10 @@
         <item name="colorPrimary">@color/orange_500</item>
     </style>
 
-
+<!--    Button-->
+    <style name="CustomButton" parent="Widget.MaterialComponents.Button">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">20sp</item>
+    </style>
 </resources>

@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
@@ -23,8 +22,6 @@ import com.example.studentmanagement.databinding.DialogAddTeacherBinding;
 import com.example.studentmanagement.utils.AppUtils;
 import com.omega_r.libs.omegarecyclerview.swipe_menu.SwipeViewHolder;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.Callable;
 
 public class TeacherListAdapter extends ListAdapter<Teacher, TeacherListAdapter.TeacherViewHolder> {
@@ -38,7 +35,6 @@ public class TeacherListAdapter extends ListAdapter<Teacher, TeacherListAdapter.
         super(diffCallback);
         this.teacherViewModel = teacherViewModel;
     }
-
 
     @NonNull
     @Override
@@ -107,11 +103,9 @@ public class TeacherListAdapter extends ListAdapter<Teacher, TeacherListAdapter.
                 Log.e("parse:", e.getMessage());
 
             }
-
-
             Teacher teacher = teacherViewModel.getTeacherById(id);
             if (teacher == null) return;
-            // get data
+            // binding data to dialog update
 
             binding.editTextTeacherId.setText(teacher.getId() + "");
             binding.editTextTeacherName.setText(teacher.getTeacherName());
@@ -156,7 +150,7 @@ public class TeacherListAdapter extends ListAdapter<Teacher, TeacherListAdapter.
                 teacher.setImageUrl(AppUtils.getImageString(CODE));
 
                 AppUtils.deleteCode(CODE);// xóa khỏi map image trong utils
-                boolean success = teacherViewModel.updateTeacher(teacher);
+                boolean success = teacherViewModel.updateTeacher2(teacher);
                 if (success) {
 
                     AppUtils.showSuccessDialog(context

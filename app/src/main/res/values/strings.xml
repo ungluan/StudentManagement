@@ -21,6 +21,10 @@
     <string name="phone_of_the_teacher">SDT: %s</string>
     <string name="account_of_the_teacher">Account: %s</string>
 
+    <string name="id_of_the_account">Mã: %s</string>
+    <string name="email_of_the_account"> - Email: %s</string>
+
+    <string name="account_item">(%4s)-%s</string>
 
     <string name="id_teacher">Id: %d</string>
     <string name="register">Đăng ký</string>

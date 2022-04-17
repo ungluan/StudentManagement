@@ -140,36 +140,36 @@ public class LoginFragment extends Fragment {
 //        });
 
         //pass login
-//        binding.btnLogin.setOnClickListener(v->{
-//            Navigation.findNavController(v).navigate(R.id.homeFragment);
-//        });
-        //pass login
-        binding.btnLogin.setOnClickListener(v -> {
-            String email = String.valueOf(binding.editTextEmail.getText());
-            String password = String.valueOf(binding.editTextPassword.getText());
-            if(!email.isEmpty() && !password.isEmpty()
-                && !binding.textInputLayoutEmail.isErrorEnabled()
-                && !binding.textInputLayoutPassword.isErrorEnabled()
-            ){
-                if(loginViewModel.login(email,password)){
-                    Toast.makeText(getContext(), "Login Thành công", Toast.LENGTH_SHORT).show();
-                    int teacherId = loginViewModel.getTeacherIdByEmail(email);
-                    updateTeacherId(requireActivity(),teacherId);
-                    sendEmail();
-                    if (loginViewModel.isUpdateInformation(teacherId)) {
-                        navigateToHomePage();
-                    } else {
-                        navigateToUpdateProfilePage(v);
-                    }
-                }else{
-                    showNotificationDialog(requireContext(),"Đăng nhập thất bại",
-                            "Tài khoản hoặc mật khẩu không chính xác. Vui lòng kiểm tra lại.",null);
-                }
-            }else{
-                if(email.isEmpty()) binding.textInputLayoutEmail.setError("Email không được trống.");
-                if(password.isEmpty()) binding.textInputLayoutPassword.setError("Mật khẩu không được trống.");
-            }
+        binding.btnLogin.setOnClickListener(v->{
+            Navigation.findNavController(v).navigate(R.id.homeFragment);
         });
+        //pass login
+//        binding.btnLogin.setOnClickListener(v -> {
+//            String email = String.valueOf(binding.editTextEmail.getText());
+//            String password = String.valueOf(binding.editTextPassword.getText());
+//            if(!email.isEmpty() && !password.isEmpty()
+//                && !binding.textInputLayoutEmail.isErrorEnabled()
+//                && !binding.textInputLayoutPassword.isErrorEnabled()
+//            ){
+//                if(loginViewModel.login(email,password)){
+//                    Toast.makeText(getContext(), "Login Thành công", Toast.LENGTH_SHORT).show();
+//                    int teacherId = loginViewModel.getTeacherIdByEmail(email);
+//                    updateTeacherId(requireActivity(),teacherId);
+//                    sendEmail();
+//                    if (loginViewModel.isUpdateInformation(teacherId)) {
+//                        navigateToHomePage();
+//                    } else {
+//                        navigateToUpdateProfilePage(v);
+//                    }
+//                }else{
+//                    showNotificationDialog(requireContext(),"Đăng nhập thất bại",
+//                            "Tài khoản hoặc mật khẩu không chính xác. Vui lòng kiểm tra lại.",null);
+//                }
+//            }else{
+//                if(email.isEmpty()) binding.textInputLayoutEmail.setError("Email không được trống.");
+//                if(password.isEmpty()) binding.textInputLayoutPassword.setError("Mật khẩu không được trống.");
+//            }
+//        });
         binding.txtRegister.setOnClickListener(v -> {
             NavDirections action = LoginFragmentDirections.actionLoginFragmentToRegisterFragment();
             Navigation.findNavController(v).navigate(action);

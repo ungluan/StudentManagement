@@ -136,7 +136,7 @@ public class AppUtils {
             String content,
             Callable<Void> actionAccept
     ) {
-        Dialog dialog = new Dialog(context, R.style.DialogStyle);
+        Dialog dialog = new Dialog(context, R.style.CustomDialogStyleNotification);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_notification);
         TextView txtContentNoti = dialog.findViewById(R.id.txt_content_noti);
@@ -172,7 +172,7 @@ public class AppUtils {
             Context context,
             String content
     ) {
-        Dialog dialog = new Dialog(context, R.style.DialogStyle);
+        Dialog dialog = new Dialog(context, R.style.CustomDialogStyleSuccess);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_success);
         TextView txtContentSuccess = dialog.findViewById(R.id.txt_content_success);
@@ -197,7 +197,7 @@ public class AppUtils {
             String title,
             String content
     ) {
-        Dialog dialog = new Dialog(context, R.style.DialogStyle);
+        Dialog dialog = new Dialog(context, R.style.CustomDialogStyleError);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_error);
         TextView txtTitleError = dialog.findViewById(R.id.txt_title_error);

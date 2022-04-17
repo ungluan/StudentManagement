@@ -108,19 +108,19 @@ public class TeacherDao {
 
     }
 
-//    public Boolean insertTeacher(Teacher teacher) {
-//        ContentValues values = new ContentValues();
-//        values.put(DataBaseHelper.COLUMN_TEN_CHU_NHIEM, teacher.getTeacherName());
-//        values.put(DataBaseHelper.COLUMN_SO_DIEN_THOAI, teacher.getPhone());
-//        values.put(DataBaseHelper.COLUMN_HINH_ANH, teacher.getImageUrl());
-//        return dataBaseHelper.insert(DataBaseHelper.TABLE_GVCN, values);
-//    }
-//
-//    public Boolean updateTeacher(Teacher teacher) {
-//        return dataBaseHelper.update(DataBaseHelper.TABLE_GVCN,
-//                DataBaseHelper.COLUMN_MA_CHU_NHIEM + "=" + teacher.getId(),
-//                values(teacher), null);
-//    }
+    public Boolean insertTeacher2(Teacher teacher) {
+        ContentValues values = new ContentValues();
+        values.put(DataBaseHelper.COLUMN_TEN_CHU_NHIEM, teacher.getTeacherName());
+        values.put(DataBaseHelper.COLUMN_SO_DIEN_THOAI, teacher.getPhone());
+        values.put(DataBaseHelper.COLUMN_HINH_ANH, teacher.getImageUrl());
+        return dataBaseHelper.insert(DataBaseHelper.TABLE_GVCN, values);
+    }
+
+    public Boolean updateTeacher2(Teacher teacher) {
+        return dataBaseHelper.update(DataBaseHelper.TABLE_GVCN,
+                DataBaseHelper.COLUMN_MA_CHU_NHIEM + "=" + teacher.getId(),
+                values(teacher), null);
+    }
 
     public Boolean deleteTeacher(int teacherId) {
         return dataBaseHelper.delete(DataBaseHelper.TABLE_GVCN,

@@ -106,7 +106,7 @@ public class SubjectListAdapter extends ListAdapter<Subject, SubjectListAdapter.
             binding.editTextSubjectName.setText(subject.getSubjectName());
             binding.editTextSubjectCoefficient.setText(subject.getCoefficient()+"");
             if(subject.getImage().equals("")){
-                binding.imageviewSubjectDialog.setImageResource(R.drawable.art_class2);
+                binding.imageviewSubjectDialog.setImageResource(R.drawable.no_image);
             }else {
                 try {
                     binding.imageviewSubjectDialog.setImageBitmap(MediaStore.Images.Media.getBitmap(
@@ -116,7 +116,6 @@ public class SubjectListAdapter extends ListAdapter<Subject, SubjectListAdapter.
                 }
             }
 
-
             binding.btnCancelAddSubject.setOnClickListener(v -> dialog.dismiss());
 
             binding.btnChooseImageSubject.setOnClickListener(v -> {
@@ -124,11 +123,9 @@ public class SubjectListAdapter extends ListAdapter<Subject, SubjectListAdapter.
             });
 
             binding.btnConfirmAddSubject.setOnClickListener(view -> {
-
-
                 String name = binding.editTextSubjectName.getText().toString();
                 if (name.equals("")) {
-                    binding.textInputSubjectName.setError("Subject name cannot be blank");
+                    binding.textInputSubjectName.setError("Tên môn học không được để trống");
                     return;
                 }
                 binding.textInputSubjectName.setErrorEnabled(false);
@@ -136,9 +133,14 @@ public class SubjectListAdapter extends ListAdapter<Subject, SubjectListAdapter.
                 try {
                     factor = Integer.parseInt(binding.editTextSubjectCoefficient
                             .getText().toString());
+                    if(factor>=0 || factor >=3) {
+                        binding.textInputSubjectId.setError("Hệ số từ 1 đến 2");
+                        return;
+                    }
+
                     binding.textInputSubjectCoefficient.setErrorEnabled(false);
                 } catch (Exception e) {
-                    binding.textInputSubjectCoefficient.setError("Subject coefficient cannot be blank or not an integer");
+                    binding.textInputSubjectCoefficient.setError("Hệ số phải là 1 số nguyên");
                     return;
                 }
 
@@ -153,16 +155,15 @@ public class SubjectListAdapter extends ListAdapter<Subject, SubjectListAdapter.
 
                 boolean success = subjectViewModel.updateSubject(subject);
                 if (success) {
-
                     AppUtils.showSuccessDialog(context
-                            , "Update subject successfully!");
+                            , "Cập nhật môn học thành công!");
 
                     subjectListAdapter.submitList(subjectViewModel.getAllSubject());
                     dialog.dismiss();
                 } else {
                     AppUtils.showErrorDialog(context
-                                    , "UPDATE ERROR"
-                                    , "Update subject failed!");
+                                    , "Lỗi cập nhật"
+                                    , "Lỗi thực thi lệnh cập nhật!");
                         }
 
                     });
@@ -192,7 +193,7 @@ public class SubjectListAdapter extends ListAdapter<Subject, SubjectListAdapter.
                     imgSubject.setImageBitmap(MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), Uri.parse(item.getImage())));
 
                 } catch (Exception e) {
-                    System.out.println("load image subject:" + e.toString());
+                    System.out.println("load image subject:" + e.getMessage());
                 }
             }
         }
@@ -210,19 +211,19 @@ public class SubjectListAdapter extends ListAdapter<Subject, SubjectListAdapter.
         private void showDelSubjectDialog(Context context, String subjectId) {
              AppUtils.showNotiDialog(
                      context
-                     , "Are you sure delete this subject?",
+                     , "Bạn có chắc muốn xóa môn học "+ subjectId + " không?",
                      new Callable<Void>() {
                          @Override
                          public Void call() throws Exception {
                              boolean check = subjectViewModel.deleteSubject(txtSubjectId.getText().toString().split(":")[1].trim());
                              if(check){
                                  AppUtils.showSuccessDialog(context
-                                         , "Delete subject successfully!");
+                                         , "Xóa môn học "+subjectId+ " thành công!");
                                  subjectListAdapter.submitList(subjectViewModel.getAllSubject());
                              }else{
                                  AppUtils.showErrorDialog(context
-                                         , "DELETE ERROR"
-                                         , "Subject have more student!");
+                                         , "Lỗi xóa"
+                                         , "Đang có học sinh học môn học này!");
                              }
                              return null;
                          }
