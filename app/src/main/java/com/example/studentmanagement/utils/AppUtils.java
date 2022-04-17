@@ -255,6 +255,23 @@ public class AppUtils {
         SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
         return sharedPref.getInt("teacherId", -1);
     }
+
+    public static void deleteTeacherId(Activity activity){
+        SharedPreferences.Editor editor =activity.getPreferences(Context.MODE_PRIVATE).edit();
+        editor.remove("teacherId").apply();
+
+    }
+    public static void updateInformation(Activity activity,boolean value){
+        SharedPreferences sharedPref = activity.
+                getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putBoolean("hasInformation",value);
+        editor.apply();
+    }
+    public static boolean getInformation(Activity activity){
+        SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
+        return sharedPref.getBoolean("hasInformation", true);
+    }
     public static String saveImage(Context context, Bitmap bitmap) throws IOException {
         OutputStream fos;
         String name = String.valueOf(System.currentTimeMillis());

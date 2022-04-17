@@ -55,6 +55,18 @@ public class ProfileFragment extends Fragment {
             NavDirections action = ProfileFragmentDirections.actionProfileFragmentToHomeFragment();
             Navigation.findNavController(v).navigate(action);
         });
+        binding.navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.menu_item_log_out:{
+                        AppUtils.deleteTeacherId(requireActivity());
+                        Navigation.findNavController(getView()).navigate(R.id.loginFragment);
+                    }
+                }
+                return false;
+            }
+        });
 
 
 //        getActivity().findViewById(R.id.btn_infor).setOnClickListener(v -> {

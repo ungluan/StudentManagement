@@ -109,7 +109,7 @@
         <action
             android:id="@+id/action_loginFragment_to_updateProfileFragment"
             app:destination="@id/updateProfileFragment"
-            app:popUpToInclusive="false" />
+            app:popUpTo="@id/loginFragment" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
@@ -252,10 +252,12 @@
             app:destination="@id/homeFragment"
             app:popUpTo="@id/loginFragment"
             app:popUpToInclusive="true" />
+
         <action
             android:id="@+id/action_updateProfileFragment_to_loginFragment2"
             app:destination="@id/loginFragment"
             app:popUpToInclusive="true" />
+
 
     </fragment>
 

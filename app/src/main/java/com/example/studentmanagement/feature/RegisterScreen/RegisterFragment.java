@@ -28,12 +28,12 @@ public class RegisterFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentRegisterBinding.inflate(inflater);
-//        mockData();
+        mockData();
         return binding.getRoot();
     }
     private void mockData(){
-        binding.editTextEmail.setText("afs@gmail.com");
-        binding.editTextPhone.setText("0915837119");
+        binding.editTextEmail.setText("afsx@gmail.com");
+        binding.editTextPhone.setText("0382916020");
         binding.editTextPassword.setText("123456");
         binding.editTextRepeatPassword.setText("123456");
     }
@@ -100,8 +100,10 @@ public class RegisterFragment extends Fragment {
                 if (!x)
                     binding.textInputLayoutRepeatPassword.setError("Mật khẩu phải trùng với mật khẩu mới");
                 else {
-                    binding.textInputLayoutPassword.setErrorEnabled(false);
                     binding.textInputLayoutRepeatPassword.setErrorEnabled(false);
+                    if(binding.editTextRepeatPassword.getText().toString().length()>=6){
+                        binding.textInputLayoutPassword.setErrorEnabled(false);
+                    }
                 }
             }
 

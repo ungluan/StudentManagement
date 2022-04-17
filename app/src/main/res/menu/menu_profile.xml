@@ -18,7 +18,7 @@
         <item android:icon="@drawable/ic_logout"
             android:iconTint="@color/black"
             android:title="Log out"
-            android:id="@+id/loginFragment"
+            android:id="@+id/menu_item_log_out"
             ></item>
     </group>
 </menu>

@@ -1,6 +1,6 @@
 package com.example.studentmanagement.feature.RegisterScreen;
 
-import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -17,12 +17,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.studentmanagement.R;
 import com.example.studentmanagement.database_sqlite.DataBaseHelper;
 import com.example.studentmanagement.databinding.FragmentOtpBinding;
-import com.example.studentmanagement.feature.ProfileScreen.ChangePasswordFragmentDirections;
 import com.example.studentmanagement.feature.ProfileScreen.ChangePasswordViewModel;
 import com.example.studentmanagement.feature.loginScreen.LoginViewModel;
 import com.example.studentmanagement.utils.AppUtils;
@@ -33,21 +31,16 @@ import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
 
-import java.util.Locale;
-import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
 
 import in.xiandan.countdowntimer.CountDownTimerSupport;
 import in.xiandan.countdowntimer.OnCountDownTimerListener;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.core.Scheduler;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 
 
 public class OtpFragment extends Fragment {
@@ -58,7 +51,6 @@ public class OtpFragment extends Fragment {
     private RegisterViewModel registerViewModel ;
     private LoginViewModel loginViewModel;
     private ChangePasswordViewModel changePasswordViewModel;
-    private CountDownTimer countDownTimer;
     private CountDownTimerSupport mTimer;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -81,19 +73,17 @@ public class OtpFragment extends Fragment {
         loginViewModel = new ViewModelProvider(requireActivity()).get(LoginViewModel.class);
         mAuth = FirebaseAuth.getInstance();
         String phoneNumber = "+84" + registerViewModel.getPhone().substring(1);
-        setUpCountDownTimer2();
+        setUpCountDownTimer();
         sendOtp(phoneNumber,view);
 
         binding.txtPhoneNumber.setText(phoneNumber);
         binding.btnConfirm.setEnabled(true);
         binding.btnConfirm.setOnClickListener(v -> {
-            Log.d("OtpFragment","onClicked");
-            if(verificationCode.isEmpty() || !binding.textInputLayoutOTP.isErrorEnabled() ) return;
+            if(verificationCode.isEmpty() || binding.textInputLayoutOTP.isErrorEnabled() ) return;
             try {
                 PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationCode, binding.editTextOTP.
                         getText().toString());
                 signInWithPhoneAuthCredential(credential);
-            Log.d("OtpFragment","onClicked");
             }catch (Exception e){
                 Log.d(TAG,e.getMessage());
             }
@@ -132,12 +122,12 @@ public class OtpFragment extends Fragment {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
-                            Observable.empty().subscribeOn(AndroidSchedulers.mainThread())
-                                    .doOnComplete(() -> {
-                                        if(registerViewModel.isRegisterPage()) handleCreateAccount(getView());
-                                        else handleForgetPassword(getView());
-                                    })
-                                    .subscribe();
+
+                            Observable.just("").observeOn(AndroidSchedulers.mainThread()).doOnComplete(() -> {
+                                if(registerViewModel.isRegisterPage()) handleCreateAccount(getView());
+                                else handleForgetPassword(getView());
+                            }).subscribe();
+
                             // Update UI
                         } else {
                             // Sign in failed, display a message and update the UI
@@ -155,10 +145,8 @@ public class OtpFragment extends Fragment {
         String content ="Bạn đã đăng ký thành công. vui lòng đăng nhập ứng dụng để tiếp tục.";
         AppUtils.showNotificationDialog(requireContext(),
                 "Thông báo",content,
-                () -> {
-                    navigateToLoginPage(view);
-                    return null;
-                });
+                () -> null);
+        navigateToLoginPage(view);
     }
     private void handleForgetPassword(View view){
         changePasswordViewModel = new ViewModelProvider(requireActivity()).get(ChangePasswordViewModel.class);
@@ -185,25 +173,6 @@ public class OtpFragment extends Fragment {
         Navigation.findNavController(view).navigate(action);
     }
     private void setUpCountDownTimer(){
-        long duration = TimeUnit.MINUTES.toMillis(1);
-        countDownTimer = new CountDownTimer(duration,1000){
-
-            @Override
-            public void onTick(long millisUntilFinished) {
-                String sDuration = String.format(Locale.ENGLISH,"%02d : %02d",TimeUnit.MILLISECONDS.toMinutes(1),
-                        TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished)-
-                                TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMillis(millisUntilFinished)));
-                binding.txtTime.setText(sDuration);
-            }
-
-            @Override
-            public void onFinish() {
-                binding.txtResendOtp.setTextColor(getResources().getColor(R.color.purple_500));
-                binding.txtTime.setEnabled(true);
-            }
-        };
-    }
-    private void setUpCountDownTimer2(){
         mTimer = new CountDownTimerSupport(59000, 1000);
         mTimer.setOnCountDownTimerListener(new OnCountDownTimerListener() {
             @Override
@@ -239,9 +208,17 @@ public class OtpFragment extends Fragment {
 
                             @Override
                             public void onVerificationFailed(@NonNull FirebaseException e) {
-                                Log.d("OtpFragment","onVerificationFailed");
-                                binding.textInputLayoutOTP.setError("Mã OTP không trùng khớp.");
-
+                                Log.d("OtpFragment","onVerificationFailed" +e.getMessage());
+                                System.out.println("'"+e.getMessage()+"'");
+                                if(e.getMessage().equals("We have blocked all requests from this device due to unusual activity. Try again later.")
+                                    ||e.getMessage().equals("This project's quota for this operation has been exceeded. [ Exceeded per phone number quota for sending verification codes. ]")) {
+                                    binding.textInputLayoutOTP.setError("Số điện thoại của bạn đã quá giới hạn nhận OTP vui lòng thử lại sau.");
+                                    binding.txtTime.setText("00:00");
+                                    binding.btnConfirm.setEnabled(false);
+                                    binding.txtResendOtp.setEnabled(true);
+                                    binding.txtResendOtp.setTextColor(getResources().getColor(R.color.purple_500));
+                                }
+                                else binding.textInputLayoutOTP.setError("Mã OTP không trùng khớp.");
                             }
 
                             @Override
@@ -254,18 +231,16 @@ public class OtpFragment extends Fragment {
                                 verificationCode = s;
                                 binding.btnConfirm.setEnabled(true);
                                 binding.txtResendOtp.setEnabled(false);
-                                binding.txtResendOtp.setTextColor(0xff808080);
-
+                                binding.txtResendOtp.setTextColor(0xFF808080);
                             }
                             @Override
                             public void onCodeAutoRetrievalTimeOut(@NonNull String s) {
                                 super.onCodeAutoRetrievalTimeOut(s);
                                 binding.btnConfirm.setEnabled(false);
                                 binding.txtResendOtp.setEnabled(true);
-                                binding.txtResendOtp.setTextColor(getResources().getColor(R.color.purple_500));
+                                binding.txtResendOtp.setTextColor(0xFF6200EE);
                             }
                         }).build();          // OnVerificationStateChangedCallbacks
         PhoneAuthProvider.verifyPhoneNumber(options);
-
     }
 }
