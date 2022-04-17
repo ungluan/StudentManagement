@@ -44,51 +44,51 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-<<<<<<< HEAD
+
         binding.btnBack.setOnClickListener(this::navigateToHomePage);
-=======
-        setUpNavigationController();
-        binding.btnBack.setOnClickListener(v -> {
-            NavDirections action = ProfileFragmentDirections.actionProfileFragmentToHomeFragment();
-            Navigation.findNavController(v).navigate(action);
-        });
-        binding.navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()){
-                    case R.id.menu_item_log_out:{
-                        AppUtils.deleteTeacherId(requireActivity());
-                        NavDirections action = ProfileFragmentDirections.actionProfileFragmentToLoginFragment();
-                        Navigation.findNavController(getView()).navigate(action);
-                        break;
-                    }
 
-                    case R.id.menu_item_create_account:{
-                        NavDirections action = ProfileFragmentDirections.actionProfileFragmentToLoginFragment();
-                        Navigation.findNavController(getView()).navigate(action);
-                        break;
-                    }
+//        setUpNavigationController();
+//        binding.btnBack.setOnClickListener(v -> {
+//            NavDirections action = ProfileFragmentDirections.actionProfileFragmentToHomeFragment();
+//            Navigation.findNavController(v).navigate(action);
+//        });
+//        binding.navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+//            @Override
+//            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+//                switch (item.getItemId()){
+//                    case R.id.menu_item_log_out:{
+//                        AppUtils.deleteTeacherId(requireActivity());
+//                        NavDirections action = ProfileFragmentDirections.actionProfileFragmentToLoginFragment();
+//                        Navigation.findNavController(getView()).navigate(action);
+//                        break;
+//                    }
+//
+//                    case R.id.menu_item_create_account:{
+//                        NavDirections action = ProfileFragmentDirections.actionProfileFragmentToLoginFragment();
+//                        Navigation.findNavController(getView()).navigate(action);
+//                        break;
+//                    }
+//
+//                    case R.id.menu_item_info_account:{
+//                        AppUtils.deleteTeacherId(requireActivity());
+//                        NavDirections action = ProfileFragmentDirections.actionProfileFragmentToInformationFragment();
+//                        Navigation.findNavController(getView()).navigate(action);
+//                        break;
+//                    }
+//
+//                    case R.id.menu_item_change_password:{
+//                        AppUtils.deleteTeacherId(requireActivity());
+//                        NavDirections action = ProfileFragmentDirections.actionProfileFragmentToChangePasswordFragment();
+//                        Navigation.findNavController(getView()).navigate(action);
+//                        break;
+//
+//                    }
+//                }
+//                return false;
+//            }
+//        });
+//
 
-                    case R.id.menu_item_info_account:{
-                        AppUtils.deleteTeacherId(requireActivity());
-                        NavDirections action = ProfileFragmentDirections.actionProfileFragmentToInformationFragment();
-                        Navigation.findNavController(getView()).navigate(action);
-                        break;
-                    }
-
-                    case R.id.menu_item_change_password:{
-                        AppUtils.deleteTeacherId(requireActivity());
-                        NavDirections action = ProfileFragmentDirections.actionProfileFragmentToChangePasswordFragment();
-                        Navigation.findNavController(getView()).navigate(action);
-                        break;
-
-                    }
-                }
-                return false;
-            }
-        });
-
->>>>>>> e98ce0ef10d1ed91894b476dac53cc0d55cf816b
 
         binding.buttonProfile.setOnClickListener(this::navigateToInformationPage);
         binding.buttonChangePassword.setOnClickListener(this::navigateToChangePasswordPage);
