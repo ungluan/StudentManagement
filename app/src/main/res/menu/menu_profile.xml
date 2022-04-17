@@ -4,16 +4,16 @@
 
         <item android:icon="@drawable/profile"
             android:title="Thông tin cá nhân"
-            android:id="@+id/informationFragment"
+            android:id="@+id/menu_item_info_account"
             ></item>
 
         <item android:icon="@drawable/padlock"
             android:title="Đổi mật khẩu"
-            android:id="@+id/changePasswordFragment"
+            android:id="@+id/menu_item_change_password"
             ></item>
         <item android:icon="@drawable/add_user"
             android:title="Tạo mới tài khoản"
-            android:id="@+id/registerFragment"
+            android:id="@+id/menu_item_create_account"
             ></item>
         <item android:icon="@drawable/ic_logout"
             android:iconTint="@color/black"

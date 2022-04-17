@@ -30,6 +30,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 
+import com.example.studentmanagement.R;
 import com.example.studentmanagement.database.entity.Teacher;
 
 import com.example.studentmanagement.databinding.FragmentLoginBinding;
@@ -149,6 +150,10 @@ public class LoginFragment extends Fragment {
 //        });
 
         //pass login
+//        binding.btnLogin.setOnClickListener(v ->{
+//            Navigation.findNavController(v).navigate(R.id.homeFragment);
+//        });
+
 
         binding.btnLogin.setOnClickListener(v -> {
             String email = String.valueOf(binding.editTextEmail.getText());

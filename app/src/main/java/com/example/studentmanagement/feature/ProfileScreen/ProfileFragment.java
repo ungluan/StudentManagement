@@ -61,7 +61,30 @@ public class ProfileFragment extends Fragment {
                 switch (item.getItemId()){
                     case R.id.menu_item_log_out:{
                         AppUtils.deleteTeacherId(requireActivity());
-                        Navigation.findNavController(getView()).navigate(R.id.loginFragment);
+                        NavDirections action = ProfileFragmentDirections.actionProfileFragmentToLoginFragment();
+                        Navigation.findNavController(getView()).navigate(action);
+                        break;
+                    }
+
+                    case R.id.menu_item_create_account:{
+                        NavDirections action = ProfileFragmentDirections.actionProfileFragmentToLoginFragment();
+                        Navigation.findNavController(getView()).navigate(action);
+                        break;
+                    }
+
+                    case R.id.menu_item_info_account:{
+                        AppUtils.deleteTeacherId(requireActivity());
+                        NavDirections action = ProfileFragmentDirections.actionProfileFragmentToInformationFragment();
+                        Navigation.findNavController(getView()).navigate(action);
+                        break;
+                    }
+
+                    case R.id.menu_item_change_password:{
+                        AppUtils.deleteTeacherId(requireActivity());
+                        NavDirections action = ProfileFragmentDirections.actionProfileFragmentToChangePasswordFragment();
+                        Navigation.findNavController(getView()).navigate(action);
+                        break;
+
                     }
                 }
                 return false;
