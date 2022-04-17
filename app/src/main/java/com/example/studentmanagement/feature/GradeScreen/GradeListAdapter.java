@@ -74,7 +74,6 @@ public class GradeListAdapter extends ListAdapter<Grade, GradeListAdapter.GradeV
             activityGalleryImageLauncher.launch(intent);
             positionImageOnClicked = holder.getAdapterPosition();
         });
-
     }
 
     @Override
@@ -217,7 +216,6 @@ public class GradeListAdapter extends ListAdapter<Grade, GradeListAdapter.GradeV
             ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getContext(),
                     R.layout.dropdown_item, teacherItems);
             if(teacherItems.size()>0){
-//                binding.editTextTeacherId.setText(teacherItems.get(0));
                 binding.editTextTeacherId.setAdapter(arrayAdapter);
             }else binding.editTextTeacherId.setText("Danh sách giáo viên trống!");
         }
