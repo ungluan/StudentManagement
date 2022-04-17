@@ -63,6 +63,10 @@ public class LoginFragment extends Fragment {
         NavController navController = NavHostFragment.findNavController(this);
         navController.navigate(action);
     }
+    private void navigateToUpdateProfilePage(View view){
+        NavDirections action = LoginFragmentDirections.actionLoginFragmentToUpdateProfileFragment();
+        Navigation.findNavController(view).navigate(action);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -124,7 +128,11 @@ public class LoginFragment extends Fragment {
                     int teacherId = loginViewModel.getTeacherIdByEmail(email);
                     updateTeacherId(requireActivity(),teacherId);
                     sendEmail();
-                    navigateToHomePage();
+                    if (loginViewModel.isUpdateInformation(teacherId)) {
+                        navigateToHomePage();
+                    } else {
+                        navigateToUpdateProfilePage(v);
+                    }
                 }else{
                     showNotificationDialog(requireContext(),"Đăng nhập thất bại",
                             "Tài khoản hoặc mật khẩu không chính xác. Vui lòng kiểm tra lại.",null);

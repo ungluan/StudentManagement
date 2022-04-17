@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.view.contentcapture.DataRemovalRequest;
 
 import com.example.studentmanagement.database.entity.Account;
+import com.example.studentmanagement.database.entity.Student;
 import com.example.studentmanagement.database.entity.Teacher;
 import com.example.studentmanagement.database_sqlite.DataBaseHelper;
 
@@ -21,6 +22,12 @@ public class TeacherDao {
     }
     public Boolean insertTeacher(Teacher teacher) {
         return dataBaseHelper.insert(DataBaseHelper.TABLE_GVCN, values(teacher,true));
+    }
+
+    public Boolean updateTeacher(Teacher teacher) {
+        return dataBaseHelper.update(DataBaseHelper.TABLE_GVCN,
+                DataBaseHelper.COLUMN_MA_CHU_NHIEM + "=" + teacher.getId(),
+                values(teacher,false), null);
     }
     public List<Teacher> getTeachers(){
         String query = "SELECT * from " + DataBaseHelper.TABLE_GVCN;

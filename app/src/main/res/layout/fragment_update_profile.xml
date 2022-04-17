@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".feature.loginScreen.UpdateProfileFragment"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_marginTop="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="31dp"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <ImageButton
+                    android:id="@+id/btn_back"
+                    android:layout_marginStart="16dp"
+                    android:src="@drawable/ic_baseline_arrow_back_ios_24"
+                    android:background="@android:color/transparent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="Cập nhật thông tin"
+                    android:textColor="@android:color/black"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_gravity="top"
+            android:elevation="12dp"
+            android:outlineSpotShadowColor="@color/color_secondary_blue_variant_lighter"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/custom_divier" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
+
+            <RelativeLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:scaleType="centerCrop"
+                    android:id="@+id/image_view_teacher"
+                    android:layout_width="200dp"
+                    android:layout_height="150dp"
+                    android:layout_centerHorizontal="true"
+                    android:background="@color/blue_200"
+                    android:src="@drawable/back_to_school">
+
+                </ImageView>
+
+
+                <androidx.cardview.widget.CardView
+                    android:layout_below="@+id/image_view_teacher"
+                    android:layout_alignStart="@id/image_view_teacher"
+                    android:layout_alignEnd="@+id/image_view_teacher"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/btn_choose_image_teacher"
+                        android:layout_gravity="center"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/ic_camera_alt_black_24dp">
+
+                    </ImageView>
+                </androidx.cardview.widget.CardView>
+
+            </RelativeLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/text_input_layout_full_name"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:hint="Họ và tên"
+                android:nextFocusDown="@id/text_input_layout_email"
+                app:boxStrokeWidth="1dp"
+                app:hintEnabled="true"
+                app:startIconCheckable="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_text_full_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:fontFamily="@font/poppins_regular"
+                    android:inputType="textEmailAddress" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/btn_update"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="16dp"
+                android:text="Cập nhật"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </LinearLayout>
+</layout>

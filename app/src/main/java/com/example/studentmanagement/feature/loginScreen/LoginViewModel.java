@@ -5,6 +5,7 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 
+import com.example.studentmanagement.database.entity.Teacher;
 import com.example.studentmanagement.database_sqlite.Dao.LoginDao;
 import com.example.studentmanagement.database_sqlite.Dao.TeacherDao;
 
@@ -36,5 +37,13 @@ public class LoginViewModel extends AndroidViewModel {
     }
     public int getTeacherIdByEmail(String email){
         return teacherDao.getIdTeacherByEmail(email);
+    }
+    public Teacher getTeacherById(int teacherId){return teacherDao.getTeacherById(teacherId);}
+    public boolean isUpdateInformation(int teacherId){
+        Teacher teacher = getTeacherById(teacherId);
+        return !teacher.getTeacherName().isEmpty();
+    }
+    public boolean updateTeacher(Teacher teacher){
+        return teacherDao.updateTeacher(teacher);
     }
 }

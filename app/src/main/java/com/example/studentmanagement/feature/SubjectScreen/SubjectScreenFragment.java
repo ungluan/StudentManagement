@@ -70,8 +70,6 @@ public class SubjectScreenFragment extends Fragment {
             NavDirections action = SubjectScreenFragmentDirections.actionSubjectScreenFragmentToHomeFragment();
             Navigation.findNavController(v).navigate(action);
         });
-
-
     }
 
     private void showDialogAddSubject(Context context) {
