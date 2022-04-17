@@ -74,6 +74,25 @@ public class TeacherDao {
         }
         return teacherId;
     }
+    public Teacher getTeacherByEmail(String email){
+        String query = "SELECT "+ DataBaseHelper.COLUMN_MA_CHU_NHIEM+","+ DataBaseHelper.COLUMN_TEN_CHU_NHIEM
+                +","+ DataBaseHelper.TABLE_GVCN+"."+DataBaseHelper.COLUMN_MA_TAI_KHOAN +","+ DataBaseHelper.COLUMN_HINH_ANH+
+                ","+ DataBaseHelper.COLUMN_SO_DIEN_THOAI+" FROM "
+                + DataBaseHelper.TABLE_GVCN +", "+DataBaseHelper.TABLE_TAI_KHOAN +" WHERE "+
+                DataBaseHelper.TABLE_GVCN +"."+ DataBaseHelper.COLUMN_MA_TAI_KHOAN +" = "+
+                DataBaseHelper.TABLE_TAI_KHOAN +"."+ DataBaseHelper.COLUMN_MA_TAI_KHOAN +" AND "+
+                DataBaseHelper.COLUMN_EMAIL +" = '"+email+"'";
+        Cursor cursor = dataBaseHelper.query(query,null);
+        Teacher teacher = new Teacher();
+        if(cursor.moveToFirst()){
+            teacher.setId(cursor.getInt(0));
+            teacher.setTeacherName(cursor.getString(1));
+            teacher.setIdAccount(cursor.getInt(2));
+            teacher.setImageUrl(cursor.getString(3));
+            teacher.setPhone(cursor.getString(4));
+        }
+        return teacher;
+    }
     public List<Teacher> getTeacherHaveNotGrade(){
         String query = "SELECT * from " + DataBaseHelper.TABLE_GVCN+
                 " WHERE " + DataBaseHelper.COLUMN_MA_CHU_NHIEM +" NOT IN "

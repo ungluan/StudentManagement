@@ -2,6 +2,7 @@ package com.example.studentmanagement.feature.loginScreen;
 
 import static com.example.studentmanagement.utils.AppUtils.isValidEmail;
 import static com.example.studentmanagement.utils.AppUtils.showNotificationDialog;
+import static com.example.studentmanagement.utils.AppUtils.updateInformation;
 import static com.example.studentmanagement.utils.AppUtils.updateTeacherId;
 
 
@@ -28,6 +29,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.studentmanagement.database.entity.Teacher;
 import com.example.studentmanagement.databinding.FragmentLoginBinding;
 import com.example.studentmanagement.utils.AppUtils;
 
@@ -54,7 +56,8 @@ public class LoginFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if(AppUtils.getTeacherId(requireActivity()) != -1){
-            navigateToHomePage();
+            if(AppUtils.getInformation(requireActivity())) navigateToHomePage();
+            else navigateToUpdateProfilePage();
         }
     }
 
@@ -63,9 +66,10 @@ public class LoginFragment extends Fragment {
         NavController navController = NavHostFragment.findNavController(this);
         navController.navigate(action);
     }
-    private void navigateToUpdateProfilePage(View view){
+    private void navigateToUpdateProfilePage(){
         NavDirections action = LoginFragmentDirections.actionLoginFragmentToUpdateProfileFragment();
-        Navigation.findNavController(view).navigate(action);
+        NavController navController = NavHostFragment.findNavController(this);
+        navController.navigate(action);
     }
 
     @Override
@@ -125,13 +129,15 @@ public class LoginFragment extends Fragment {
             ){
                 if(loginViewModel.login(email,password)){
                     Toast.makeText(getContext(), "Login Thành công", Toast.LENGTH_SHORT).show();
-                    int teacherId = loginViewModel.getTeacherIdByEmail(email);
-                    updateTeacherId(requireActivity(),teacherId);
+//                    int teacherId = loginViewModel.getTeacherIdByEmail(email);
+                    Teacher teacher = loginViewModel.getTeacherByEmail(email);
+                    updateTeacherId(requireActivity(),teacher.getId());
+                    updateInformation(requireActivity(),!teacher.getTeacherName().isEmpty());
                     sendEmail();
-                    if (loginViewModel.isUpdateInformation(teacherId)) {
+                    if (loginViewModel.isUpdateInformation(teacher.getId())) {
                         navigateToHomePage();
                     } else {
-                        navigateToUpdateProfilePage(v);
+                        navigateToUpdateProfilePage();
                     }
                 }else{
                     showNotificationDialog(requireContext(),"Đăng nhập thất bại",

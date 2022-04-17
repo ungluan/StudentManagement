@@ -38,6 +38,9 @@ public class LoginViewModel extends AndroidViewModel {
     public int getTeacherIdByEmail(String email){
         return teacherDao.getIdTeacherByEmail(email);
     }
+    public Teacher getTeacherByEmail(String email){
+        return teacherDao.getTeacherByEmail(email);
+    }
     public Teacher getTeacherById(int teacherId){return teacherDao.getTeacherById(teacherId);}
     public boolean isUpdateInformation(int teacherId){
         Teacher teacher = getTeacherById(teacherId);
