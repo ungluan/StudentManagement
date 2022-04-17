@@ -240,16 +240,21 @@ public class GradeListAdapter extends ListAdapter<Grade, GradeListAdapter.GradeV
 //                int teacherId = Integer.parseInt();
                 Grade grade = new Grade(gradeId, teacher.getId(), "");
                 // Kiem tra co hs trong lop khong
-                if (gradeViewModel.deleteGrade(grade.getGradeId())) {
-                    List<Grade> grades = new ArrayList<Grade>(gradeListAdapter.getCurrentList());
-                    grades.remove(grade);
-                    gradeListAdapter.submitList(grades);
-                    gradeListAdapter.notifyItemRemoved(getAdapterPosition());
-                    showToast("Xóa lớp thành công!");
-                    dialog.dismiss();
-                } else {
+                if(gradeViewModel.getNumberOfStudentByGrade(grade.getGradeId())==0){
+                    if (gradeViewModel.deleteGrade(grade.getGradeId())) {
+                        List<Grade> grades = new ArrayList<Grade>(gradeListAdapter.getCurrentList());
+                        grades.remove(grade);
+                        gradeListAdapter.submitList(grades);
+                        gradeListAdapter.notifyItemRemoved(getAdapterPosition());
+                        showToast("Xóa lớp thành công!");
+                        dialog.dismiss();
+                    } else {
+                        AppUtils.showNotificationDialog(
+                                getContext(), "Thông báo", "Xóa lớp thất bại!",null);
+                    }
+                }else{
                     AppUtils.showNotificationDialog(
-                            getContext(), "Thông báo", "Xóa lớp thất bại!",null);
+                            getContext(), "Thông báo", "Lớp có học sinh không thể xóa!",null);
                 }
             });
             dialog.show();
