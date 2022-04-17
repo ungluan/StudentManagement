@@ -1,5 +1,6 @@
 package com.example.studentmanagement.feature.RegisterScreen;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -230,14 +231,14 @@ public class OtpFragment extends Fragment {
                                 verificationCode = s;
                                 binding.btnConfirm.setEnabled(true);
                                 binding.txtResendOtp.setEnabled(false);
-                                binding.txtResendOtp.setTextColor(0xff808080);
+                                binding.txtResendOtp.setTextColor(0xFF808080);
                             }
                             @Override
                             public void onCodeAutoRetrievalTimeOut(@NonNull String s) {
                                 super.onCodeAutoRetrievalTimeOut(s);
                                 binding.btnConfirm.setEnabled(false);
                                 binding.txtResendOtp.setEnabled(true);
-                                binding.txtResendOtp.setTextColor(getResources().getColor(R.color.purple_500));
+                                binding.txtResendOtp.setTextColor(0xFF6200EE);
                             }
                         }).build();          // OnVerificationStateChangedCallbacks
         PhoneAuthProvider.verifyPhoneNumber(options);
