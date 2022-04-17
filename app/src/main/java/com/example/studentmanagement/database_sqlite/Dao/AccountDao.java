@@ -7,6 +7,7 @@ import android.database.Cursor;
 import com.example.studentmanagement.database.entity.Account;
 import com.example.studentmanagement.database.entity.Mark;
 import com.example.studentmanagement.database.entity.Student;
+import com.example.studentmanagement.database.entity.Teacher;
 import com.example.studentmanagement.database_sqlite.DataBaseHelper;
 
 import java.util.ArrayList;
@@ -20,6 +21,9 @@ public class AccountDao {
         this.dataBaseHelper = DataBaseHelper.getInstance(application);
     }
 
+    public Boolean insertAccount(Account account) {
+        return dataBaseHelper.insert(DataBaseHelper.TABLE_TAI_KHOAN, values(account,true));
+    }
     public void updatePassword(int accountId, String newPassword) {
         String query = "UPDATE " + DataBaseHelper.TABLE_TAI_KHOAN + " SET " +
                 DataBaseHelper.COLUMN_MAT_KHAU + " = '"+ newPassword +"'" + " WHERE "+
@@ -55,6 +59,30 @@ public class AccountDao {
             studentId = cursor.getInt(0);
         }
         return studentId;
+    }
+    public int getAccountIdByEmail(String email){
+        String query = "SELECT "+ DataBaseHelper.COLUMN_MA_TAI_KHOAN + " FROM "+
+                DataBaseHelper.TABLE_TAI_KHOAN + " WHERE "+
+                DataBaseHelper.COLUMN_EMAIL + " = '" + email + "'";
+        Cursor cursor = dataBaseHelper.query(query,null);
+        int accountId = -1;
+        if(cursor.moveToFirst()){
+            accountId = cursor.getInt(0);
+        }
+        return accountId;
+    }
+    public String getEmailByPhone(String phone){
+        String query = "SELECT "+DataBaseHelper.TABLE_TAI_KHOAN +"."+ DataBaseHelper.COLUMN_EMAIL +
+                " FROM "+DataBaseHelper.TABLE_TAI_KHOAN + ", "+ DataBaseHelper.TABLE_GVCN +
+                " WHERE "+ DataBaseHelper.TABLE_GVCN +"."+ DataBaseHelper.COLUMN_MA_TAI_KHOAN +" = "+
+                DataBaseHelper.TABLE_TAI_KHOAN +"."+ DataBaseHelper.COLUMN_MA_TAI_KHOAN +" AND "+
+                DataBaseHelper.COLUMN_SO_DIEN_THOAI + " = '" + phone+"'";
+        Cursor cursor = dataBaseHelper.query(query,null);
+        String email="";
+        if(cursor.moveToFirst()){
+            email = cursor.getString(0);
+        }
+        return email;
     }
 
     public Account getAccountById(int accountId){

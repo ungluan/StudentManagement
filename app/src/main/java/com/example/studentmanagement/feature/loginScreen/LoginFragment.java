@@ -4,8 +4,10 @@ import static com.example.studentmanagement.utils.AppUtils.isValidEmail;
 import static com.example.studentmanagement.utils.AppUtils.showNotificationDialog;
 import static com.example.studentmanagement.utils.AppUtils.updateTeacherId;
 
+
 import android.content.Context;
-import android.content.SharedPreferences;
+import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -17,8 +19,10 @@ import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
+import android.os.StrictMode;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,9 +32,25 @@ import com.example.studentmanagement.R;
 import com.example.studentmanagement.databinding.FragmentLoginBinding;
 import com.example.studentmanagement.utils.AppUtils;
 
+import java.util.Properties;
+
+import javax.mail.Authenticator;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+import papaya.in.sendmail.SendMail;
+
+
 public class LoginFragment extends Fragment {
     private FragmentLoginBinding binding ;
-
+    private LoginViewModel loginViewModel;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +64,10 @@ public class LoginFragment extends Fragment {
         NavController navController = NavHostFragment.findNavController(this);
         navController.navigate(action);
     }
+    private void navigateToUpdateProfilePage(View view){
+        NavDirections action = LoginFragmentDirections.actionLoginFragmentToUpdateProfileFragment();
+        Navigation.findNavController(view).navigate(action);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -55,8 +79,10 @@ public class LoginFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        LoginViewModel loginViewModel = 
+        loginViewModel =
                 new ViewModelProvider(requireActivity()).get(LoginViewModel.class);
+        if(loginViewModel.getEmail()!=null) binding.editTextEmail.setText(loginViewModel.getEmail());
+        if(loginViewModel.getPassword()!=null) binding.editTextPassword.setText(loginViewModel.getPassword());
         binding.editTextEmail.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -114,13 +140,71 @@ public class LoginFragment extends Fragment {
 //        });
 
         //pass login
+//        binding.btnLogin.setOnClickListener(v->{
+//            Navigation.findNavController(v).navigate(R.id.homeFragment);
+//        });
+        //pass login
         binding.btnLogin.setOnClickListener(v -> {
-            Navigation.findNavController(v).navigate(R.id.action_loginFragment_to_homeFragment);
+            String email = String.valueOf(binding.editTextEmail.getText());
+            String password = String.valueOf(binding.editTextPassword.getText());
+            if(!email.isEmpty() && !password.isEmpty()
+                && !binding.textInputLayoutEmail.isErrorEnabled()
+                && !binding.textInputLayoutPassword.isErrorEnabled()
+            ){
+                if(loginViewModel.login(email,password)){
+                    Toast.makeText(getContext(), "Login Thành công", Toast.LENGTH_SHORT).show();
+                    int teacherId = loginViewModel.getTeacherIdByEmail(email);
+                    updateTeacherId(requireActivity(),teacherId);
+                    sendEmail();
+                    if (loginViewModel.isUpdateInformation(teacherId)) {
+                        navigateToHomePage();
+                    } else {
+                        navigateToUpdateProfilePage(v);
+                    }
+                }else{
+                    showNotificationDialog(requireContext(),"Đăng nhập thất bại",
+                            "Tài khoản hoặc mật khẩu không chính xác. Vui lòng kiểm tra lại.",null);
+                }
+            }else{
+                if(email.isEmpty()) binding.textInputLayoutEmail.setError("Email không được trống.");
+                if(password.isEmpty()) binding.textInputLayoutPassword.setError("Mật khẩu không được trống.");
+            }
         });
         binding.txtRegister.setOnClickListener(v -> {
             NavDirections action = LoginFragmentDirections.actionLoginFragmentToRegisterFragment();
             Navigation.findNavController(v).navigate(action);
         });
+        binding.txtForgotPassword.setOnClickListener(v -> {
+            NavDirections action = LoginFragmentDirections.actionLoginFragmentToForgotPasswordFragment();
+            Navigation.findNavController(v).navigate(action);
+        });
+    }
+    private void sendEmail(){
+        SendMail mail = new SendMail("ungluan01@gmail.com", "testingapp",
+                String.valueOf(binding.editTextEmail.getText()).trim(),
+                "Cảnh báo đăng nhập.",
+                "Tài khoản của bạn vừa mới đăng nhập trên thiết bị "+getDeviceName());
+        mail.execute();
     }
 
+    public String getDeviceName() {
+        String manufacturer = Build.MANUFACTURER;
+        String model = Build.MODEL;
+        if (model.startsWith(manufacturer)) {
+            return capitalize(model);
+        } else {
+            return capitalize(manufacturer) + " " + model;
+        }
+    }
+    private String capitalize(String s) {
+        if (s == null || s.length() == 0) {
+            return "";
+        }
+        char first = s.charAt(0);
+        if (Character.isUpperCase(first)) {
+            return s;
+        } else {
+            return Character.toUpperCase(first) + s.substring(1);
+        }
+    }
 }

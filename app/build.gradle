@@ -7,7 +7,7 @@ android {
     compileSdk 31
 
     defaultConfig {
-        applicationId "com.example.studentmanagement"
+        applicationId "com.example.studentmanagement1"
         minSdk 28
         targetSdk 31
         versionCode 1
@@ -87,5 +87,8 @@ dependencies {
 
     implementation platform('com.google.firebase:firebase-bom:29.3.0')
     implementation 'com.google.firebase:firebase-auth'
+
+    // Send mail
+    implementation 'com.github.1902shubh:SendMail:1.0.0'
 
 }

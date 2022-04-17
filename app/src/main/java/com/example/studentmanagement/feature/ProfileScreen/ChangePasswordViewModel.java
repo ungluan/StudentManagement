@@ -10,6 +10,15 @@ import com.example.studentmanagement.database_sqlite.Dao.AccountDao;
 
 public class ChangePasswordViewModel extends AndroidViewModel {
     private AccountDao accountDao;
+    private boolean isForgotPassword = false;
+    public void setIsForgotPassword(boolean value){
+        this.isForgotPassword = value;
+    }
+
+    public boolean isForgotPassword() {
+        return isForgotPassword;
+    }
+
     public ChangePasswordViewModel(@NonNull Application application) {
         super(application);
         accountDao = new AccountDao(application);

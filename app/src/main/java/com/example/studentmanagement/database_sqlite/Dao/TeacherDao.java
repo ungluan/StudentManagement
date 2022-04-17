@@ -4,6 +4,8 @@ import android.app.Application;
 import android.content.ContentValues;
 import android.database.Cursor;
 
+import com.example.studentmanagement.database.entity.Account;
+import com.example.studentmanagement.database.entity.Student;
 import com.example.studentmanagement.database.entity.Teacher;
 import com.example.studentmanagement.database_sqlite.DataBaseHelper;
 
@@ -17,7 +19,15 @@ public class TeacherDao {
         // GetInstances
         this.dataBaseHelper = DataBaseHelper.getInstance(application);
     }
+    public Boolean insertTeacher(Teacher teacher) {
+        return dataBaseHelper.insert(DataBaseHelper.TABLE_GVCN, values(teacher,true));
+    }
 
+    public Boolean updateTeacher(Teacher teacher) {
+        return dataBaseHelper.update(DataBaseHelper.TABLE_GVCN,
+                DataBaseHelper.COLUMN_MA_CHU_NHIEM + "=" + teacher.getId(),
+                values(teacher,false), null);
+    }
     public List<Teacher> getTeachers(){
         String query = "SELECT * from " + DataBaseHelper.TABLE_GVCN;
         Cursor cursor = dataBaseHelper.query(query,null);
@@ -98,19 +108,19 @@ public class TeacherDao {
 
     }
 
-    public Boolean insertTeacher(Teacher teacher) {
-        ContentValues values = new ContentValues();
-        values.put(DataBaseHelper.COLUMN_TEN_CHU_NHIEM, teacher.getTeacherName());
-        values.put(DataBaseHelper.COLUMN_SO_DIEN_THOAI, teacher.getPhone());
-        values.put(DataBaseHelper.COLUMN_HINH_ANH, teacher.getImageUrl());
-        return dataBaseHelper.insert(DataBaseHelper.TABLE_GVCN, values);
-    }
-
-    public Boolean updateTeacher(Teacher teacher) {
-        return dataBaseHelper.update(DataBaseHelper.TABLE_GVCN,
-                DataBaseHelper.COLUMN_MA_CHU_NHIEM + "=" + teacher.getId(),
-                values(teacher), null);
-    }
+//    public Boolean insertTeacher(Teacher teacher) {
+//        ContentValues values = new ContentValues();
+//        values.put(DataBaseHelper.COLUMN_TEN_CHU_NHIEM, teacher.getTeacherName());
+//        values.put(DataBaseHelper.COLUMN_SO_DIEN_THOAI, teacher.getPhone());
+//        values.put(DataBaseHelper.COLUMN_HINH_ANH, teacher.getImageUrl());
+//        return dataBaseHelper.insert(DataBaseHelper.TABLE_GVCN, values);
+//    }
+//
+//    public Boolean updateTeacher(Teacher teacher) {
+//        return dataBaseHelper.update(DataBaseHelper.TABLE_GVCN,
+//                DataBaseHelper.COLUMN_MA_CHU_NHIEM + "=" + teacher.getId(),
+//                values(teacher), null);
+//    }
 
     public Boolean deleteTeacher(int teacherId) {
         return dataBaseHelper.delete(DataBaseHelper.TABLE_GVCN,
@@ -154,5 +164,15 @@ public class TeacherDao {
                     cursor.getString(4));
         else return null;
 
+    }
+
+    public ContentValues values(Teacher teacher, boolean noId) {
+        ContentValues values = new ContentValues();
+        if(!noId) values.put(DataBaseHelper.COLUMN_MA_CHU_NHIEM, teacher.getId());
+        values.put(DataBaseHelper.COLUMN_TEN_CHU_NHIEM, teacher.getTeacherName());
+        values.put(DataBaseHelper.COLUMN_HINH_ANH, teacher.getImageUrl());
+        values.put(DataBaseHelper.COLUMN_MA_TAI_KHOAN, teacher.getIdAccount());
+        values.put(DataBaseHelper.COLUMN_SO_DIEN_THOAI,teacher.getPhone());
+        return values;
     }
 }

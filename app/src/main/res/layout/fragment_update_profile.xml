@@ -10,7 +10,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".feature.RegisterScreen.OtpFragment"
+        tools:context=".feature.loginScreen.UpdateProfileFragment"
         android:orientation="vertical">
 
         <LinearLayout
@@ -38,7 +38,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:text="Xác thực OTP"
+                    android:text="Cập nhật thông tin"
                     android:textColor="@android:color/black"
                     android:textSize="24sp"
                     android:textStyle="bold" />
@@ -59,78 +59,75 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:orientation="vertical">
+            android:paddingRight="16dp">
 
-            <TextView
-                android:text="@string/otp_string_01"
+            <RelativeLayout
+                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-            <TextView
-                android:id="@+id/txt_phone_number"
-                android:text="0382916020"
-                android:textSize="20sp"
-                android:textColor="@color/black"
-                android:layout_marginStart="24dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="32dp"/>
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:scaleType="centerCrop"
+                    android:id="@+id/image_view_teacher"
+                    android:layout_width="200dp"
+                    android:layout_height="150dp"
+                    android:layout_centerHorizontal="true"
+                    android:background="@color/blue_200"
+                    android:src="@drawable/back_to_school">
+
+                </ImageView>
+
+
+                <androidx.cardview.widget.CardView
+                    android:layout_below="@+id/image_view_teacher"
+                    android:layout_alignStart="@id/image_view_teacher"
+                    android:layout_alignEnd="@+id/image_view_teacher"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/btn_choose_image_teacher"
+                        android:layout_gravity="center"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/ic_camera_alt_black_24dp">
+
+                    </ImageView>
+                </androidx.cardview.widget.CardView>
+
+            </RelativeLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/text_input_layout_OTP"
+                android:id="@+id/text_input_layout_full_name"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
-                android:hint="OTP"
+                android:hint="Họ và tên"
+                android:nextFocusDown="@id/text_input_layout_email"
                 app:boxStrokeWidth="1dp"
                 app:hintEnabled="true"
-                app:startIconCheckable="true"
-                app:startIconDrawable="@drawable/ic_otp">
+                app:startIconCheckable="true">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edit_text_OTP"
+                    android:id="@+id/edit_text_full_name"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:fontFamily="@font/poppins_regular"
-                    android:inputType="numberDecimal" />
+                    android:inputType="textEmailAddress" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:layout_marginTop="4dp"
-                    android:text="Chưa nhận được OTP?"
-                    android:textStyle="bold" />
-                <TextView
-                    android:id="@+id/txt_resend_otp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:layout_marginTop="4dp"
-                    android:textColor="@color/purple_500"
-                    android:text=" Gửi lại OTP."
-                    android:textStyle="bold" />
-            </LinearLayout>
-
             <Button
-                android:id="@+id/btn_confirm"
+                android:id="@+id/btn_update"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginTop="16dp"
-                android:text="Xác thực"
+                android:text="Cập nhật"
                 android:textSize="16sp"
                 android:textStyle="bold" />
-
         </LinearLayout>
-
     </LinearLayout>
-
 </layout>

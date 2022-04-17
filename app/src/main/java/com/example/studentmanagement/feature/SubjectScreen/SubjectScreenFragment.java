@@ -99,8 +99,6 @@ public class SubjectScreenFragment extends Fragment {
             NavDirections action = SubjectScreenFragmentDirections.actionSubjectScreenFragmentToHomeFragment();
             Navigation.findNavController(v).navigate(action);
         });
-
-
     }
 
     // get data from search view & query api to get the results
