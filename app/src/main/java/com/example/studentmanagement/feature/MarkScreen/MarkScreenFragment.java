@@ -174,7 +174,7 @@ public class MarkScreenFragment extends Fragment {
             document.addCreator("Hien Nguyen");
 
             Paragraph paragraph = new Paragraph("");
-            pdf.addNewItem(document, "MANAGE STUDENT", Element.ALIGN_CENTER, pdf.titleFont);
+            pdf.addNewItem(document, "QUẢN LÍ HỌC SINH", Element.ALIGN_CENTER, pdf.titleFont);
 //            specify column widths
             if (indexGrade == -1) {
                 return;
@@ -182,7 +182,7 @@ public class MarkScreenFragment extends Fragment {
             Grade grade = dropdownItemsGrade.get(indexGrade);
             Teacher teacher = markViewModel.findTeacherById(grade.getTeacherId());
             // title pdf
-            pdf.addNewItem(document, "CLASS:" + grade.getGradeId() + "           " + "TEACHER:" +
+            pdf.addNewItem(document, "LỚP:" + grade.getGradeId() + "           " + "GIÁO VIÊN:" +
                     teacher.getTeacherName(), Element.ALIGN_CENTER, pdf.bf12);
             pdf.addNewItem(document, "                              ", Element.ALIGN_CENTER, pdf.bf12);
 
@@ -193,7 +193,7 @@ public class MarkScreenFragment extends Fragment {
                 pdf.addNewItem(document, "STT: " + (++i), Element.ALIGN_CENTER, pdf.bfBold12);
                 // student information
                 pdf.addNewItem(document,
-                        "STUDENT INFORMATION",
+                        "Thông tin học sinh",
                         Element.ALIGN_CENTER,
                         pdf.bfBold12);
 
@@ -204,21 +204,21 @@ public class MarkScreenFragment extends Fragment {
 
                 pdf.addNewItem(document,
                         String.format("%10s %-50s %-30s", "",
-                                "ID:" + student.getId(),
-                                "GENDER:" + (student.getGender())),
+                                "Mã:" + student.getId(),
+                                "Giới tính:" + (student.getGender())),
                         Element.ALIGN_LEFT,
                         pdf.bf12);
 
                 pdf.addNewItem(document,
                         String.format("%10s %-37s %-30s", "",
-                                "NAME:" + student.getFirstName() + " " + student.getLastName(),
-                                "BIRTHDAY:" + student.getBirthday()),
+                                "Tên:" + student.getFirstName() + " " + student.getLastName(),
+                                "Ngáy sinh:" + student.getBirthday()),
                         Element.ALIGN_LEFT,
                         pdf.bf12);
                 // list mark of student
 
                 pdf.addNewItem(document,
-                        "TABLE SUBJECT MARK",
+                        "Bảng điểm các môn",
                         Element.ALIGN_CENTER,
                         pdf.bfBold12);
                 pdf.addNewItem(document,
@@ -261,9 +261,9 @@ public class MarkScreenFragment extends Fragment {
 
         //insert column headings
         pdf.insertCell(table, "STT", Element.ALIGN_CENTER, 1, pdf.bfBold12);
-        pdf.insertCell(table, "Subject name", Element.ALIGN_CENTER, 1, pdf.bfBold12);
-        pdf.insertCell(table, "Factor", Element.ALIGN_CENTER, 1, pdf.bfBold12);
-        pdf.insertCell(table, "Score", Element.ALIGN_CENTER, 1, pdf.bfBold12);
+        pdf.insertCell(table, "Tên môn học", Element.ALIGN_CENTER, 1, pdf.bfBold12);
+        pdf.insertCell(table, "Hệ số", Element.ALIGN_CENTER, 1, pdf.bfBold12);
+        pdf.insertCell(table, "Điểm", Element.ALIGN_CENTER, 1, pdf.bfBold12);
         table.setHeaderRows(1);
 
 
@@ -282,7 +282,7 @@ public class MarkScreenFragment extends Fragment {
 
         }
         //merge the cells to create a footer for that section
-        pdf.insertCell(table, "Average subject:", Element.ALIGN_RIGHT, 3, pdf.bfBold12);
+        pdf.insertCell(table, "Điểm trung bình:", Element.ALIGN_RIGHT, 3, pdf.bfBold12);
         pdf.insertCell(table, df.format(totalScore/totalCoefficient), Element.ALIGN_RIGHT, 1, pdf.bfBold12);
 
         paragraph.add(table);

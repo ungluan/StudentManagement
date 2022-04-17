@@ -158,12 +158,22 @@ public class MarkListAdapter extends ListAdapter<Mark, MarkListAdapter.MarkViewH
                 try{
                     score = Double.parseDouble(
                             binding.editTextStudentMarkMark.getText().toString());
+                    if(score <=0 || score>=10){
+                        binding.textInputMarkUpdateMark.setError("Điểm nẳm trong khoảng 0->10");
+                        binding.textInputMarkUpdateMark.requestFocus();
+                        return;
+                    }else{
+                        binding.textInputMarkUpdateMark.setErrorEnabled(false);
+                    }
                 }catch (Exception e){
-                    AppUtils.showErrorDialog(
-                            getContext()
-                            , "ParseDouble Error"
-                            , e.getMessage()
-                    );
+
+                    binding.textInputMarkUpdateMark.setError("Điểm phải là một số");
+                    binding.textInputMarkUpdateMark.requestFocus();
+//                    AppUtils.showErrorDialog(
+//                            getContext()
+//                            , "ParseDouble Error"
+//                            , e.getMessage()
+//                    );
                     return;
                 }
                 this.mark.setScore(score);
