@@ -29,5 +29,11 @@
     <string name="id_teacher">Id: %d</string>
     <string name="register">Đăng ký</string>
     <string name="otp_string_01">Mã OTP đã được gửi về số điện thoại:</string>
+    <string name="validate_password_01">Mật khẩu phải có ít nhất 6 ký tự.</string>
+    <string name="validate_repeat_password_01">Mật khẩu phải trùng với mật khẩu ở trên.</string>
+    <string name="validate_repeat_password_02">Mật khẩu phải trùng với mật khẩu mới.</string>
+    <string name="validate_email_01">Email không hợp lệ.</string>
+    <string name="validate_phone_01">Số điện thoại không hợp lệ.</string>
+
 
 </resources>
