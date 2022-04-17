@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+
+        <item android:icon="@drawable/profile"
+            android:title="Thông tin cá nhân"
+            android:id="@+id/informationFragment"
+            ></item>
+
+        <item android:icon="@drawable/padlock"
+            android:title="Đổi mật khẩu"
+            android:id="@+id/changePasswordFragment"
+            ></item>
+        <item android:icon="@drawable/add_user"
+            android:title="Tạo mới tài khoản"
+            android:id="@+id/registerFragment"
+            ></item>
+        <item android:icon="@drawable/ic_logout"
+            android:iconTint="@color/black"
+            android:title="Log out"
+            android:id="@+id/loginFragment"
+            ></item>
+    </group>
+</menu>

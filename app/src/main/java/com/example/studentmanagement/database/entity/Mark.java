@@ -9,7 +9,7 @@ import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Index;
 
-import com.example.studentmanagement.database_sqlite.Dao.RankStudent;
+import com.example.studentmanagement.database_sqlite.Dao.ERankStudent;
 
 import java.util.Arrays;
 
@@ -52,9 +52,9 @@ public class Mark {
     }
 
     public String rankStudent(){
-        return Arrays.stream(RankStudent.values())
+        return Arrays.stream(ERankStudent.values())
                 .filter(rankStudent ->  score < rankStudent.getTo() && score >= rankStudent.getFrom())
-                .findFirst().get().name();
+                .findFirst().get().getRank();
 
     }
 

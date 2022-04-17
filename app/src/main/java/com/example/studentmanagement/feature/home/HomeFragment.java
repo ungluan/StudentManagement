@@ -6,11 +6,16 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
 
 import android.os.Handler;
 import android.os.Looper;
@@ -22,7 +27,7 @@ import com.example.studentmanagement.R;
 import com.example.studentmanagement.database_sqlite.DataBaseHelper;
 import com.example.studentmanagement.databinding.FragmentHomeBinding;
 import com.example.studentmanagement.utils.AppUtils;
-
+import com.google.android.material.navigation.NavigationView;
 
 
 public class HomeFragment extends Fragment {
@@ -36,16 +41,26 @@ public class HomeFragment extends Fragment {
     private DataBaseHelper db;
     private Handler handler = new Handler(Looper.getMainLooper());
 
+//    drawer
+
+
+
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentHomeBinding.inflate(inflater);
+
         return binding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+//        createDrawer();
+
         homeViewModel = new ViewModelProvider(requireActivity()).get(HomeViewModel.class);
 
         binding.txtSeeAll.setOnClickListener(v -> {
@@ -87,6 +102,10 @@ public class HomeFragment extends Fragment {
             Navigation.findNavController(v).navigate(action);
 
         });
+    }
+
+    private void createDrawer() {
+
     }
 
 

@@ -180,9 +180,9 @@ public class MarkDao {
 
     public Map<String, Integer> countRankStudent(){
         Map<String , Integer> countRank = new HashMap<>();
-        Arrays.stream(RankStudent.values())
+        Arrays.stream(ERankStudent.values())
                 .forEach(rankStudent -> {
-                    countRank.put(rankStudent.name(), 0);
+                    countRank.put(rankStudent.getRank(), 0);
                 });
 
         getAllMarks().forEach(mark -> {

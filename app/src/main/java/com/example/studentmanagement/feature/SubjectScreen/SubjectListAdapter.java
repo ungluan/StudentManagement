@@ -70,7 +70,6 @@ public class SubjectListAdapter extends ListAdapter<Subject, SubjectListAdapter.
 
         public SubjectViewHolder(ViewGroup parent, SubjectViewModel subjectViewModel, SubjectListAdapter subjectListAdapter) {
             super(parent, R.layout.subject_item, R.layout.item_swipe_left_menu);
-
             this.subjectViewModel = subjectViewModel;
             this.subjectListAdapter = subjectListAdapter;
             txtSubjectId = findViewById(R.id.txt_subject_id);
@@ -146,8 +145,12 @@ public class SubjectListAdapter extends ListAdapter<Subject, SubjectListAdapter.
 
                 subject.setSubjectName(name);
                 subject.setCoefficient(factor);
-                subject.setImage(AppUtils.getImageString(CODE));
-                AppUtils.deleteCode(CODE);
+                if(!AppUtils.getImageString(CODE).equals("")){
+                    subject.setImage(AppUtils.getImageString(CODE));
+                    AppUtils.deleteCode(CODE);
+                }
+
+
                 boolean success = subjectViewModel.updateSubject(subject);
                 if (success) {
 

@@ -23,6 +23,7 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.sql.SQLOutput;
@@ -50,8 +51,9 @@ public class FragmentRankStudentScreen extends Fragment {
         markDao = new MarkDao(requireActivity().getApplication());
 
         piechart = binding.piechartRankStudent;
+        setUpPieChart();
         createPieChar();
-//        setUpPieChart();
+
 //        loadPiechartData();
         setEvents();
     }
@@ -65,9 +67,9 @@ public class FragmentRankStudentScreen extends Fragment {
     }
 
     private void setUpPieChart() {
-        piechart = binding.piechartRankStudent;
+
         piechart.setDrawHoleEnabled(true);
-        piechart.setUsePercentValues(true);
+//        piechart.setUsePercentValues(true);
         piechart.setEntryLabelTextSize(12);
         piechart.setEntryLabelColor(Color.BLACK);
         piechart.setCenterText("Spending by Category");
@@ -84,19 +86,19 @@ public class FragmentRankStudentScreen extends Fragment {
     private void createPieChar(){
 
         //set up pie chart
-        Legend le = piechart.getLegend();
-        le.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
-        le.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
-        le.setOrientation(Legend.LegendOrientation.VERTICAL);
-        le.setDrawInside(false);
-        le.setEnabled(false);
+//        Legend le = piechart.getLegend();
+//        le.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+//        le.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
+//        le.setOrientation(Legend.LegendOrientation.VERTICAL);
+//        le.setDrawInside(false);
+//        le.setEnabled(false);
 
 
 
         ArrayList<PieEntry> ranks =new ArrayList<>();
         Map<String, Integer> map = markDao.countRankStudent();
         for(String key: map.keySet()){
-            ranks.add(new PieEntry((int)map.get(key), key));
+            ranks.add(new PieEntry(map.get(key), key));
             System.out.println("value:" + map.get(key));
         }
 
@@ -104,14 +106,14 @@ public class FragmentRankStudentScreen extends Fragment {
 //        visitors.add(new PieEntry(508, "Excellent"));
 //        visitors.add(new PieEntry(600, "Good"));
 //        visitors.add(new PieEntry(750, "Average"));
-        PieDataSet pieDataSet = new PieDataSet(ranks, "Rank student");
+        PieDataSet pieDataSet = new PieDataSet(ranks, "Số lượng học sinh");
         pieDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
         pieDataSet.setValueTextColor(Color.BLACK);
-        pieDataSet.setValueTextSize(16f);
+        pieDataSet.setValueTextSize(20f);
         PieData pieData = new PieData(pieDataSet);
         piechart.setData(pieData);
         piechart.getDescription().setEnabled(false);
-        piechart.setCenterText("Rank Student");
+        piechart.setCenterText("");
         piechart.animateY(1400, Easing.EaseInOutQuad);
     }
     private void loadPiechartData() {

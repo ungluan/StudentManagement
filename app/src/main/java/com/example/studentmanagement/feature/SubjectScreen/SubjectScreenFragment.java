@@ -178,7 +178,7 @@ public class SubjectScreenFragment extends Fragment {
             boolean success = subjectViewModel.insertSubejct(subject);
             if (success) {
                 AppUtils.showSuccessDialog(context
-                        , "INSERT SUCCESS");
+                        , "Thêm thành công");
                 dialog.dismiss();
                 adapter.submitList(subjectViewModel.getAllSubject());
 
