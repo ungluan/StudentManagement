@@ -91,29 +91,18 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
+
                     <com.omega_r.libs.omegarecyclerview.OmegaRecyclerView
-                        android:layout_marginTop="24dp"
                         android:id="@+id/recycler_view_student"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
                         android:divider="@color/secondary_blue"
                         android:orientation="vertical"
                         app:dividerHeight="2dp"
-                        tools:listitem="@layout/student_item"
                         app:itemSpace="16dp"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-
-                    <TextView
-                        android:id="@+id/txt_list_empty"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="24dp"
-                        android:gravity="center"
-                        android:visibility="invisible"
-                        android:text="Danh sách trống."
-                        android:textColor="@android:color/black"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:listitem="@layout/student_item" />
 
                 </RelativeLayout>
 

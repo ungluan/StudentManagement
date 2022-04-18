@@ -141,7 +141,6 @@ public class OtpFragment extends Fragment {
     }
     private void handleCreateAccount(View view){
         registerViewModel.insertAccount();
-        loginViewModel.saveInformation(registerViewModel.getEmail(), loginViewModel.getPassword());
         String content ="Bạn đã đăng ký thành công. vui lòng đăng nhập ứng dụng để tiếp tục.";
         AppUtils.showNotificationDialog(requireContext(),
                 "Thông báo",content,

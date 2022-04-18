@@ -1,5 +1,6 @@
 package com.example.studentmanagement.feature.loginScreen;
 
+import static com.example.studentmanagement.utils.AppUtils.getInformation;
 import static com.example.studentmanagement.utils.AppUtils.isValidEmail;
 import static com.example.studentmanagement.utils.AppUtils.showNotificationDialog;
 import static com.example.studentmanagement.utils.AppUtils.updateInformation;
@@ -130,7 +131,7 @@ public class LoginFragment extends Fragment {
 //                    int teacherId = loginViewModel.getTeacherIdByEmail(email);
                     Teacher teacher = loginViewModel.getTeacherByEmail(email);
                     updateTeacherId(requireActivity(),teacher.getId());
-                    updateInformation(requireActivity(),!teacher.getTeacherName().isEmpty());
+                    updateInformation(requireActivity(),teacher.getTeacherName().length()>0);
                     sendEmail();
                     if (loginViewModel.isUpdateInformation(teacher.getId())) {
                         navigateToHomePage();
@@ -146,33 +147,7 @@ public class LoginFragment extends Fragment {
                 if(password.isEmpty()) binding.textInputLayoutPassword.setError("Mật khẩu không được trống.");
             }
         });
-        //pass login
-//        binding.btnLogin.setOnClickListener(v -> {
-//            String email = String.valueOf(binding.editTextEmail.getText());
-//            String password = String.valueOf(binding.editTextPassword.getText());
-//            if(!email.isEmpty() && !password.isEmpty()
-//                && !binding.textInputLayoutEmail.isErrorEnabled()
-//                && !binding.textInputLayoutPassword.isErrorEnabled()
-//            ){
-//                if(loginViewModel.login(email,password)){
-//                    Toast.makeText(getContext(), "Login Thành công", Toast.LENGTH_SHORT).show();
-//                    int teacherId = loginViewModel.getTeacherIdByEmail(email);
-//                    updateTeacherId(requireActivity(),teacherId);
-//                    sendEmail();
-//                    if (loginViewModel.isUpdateInformation(teacherId)) {
-//                        navigateToHomePage();
-//                    } else {
-//                        navigateToUpdateProfilePage(v);
-//                    }
-//                }else{
-//                    showNotificationDialog(requireContext(),"Đăng nhập thất bại",
-//                            "Tài khoản hoặc mật khẩu không chính xác. Vui lòng kiểm tra lại.",null);
-//                }
-//            }else{
-//                if(email.isEmpty()) binding.textInputLayoutEmail.setError("Email không được trống.");
-//                if(password.isEmpty()) binding.textInputLayoutPassword.setError("Mật khẩu không được trống.");
-//            }
-//        });
+
         binding.txtRegister.setOnClickListener(v -> {
             NavDirections action = LoginFragmentDirections.actionLoginFragmentToRegisterFragment();
             Navigation.findNavController(v).navigate(action);
@@ -183,8 +158,6 @@ public class LoginFragment extends Fragment {
         });
     }
 
-    private void setEvents() {
-    }
 
     private void sendEmail(){
         SendMail mail = new SendMail("ungluan01@gmail.com", "testingapp",
@@ -193,7 +166,7 @@ public class LoginFragment extends Fragment {
                 "Tài khoản của bạn vừa mới đăng nhập trên thiết bị "+getDeviceName());
         mail.execute();
     }
-    public String getDeviceName() {
+    private String getDeviceName() {
         String manufacturer = Build.MANUFACTURER;
         String model = Build.MODEL;
         if (model.startsWith(manufacturer)) {

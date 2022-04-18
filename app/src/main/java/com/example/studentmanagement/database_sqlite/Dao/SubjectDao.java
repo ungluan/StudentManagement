@@ -70,7 +70,8 @@ public class SubjectDao {
                 String subjectName = cursor.getString(1);
                 int coefficient = cursor.getInt(2);
                 String image = cursor.getString(3);
-                Subject subject = new Subject(subjectId,subjectName,coefficient, image);
+                int gradeSchool = cursor.getInt(4);
+                Subject subject = new Subject(subjectId,subjectName,coefficient, image,gradeSchool );
                 list.add(subject);
             }while (cursor.moveToNext());
         }
@@ -108,7 +109,9 @@ public class SubjectDao {
                 String subjectId = cursor.getString(0);
                 String subjectName = cursor.getString(1);
                 int coefficient = cursor.getInt(2);
-                Subject subject = new Subject(subjectId,subjectName,coefficient);
+                String image = cursor.getString(3);
+                int gradeSchool = cursor.getInt(4);
+                Subject subject = new Subject(subjectId,subjectName,coefficient, image,gradeSchool );
                 list.add(subject);
             }while(cursor.moveToNext());
         }
@@ -122,6 +125,7 @@ public class SubjectDao {
         values.put(DataBaseHelper.COLUMN_TEN_MON_HOC, subject.getSubjectName());
         values.put(DataBaseHelper.COLUMN_HE_SO, subject.getCoefficient());
         values.put(DataBaseHelper.COLUMN_HINH_ANH, subject.getImage());
+        values.put(DataBaseHelper.COLUMN_KHOI, subject.getGradeSchool());
         return values;
     }
 
@@ -138,16 +142,11 @@ public class SubjectDao {
                     id,
                     cursor.getString(1),
                     cursor.getInt(2),
-                    cursor.getString(3)
+                    cursor.getString(3),
+                    cursor.getInt(4)
             );
-
-
         }
-
         return subject;
-
-
-
     }
 
     public List<Subject> searchSubjectBySameIdOrName(String search) {
@@ -166,7 +165,9 @@ public class SubjectDao {
                     new Subject(cursor.getString(0),
                             cursor.getString(1),
                             cursor.getInt(2),
-                            cursor.getString(3)));
+                            cursor.getString(3),
+                            cursor.getInt(4)
+                            ));
 
         }
         return list;

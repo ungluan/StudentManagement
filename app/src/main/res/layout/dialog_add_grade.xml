@@ -62,7 +62,7 @@
                 android:id="@+id/edit_text_grade_name"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:inputType="textEmailAddress" />
+                android:inputType="text" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -90,7 +90,7 @@
             android:elevation="10dp"
             app:hintEnabled="true"
             app:endIconTint="@color/secondary_orange"
-            app:boxStrokeColor="@color/secondary_orange"
+            app:boxStrokeColor="@color/primary_color"
             app:boxStrokeWidth="1dp">
 
             <AutoCompleteTextView
@@ -101,6 +101,23 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/text_input_layout_grade_school"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="Khối"
+            app:boxStrokeWidth="1dp"
+            app:hintEnabled="true"
+            app:startIconCheckable="true">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_text_grade_school"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:inputType="numberDecimal" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

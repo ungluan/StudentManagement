@@ -64,7 +64,8 @@ public class GradeDao {
                 String gradeId = cursor.getString(0);
                 int teacherId = cursor.getInt(1);
                 String image = cursor.getString(2);
-                Grade grade = new Grade(gradeId,teacherId,image);
+                int gradeSchool = cursor.getInt(3);
+                Grade grade = new Grade(gradeId,teacherId,image,gradeSchool);
                 grades.add(grade);
             }while (cursor.moveToNext());
         }
@@ -76,6 +77,7 @@ public class GradeDao {
         if(!noId) values.put(DataBaseHelper.COLUMN_LOP, grade.getGradeId());
         values.put(DataBaseHelper.COLUMN_MA_CHU_NHIEM, grade.getTeacherId());
         values.put(DataBaseHelper.COLUMN_HINH_ANH, grade.getImage());
+        values.put(DataBaseHelper.COLUMN_KHOI, grade.getGradeSchool());
         return values;
     }
 }

@@ -21,7 +21,6 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.studentmanagement.R;
@@ -51,7 +50,6 @@ public class StudentScreenFragment extends Fragment {
     private List<String> dropdownItems = new ArrayList<>();
     private OmegaRecyclerView recyclerView;
     private StudentListAdapter studentListAdapter;
-    private TextView txtListEmpty;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -72,7 +70,6 @@ public class StudentScreenFragment extends Fragment {
         recyclerView = binding.recyclerViewStudent;
         recyclerView.setAdapter(studentListAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-        txtListEmpty = binding.txtListEmpty;
 
 
         initialStudentScreen();
@@ -98,9 +95,6 @@ public class StudentScreenFragment extends Fragment {
 
     private void loadRecyclerViewStudent(String gradeId) {
         studentListAdapter.submitList(studentViewModel.getStudentsByGradeId(gradeId));
-        if (studentListAdapter.getCurrentList().size() != 0)
-            txtListEmpty.setVisibility(View.INVISIBLE);
-        else txtListEmpty.setVisibility(View.VISIBLE);
     }
 
     private void initialDropdown() {
@@ -109,7 +103,7 @@ public class StudentScreenFragment extends Fragment {
             editTextGradeName.setText(dropdownItems.get(0));
             editTextGradeName.setAdapter(arrayAdapter);
             loadRecyclerViewStudent(dropdownItems.get(0));
-        }else editTextGradeName.setText("Danh sách lớp trống!");
+        }
     }
 
     private void initialStudentScreen() {
@@ -162,6 +156,10 @@ public class StudentScreenFragment extends Fragment {
             }
             Student student = new Student(firstName, lastName, gender, birthday, gradeId);
 
+            if(dropdownItems.isEmpty()) {
+                AppUtils.showNotificationDialog(context,"Thông báo","Danh sách lớp trống không thể thêm.",null);
+                return;
+            }
             if(studentViewModel.insertStudent(student)){
                 showToast("Thêm học sinh thành công");
                 List<Student> students = new ArrayList<>(studentListAdapter.getCurrentList());
