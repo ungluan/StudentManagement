@@ -1,22 +1,19 @@
 package com.example.studentmanagement.feature.ProfileScreen;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
-import androidx.navigation.NavDirections;
-import androidx.navigation.Navigation;
-
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.studentmanagement.R;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
+
 import com.example.studentmanagement.databinding.FragmentChangePasswordBinding;
 import com.example.studentmanagement.feature.loginScreen.LoginViewModel;
 import com.example.studentmanagement.utils.AppUtils;
@@ -137,8 +134,9 @@ public class ChangePasswordFragment extends Fragment {
                 if (!isForgetPassword && !changePasswordViewModel.checkPassword(AppUtils.getTeacherId(requireActivity()), oldPassword))
                     binding.textInputLayoutOldPassword.setError("Mật khẩu không trùng khớp với mật khẩu hiện tại.");
                 else {
-                    int accountId = isForgetPassword ? changePasswordViewModel.getAccountIdByTeacherId(
-                            AppUtils.getTeacherId(requireActivity())) : loginViewModel.getIdUserForgotPass();
+                    int accountId = isForgetPassword ? loginViewModel.getIdUserForgotPass():
+                            changePasswordViewModel.getAccountIdByTeacherId(
+                                    AppUtils.getTeacherId(requireActivity()));
                     changePasswordViewModel.updatePassword(accountId, newPassword);
                     AppUtils.showNotificationDialog(requireContext(),
                             "Đổi mật khẩu thành công",
