@@ -100,7 +100,7 @@ public class SubjectDao {
 
     public List<Subject> getSubjectSubjectId(int studentId){
         List<Subject> list = new ArrayList<>();
-        String query = "SELECT MONHOC.MAMONHOC, MONHOC.TENMONHOC , MONHOC.HESO FROM MONHOC,DIEM \n" +
+        String query = "SELECT MONHOC.MAMONHOC, MONHOC.TENMONHOC , MONHOC.HESO, MONHOC.HINHANH, MONHOC.KHOI FROM MONHOC,DIEM \n" +
                 " WHERE DIEM.MAHOCSINH = "+ studentId + " AND DIEM.MAMONHOC = MONHOC.MAMONHOC ";
 
         Cursor cursor = db.rawQuery(query,null);

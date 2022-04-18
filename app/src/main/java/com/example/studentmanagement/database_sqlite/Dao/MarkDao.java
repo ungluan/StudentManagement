@@ -37,22 +37,28 @@ public class MarkDao {
     }
 
     public Boolean deleteAndInsertMark(List<Mark> marks, List<String> delList){
-        db.beginTransaction();
         try{
-            String queryDelete = "DELETE FROM MARK WHERE MAMONHOC IN ( "+
-                    listToString(delList) +" ) ";
-            String queryInsert = "INSERT INTO DIEM VALUES "+listMarkToString(marks);
-            dataBaseHelper.query(queryDelete,null);
-            dataBaseHelper.query(queryInsert,null);
-            db.endTransaction();
+            if(!delList.isEmpty()) {
+                String queryDelete = "DELETE FROM DIEM WHERE MAMONHOC IN ( "+
+                        listToString(delList) +" ) ";
+                Log.d("Mark","'"+queryDelete+"'");
+                dataBaseHelper.execSql(queryDelete);
+
+            }
+            if(marks.size()!=0){
+                String queryInsert = "INSERT INTO DIEM (MAHOCSINH, MAMONHOC, DIEM) VALUES "+listMarkToString(marks);
+                Log.d("Mark","'"+queryInsert+"'");
+
+                dataBaseHelper.execSql(queryInsert);
+            }
             return true;
         }catch (Exception e){
-            db.endTransaction();
             return false;
         }
     }
     public String stringMark(Mark mark){
-        return "("+mark.getStudentId()+", '"+mark.getSubjectId()+"', "+mark.getScore()+"),";
+
+        return "("+mark.getStudentId()+", '"+mark.getSubjectId()+"', "+mark.getScore()+ "),";
     }
     public String listMarkToString(List<Mark> marks){
         String s ="" ;
@@ -61,10 +67,16 @@ public class MarkDao {
         }
         return s.substring(0,s.length()-1);
     }
+    public String stringSub(String s){
+        return "'"+s+"'";
+    }
     public String listToString(List<String> delList){
         if(delList.size()==0) return "";
-        String s = delList.toString();
-        s = s.substring(1,s.length()-1);
+        String s ="";
+        for(int i=0; i<delList.size() ; i++){
+            s += stringSub(delList.get(i))+",";
+        }
+        s= s.substring(0,s.length()-1);
         return s;
     }
 

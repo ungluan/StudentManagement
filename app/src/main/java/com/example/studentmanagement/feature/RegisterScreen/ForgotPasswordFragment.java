@@ -19,10 +19,12 @@ import com.example.studentmanagement.R;
 import com.example.studentmanagement.databinding.FragmentForgotPasswordBinding;
 import com.example.studentmanagement.databinding.FragmentOtpBinding;
 import com.example.studentmanagement.feature.ProfileScreen.ChangePasswordViewModel;
+import com.example.studentmanagement.feature.loginScreen.LoginViewModel;
 
 public class ForgotPasswordFragment extends Fragment {
     private FragmentForgotPasswordBinding binding;
     private RegisterViewModel registerViewModel;
+    private LoginViewModel loginViewModel;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -35,6 +37,7 @@ public class ForgotPasswordFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         registerViewModel = new ViewModelProvider(requireActivity()).get(RegisterViewModel.class);
+        loginViewModel = new ViewModelProvider(requireActivity()).get(LoginViewModel.class);
         registerViewModel.setIsRegisterPage(false);
         binding.editTextPhone.addTextChangedListener(new TextWatcher() {
             @Override
@@ -69,7 +72,7 @@ public class ForgotPasswordFragment extends Fragment {
             if(!binding.textInputLayoutPhone.isErrorEnabled()){
                 String phone = binding.editTextPhone.getText().toString();
                 String email = registerViewModel.getEmailByPhone(phone);
-                registerViewModel.saveInformationRegister(phone,email,"");
+                loginViewModel.setEmail(email);
                 navigateToOtpPage(v);
             }
         });

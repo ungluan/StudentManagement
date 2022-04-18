@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import io.reactivex.rxjava3.core.Observable;
 
@@ -54,7 +55,7 @@ public class StudentListAdapter extends ListAdapter<Student, StudentListAdapter.
         return new StudentViewHolder(
                 parent,
                 R.layout.student_item,
-                R.layout.item_swipe_left_menu,
+                R.layout.item_swipe_student_menu,
                 studentViewModel,
                 this
         );
@@ -73,7 +74,14 @@ public class StudentListAdapter extends ListAdapter<Student, StudentListAdapter.
         private TextView txtBirthdate;
         private TextView txtEdit;
         private TextView txtDel;
+        private TextView txtUpdateSubject;
         private Student student;
+        private ChipGroup chipGroupSubjects;
+        private List<Subject> listSubjects;
+        private List<Subject> listSelected = new ArrayList<>();
+        private List<Subject> saveList = new ArrayList<>();
+        private List<Subject> delList = new ArrayList<>();
+        private Map<String,Double> maps = new HashMap<>();
 
         public StudentViewHolder(ViewGroup parent, int contentRes, int swipeLeftMenuRes,
                                  StudentViewModel studentViewModel, StudentListAdapter studentListAdapter) {
@@ -83,6 +91,7 @@ public class StudentListAdapter extends ListAdapter<Student, StudentListAdapter.
             txtBirthdate = findViewById(R.id.txt_birth_day);
             txtEdit = findViewById(R.id.txtEdit);
             txtDel = findViewById(R.id.txtDel);
+            txtUpdateSubject = findViewById(R.id.txtUpdate);
             this.studentViewModel = studentViewModel;
             this.studentListAdapter = studentListAdapter;
         }
@@ -94,6 +103,13 @@ public class StudentListAdapter extends ListAdapter<Student, StudentListAdapter.
             this.student = student;
             txtEdit.setOnClickListener(this);
             txtDel.setOnClickListener(this);
+            txtUpdateSubject.setOnClickListener(this);
+
+            // Khoi tao
+            DataBaseHelper.databaseExecutor.execute(() -> {
+                listSubjects = studentViewModel.getSubjects();
+
+            });
         }
 
         @Override
@@ -102,6 +118,8 @@ public class StudentListAdapter extends ListAdapter<Student, StudentListAdapter.
                 showEditStudentDialog(getContext());
             } else if (v.getId() == txtDel.getId()) {
                 showDelStudentDialog(getContext());
+            } else if (v.getId() == txtUpdateSubject.getId()) {
+                showUpdateSubjectDialog(getContext());
             }
         }
 
@@ -204,7 +222,88 @@ public class StudentListAdapter extends ListAdapter<Student, StudentListAdapter.
             });
             dialog.show();
         }
+        private void showUpdateSubjectDialog(Context context) {
 
+            Dialog dialog = new Dialog(context, R.style.DialogStyle);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            DialogUpdateSubjectBinding binding = DialogUpdateSubjectBinding.inflate(
+                    LayoutInflater.from(context)
+            );
+            binding.linearLayoutCenter.setVisibility(View.VISIBLE);
+            dialog.setContentView(binding.getRoot());
+            dialog.getWindow().setBackgroundDrawableResource(R.drawable.bg_white_color);
+            binding.btnAdd.setText("Cập nhật");
+
+            chipGroupSubjects = binding.chipGroupSubject;
+            // Ds môn học của học sinh
+            listSelected = studentViewModel.getSubjectSubjectId(student.getId());
+            // Môn học và điểm
+            maps = studentViewModel.getSubjectsSelectedByStudentId(student.getId());
+
+            // Load chip
+            for(int i=0 ; i<listSubjects.size() ; i++){
+                addChips(listSubjects.get(i));
+            }
+            binding.linearLayoutCenter.setVisibility(View.INVISIBLE);
+
+            dialog.setOnDismissListener(d -> {
+                saveList.clear();
+                delList.clear();
+                listSelected.clear();
+            });
+
+            binding.btnCancel.setOnClickListener(v -> dialog.dismiss());
+            binding.btnAdd.setOnClickListener(v -> {
+
+                if (saveList.isEmpty() && delList.isEmpty() ) {
+                    binding.txtError.setVisibility(View.VISIBLE);
+                } else {
+                    binding.txtError.setVisibility(View.INVISIBLE);
+                    List<Mark> lm = new ArrayList<>();
+                    saveList.forEach(subject -> {
+                        lm.add(new Mark(student.getId(),subject.getId(),0.0));
+                    });
+                    List<String> lmm = delList.stream().map(subject -> subject.getId()).collect(Collectors.toList());
+                    lm.size();
+                    lmm.size();
+                    if(studentViewModel.deleteAndInsertMark(lm, lmm)){
+                        dialog.dismiss();
+                        showToast("Thanh cong");
+                    }else {
+                        showToast("that bai");
+                    }
+                }
+            });
+            dialog.show();
+        }
+
+        private void addChips(@NonNull Subject subject) {
+            Chip chip = (Chip) ((Activity) getContext()).getLayoutInflater()
+                    .inflate(R.layout.item_chip_subject, null, false);
+            chip.setText(subject.getSubjectName());
+            chip.setTag(subject.getId());
+
+            chipGroupSubjects.addView(chip);
+            // Nếu subject này có trong danh sách môn học đã chọn
+            double mark = maps.get(subject.getId())==null ? -1 : maps.get(subject.getId()) ;
+            if(mark != -1){
+                chip.setChecked(true);
+                if( mark != 0){
+                    chip.setEnabled(false);
+                }else{
+                    saveList.add(subject);
+                }
+            }
+            chip.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if (!isChecked){
+                    delList.add(subject);
+                    saveList.remove(subject);
+                }else{
+                    delList.remove(subject);
+                    saveList.add(subject);
+                }
+            });
+        }
 
         private void showToast(String message){
             Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();

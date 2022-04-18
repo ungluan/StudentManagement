@@ -146,7 +146,7 @@ public class ChangePasswordFragment extends Fragment {
                                 if(!isForgetPassword) navigateToProfilePage(view);
                                 else {
                                     loginViewModel = new ViewModelProvider(requireActivity()).get(LoginViewModel.class);
-                                    loginViewModel.saveInformation(loginViewModel.getEmail(), binding.editTextNewPassword.getText().toString());
+                                    loginViewModel.setPassword(binding.editTextNewPassword.getText().toString());
                                     navigateToLoginPage(view);
                                 }
                                 return null;

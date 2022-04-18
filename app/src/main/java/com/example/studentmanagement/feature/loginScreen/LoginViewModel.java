@@ -28,7 +28,16 @@ public class LoginViewModel extends AndroidViewModel {
         loginDao = new LoginDao(application);
         teacherDao = new TeacherDao(application);
     }
-    public void saveInformation(String email,String password){
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void saveInformation(String email, String password){
         this.email = email;
         this.password = password;
     }
