@@ -255,7 +255,7 @@
         <action
             android:id="@+id/action_updateProfileFragment_to_homeFragment"
             app:destination="@id/homeFragment"
-            app:popUpTo="@id/loginFragment"
+            app:popUpTo="@id/updateProfileFragment"
             app:popUpToInclusive="true" />
     </fragment>
 

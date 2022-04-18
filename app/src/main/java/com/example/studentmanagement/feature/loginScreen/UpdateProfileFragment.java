@@ -20,7 +20,6 @@ import com.example.studentmanagement.utils.AppUtils;
 public class UpdateProfileFragment extends Fragment {
     private FragmentUpdateProfileBinding binding;
     private int CODE = 123;
-    private String imageString;
     private LoginViewModel loginViewModel;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -36,7 +35,6 @@ public class UpdateProfileFragment extends Fragment {
         loginViewModel = new ViewModelProvider(requireActivity()).get(LoginViewModel.class);
         binding.btnChooseImageTeacher.setOnClickListener(v -> {
             AppUtils.chooseImage(requireContext(), binding.imageViewTeacher, CODE);
-            imageString = AppUtils.getImageString(CODE);
         });
 
         binding.btnUpdate.setOnClickListener(v -> {
@@ -48,12 +46,10 @@ public class UpdateProfileFragment extends Fragment {
             navigateToHomePage(v);
         });
     }
-    private void navigationToLoginPage(View view){
-        // Này bắt buộc cập nhật
-    }
+
     private void updateTeacher(){
         Teacher teacher = loginViewModel.getTeacherById(AppUtils.getTeacherId(requireActivity()));
-        teacher.setTeacherName(binding.editTextFullName.getText().toString());
+        teacher.setTeacherName(AppUtils.formatPersonName(binding.editTextFullName.getText().toString()));
         teacher.setImageUrl(AppUtils.getImageString(CODE));
         loginViewModel.updateTeacher(teacher);
     }

@@ -100,7 +100,6 @@ public class GradeScreenFragment extends Fragment {
         searchView = binding.searchGrade;
         SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
-        // Có dòng này ?
         searchView.setMaxWidth(Integer.MAX_VALUE);
 
         binding.searchGrade.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -140,11 +139,7 @@ public class GradeScreenFragment extends Fragment {
                     }
                 }
             });
-//    public boolean saveImageToExternalStorage(String image, Bitmap bitmap){
-//        Uri uri = Uri.parse(image);
-//        ContentResolver resolver = getContext().getContentResolver();
-//
-//    }
+
 
     public void showToast(String message){
         Toast.makeText(this.requireContext(), message, Toast.LENGTH_SHORT).show();
@@ -186,12 +181,23 @@ public class GradeScreenFragment extends Fragment {
                         String.valueOf(binding.editTextGradeName.getText()));
                 String teacherText = binding.editTextTeacherId.getText().toString();
                 int teacherId = Integer.parseInt(teacherText.substring(0,teacherText.indexOf(" ")));
+                int gradeSchool ;
                 if (gradeId.equals("")) {
                     binding.textInputLayoutGradeName.setError("Tên lớp không được trống.");
                     return;
                 }
-                // Chưa set Image
-                Grade grade = new Grade(gradeId,teacherId,"");
+                try {
+                    gradeSchool = Integer.parseInt(binding.editTextGradeSchool.getText().toString());
+                    if(gradeSchool<1 && gradeSchool>12){
+                        binding.textInputLayoutGradeName.setError("Khối không hợp lệ. (1->12)");
+                        return;
+                    }
+                }catch (Exception e){
+                    binding.textInputLayoutGradeName.setError("Khối là một số nguyên.");
+                    return;
+                }
+
+                Grade grade = new Grade(gradeId,teacherId,"",gradeSchool);
 
                 if(!gradeViewModel.checkGradeId(gradeId)){
                     if(gradeViewModel.insertGrade(grade)){

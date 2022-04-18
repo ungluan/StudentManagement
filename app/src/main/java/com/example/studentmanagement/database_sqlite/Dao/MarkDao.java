@@ -133,15 +133,21 @@ public class MarkDao {
                 ", " + DataBaseHelper.COLUMN_TEN_MON_HOC +
                 ", "+DataBaseHelper.COLUMN_HE_SO+
                 ", " + DataBaseHelper.COLUMN_DIEM+
+                ", " + DataBaseHelper.COLUMN_KHOI+
+                ", " + DataBaseHelper.COLUMN_HINH_ANH +
                 " FROM "+DataBaseHelper.TABLE_DIEM +", " + DataBaseHelper.TABLE_MON_HOC +
                 " WHERE "+ DataBaseHelper.TABLE_DIEM+"."+DataBaseHelper.COLUMN_MA_MON_HOC+
                 "="+DataBaseHelper.TABLE_MON_HOC+"." + DataBaseHelper.COLUMN_MA_MON_HOC+
                 " AND MAHOCSINH='" + studentId + "'";
         Cursor cursor = dataBaseHelper.query(sql, null);
         while (cursor.moveToNext()) {
-            Subject subject = new Subject(cursor.getString(1),
+            Subject subject = new Subject(
+                    cursor.getString(1),
                     cursor.getString(2),
-                    cursor.getInt(3));
+                    cursor.getInt(3),
+                    cursor.getString(6),
+                    cursor.getInt(5)
+            );
 
             list.add(new Mark(cursor.getInt(0),
                     cursor.getString(1),

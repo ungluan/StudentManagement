@@ -20,6 +20,7 @@ public class GradeViewModel extends AndroidViewModel {
         super(application);
         gradeDao = new GradeDao(application);
         teacherDao = new TeacherDao(application);
+        studentDao = new StudentDao(application);
     }
 
     public List<Grade> getGrades() {

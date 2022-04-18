@@ -41,14 +41,15 @@ public class GradeListAdapter extends ListAdapter<Grade, GradeListAdapter.GradeV
     private final ActivityResultLauncher<Intent> activityGalleryImageLauncher;
     private int positionImageOnClicked = -1;
     private final List<Grade> gradeList = new ArrayList<>();
-    public int getPositionImageOnClicked(){
+
+    public int getPositionImageOnClicked() {
         return positionImageOnClicked;
     }
 
     public GradeListAdapter(
             GradeViewModel gradeViewModel,
             ActivityResultLauncher<Intent> activityGalleryImageLauncher
-            ,@NonNull DiffUtil.ItemCallback<Grade> diffCallback) {
+            , @NonNull DiffUtil.ItemCallback<Grade> diffCallback) {
         super(diffCallback);
         this.gradeViewModel = gradeViewModel;
         this.activityGalleryImageLauncher = activityGalleryImageLauncher;
@@ -57,7 +58,7 @@ public class GradeListAdapter extends ListAdapter<Grade, GradeListAdapter.GradeV
     @NonNull
     @Override
     public GradeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        if(gradeList.size()==0) gradeList.addAll(getCurrentList());
+        if (gradeList.size() == 0) gradeList.addAll(getCurrentList());
         return new GradeViewHolder(
                 parent,
                 gradeViewModel,
@@ -68,7 +69,7 @@ public class GradeListAdapter extends ListAdapter<Grade, GradeListAdapter.GradeV
     @Override
     public void onBindViewHolder(@NonNull GradeViewHolder holder, int position) {
         holder.bind(getItem(position));
-        holder.gradeImage.setOnClickListener(v ->{
+        holder.gradeImage.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
             intent.setType("image/*");
             activityGalleryImageLauncher.launch(intent);
@@ -83,10 +84,10 @@ public class GradeListAdapter extends ListAdapter<Grade, GradeListAdapter.GradeV
             protected FilterResults performFiltering(CharSequence constraint) {
                 String strSearch = constraint.toString();
                 List<Grade> list = gradeList;
-                if(!strSearch.isEmpty()){
+                if (!strSearch.isEmpty()) {
                     List<Grade> grades = new ArrayList<>();
-                    for(Grade grade : list){
-                        if(grade.getGradeId().toLowerCase().contains(strSearch.toLowerCase())){
+                    for (Grade grade : list) {
+                        if (grade.getGradeId().toLowerCase().contains(strSearch.toLowerCase())) {
                             grades.add(grade);
                         }
                     }
@@ -140,7 +141,7 @@ public class GradeListAdapter extends ListAdapter<Grade, GradeListAdapter.GradeV
             this.grade = grade;
             teacher = gradeViewModel.getTeacherById(grade.getTeacherId());
             txtGradeName.setText(getString(R.string.name_of_the_grade, grade.getGradeId()));
-            txtTeacherInfo.setText(getString(R.string.teacher_of_the_grade,teacher.getTeacherName()));
+            txtTeacherInfo.setText(getString(R.string.teacher_of_the_grade, teacher.getTeacherName()));
             Picasso.get().load(Uri.parse(grade.getImage()))
                     .placeholder(R.drawable.no_image).into(gradeImage);
         }
@@ -171,7 +172,7 @@ public class GradeListAdapter extends ListAdapter<Grade, GradeListAdapter.GradeV
                     String.valueOf(txtGradeName.getText()).split(":")[1].trim());
             binding.editTextGradeName.setEnabled(false);
             // format??
-            binding.editTextTeacherId.setText(teacher.getId()+" - "+teacher.getTeacherName());
+            binding.editTextTeacherId.setText(teacher.getId() + " - " + teacher.getTeacherName());
             binding.btnAdd.setText("Sửa");
             binding.txtTitle.setText("Sửa lớp học");
 
@@ -179,12 +180,21 @@ public class GradeListAdapter extends ListAdapter<Grade, GradeListAdapter.GradeV
 
             binding.btnCancel.setOnClickListener(v -> dialog.dismiss());
             binding.btnAdd.setOnClickListener(v -> {
-            String gradeId = String.valueOf(binding.editTextGradeName.getText());
-            // format
-            int teacherId = AppUtils.getTeacherIdFromDropDown(binding.editTextTeacherId.getText().toString());
-
-                // Chưa cập nhật Image
-                Grade gradeEdit = new Grade(gradeId, teacherId, grade.getImage());
+                String gradeId = String.valueOf(binding.editTextGradeName.getText());
+                // format
+                int teacherId = AppUtils.getTeacherIdFromDropDown(binding.editTextTeacherId.getText().toString());
+                int gradeSchool ;
+                try {
+                    gradeSchool = Integer.parseInt(binding.editTextGradeSchool.getText().toString());
+                    if(gradeSchool<1 && gradeSchool>12){
+                        binding.textInputLayoutGradeName.setError("Khối không hợp lệ. (1->12)");
+                        return;
+                    }
+                }catch (Exception e){
+                    binding.textInputLayoutGradeName.setError("Khối là một số nguyên.");
+                    return;
+                }
+                Grade gradeEdit = new Grade(gradeId, teacherId, grade.getImage(),gradeSchool );
                 if (gradeViewModel.updateGrade(gradeEdit)) {
                     showToast("Cập nhật lớp thành công!");
                     gradeListAdapter.submitList(updateGradeInList(gradeEdit));
@@ -193,7 +203,7 @@ public class GradeListAdapter extends ListAdapter<Grade, GradeListAdapter.GradeV
                 } else {
                     AppUtils.showNotificationDialog(
                             getContext(), "Thông báo", "Cập nhật lớp thất bại!"
-                            ,null);
+                            , null);
                 }
             });
             dialog.show();
@@ -206,18 +216,19 @@ public class GradeListAdapter extends ListAdapter<Grade, GradeListAdapter.GradeV
             System.out.println(grades);
             return grades;
         }
+
         private void initialDropdown(DialogAddGradeBinding binding) {
             List<String> teacherList = gradeViewModel.getTeacherHaveNotGrade().stream()
-                    .map(item -> item.getId() +" - "+item.getTeacherName())
+                    .map(item -> item.getId() + " - " + item.getTeacherName())
                     .collect(Collectors.toList());
             teacherItems.clear();
             teacherItems.addAll(teacherList);
 
             ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getContext(),
                     R.layout.dropdown_item, teacherItems);
-            if(teacherItems.size()>0){
+            if (teacherItems.size() > 0) {
                 binding.editTextTeacherId.setAdapter(arrayAdapter);
-            }else binding.editTextTeacherId.setText("Danh sách giáo viên trống!");
+            } else binding.editTextTeacherId.setText("Danh sách giáo viên trống!");
         }
 
         private void showDelGradeDialog(Context context) {
@@ -236,23 +247,23 @@ public class GradeListAdapter extends ListAdapter<Grade, GradeListAdapter.GradeV
                 String gradeId = String.valueOf(txtGradeName.getText()).split(":")[1].trim();
 //                String teacherName = AppUtils.formatPersonName(String.valueOf(txtTeacherName.getText()).split(":")[1].trim());
 //                int teacherId = Integer.parseInt();
-                Grade grade = new Grade(gradeId, teacher.getId(), "");
+                Grade gradeDel = new Grade(gradeId, teacher.getId(), "", grade.getGradeSchool());
                 // Kiem tra co hs trong lop khong
-                if(gradeViewModel.getNumberOfStudentByGrade(grade.getGradeId())==0){
-                    if (gradeViewModel.deleteGrade(grade.getGradeId())) {
+                if (gradeViewModel.getNumberOfStudentByGrade(gradeDel.getGradeId()) == 0) {
+                    if (gradeViewModel.deleteGrade(gradeDel.getGradeId())) {
                         List<Grade> grades = new ArrayList<Grade>(gradeListAdapter.getCurrentList());
-                        grades.remove(grade);
+                        grades.remove(gradeDel);
                         gradeListAdapter.submitList(grades);
                         gradeListAdapter.notifyItemRemoved(getAdapterPosition());
                         showToast("Xóa lớp thành công!");
                         dialog.dismiss();
                     } else {
                         AppUtils.showNotificationDialog(
-                                getContext(), "Thông báo", "Xóa lớp thất bại!",null);
+                                getContext(), "Thông báo", "Xóa lớp thất bại!", null);
                     }
-                }else{
+                } else {
                     AppUtils.showNotificationDialog(
-                            getContext(), "Thông báo", "Lớp có học sinh không thể xóa!",null);
+                            getContext(), "Thông báo", "Lớp có học sinh không thể xóa!", null);
                 }
             });
             dialog.show();

@@ -19,11 +19,12 @@ import android.view.ViewGroup;
 
 import com.example.studentmanagement.R;
 import com.example.studentmanagement.databinding.FragmentRegisterBinding;
+import com.example.studentmanagement.feature.loginScreen.LoginViewModel;
 
 public class RegisterFragment extends Fragment {
     private FragmentRegisterBinding binding;
     private RegisterViewModel registerViewModel;
-
+    private LoginViewModel loginViewModel;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -35,6 +36,7 @@ public class RegisterFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         registerViewModel = new ViewModelProvider(requireActivity()).get(RegisterViewModel.class);
+        loginViewModel = new ViewModelProvider(requireActivity()).get(LoginViewModel.class);
         registerViewModel.setIsRegisterPage(true);
 
         handleInputTextFields();
@@ -53,6 +55,7 @@ public class RegisterFragment extends Fragment {
            if(!binding.textInputLayoutEmail.isErrorEnabled() && !binding.textInputLayoutPassword.isErrorEnabled()
             && !binding.textInputLayoutRepeatPassword.isErrorEnabled() && !binding.textInputLayoutPhone.isErrorEnabled()){
                 registerViewModel.saveInformationRegister(phone,email,password);
+                loginViewModel.saveInformation(email,password);
                 navigateToOTPPage(v);
             }
         });
