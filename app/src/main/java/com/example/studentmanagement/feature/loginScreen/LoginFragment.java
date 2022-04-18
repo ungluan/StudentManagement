@@ -128,7 +128,6 @@ public class LoginFragment extends Fragment {
             ){
                 if(loginViewModel.login(email,password)){
                     Toast.makeText(getContext(), "Login Thành công", Toast.LENGTH_SHORT).show();
-//                    int teacherId = loginViewModel.getTeacherIdByEmail(email);
                     Teacher teacher = loginViewModel.getTeacherByEmail(email);
                     updateTeacherId(requireActivity(),teacher.getId());
                     updateInformation(requireActivity(),teacher.getTeacherName().length()>0);

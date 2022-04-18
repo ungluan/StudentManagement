@@ -113,7 +113,15 @@ public class TeacherDao {
         }
         return list;
     }
-
+    public int getIdTeacherByPhone(String phone){
+        String query = "SELECT "+DataBaseHelper.COLUMN_MA_CHU_NHIEM +" FROM "+
+                DataBaseHelper.TABLE_GVCN +" WHERE " + DataBaseHelper.COLUMN_SO_DIEN_THOAI
+                + " = '"+ phone +"'";
+        Cursor cursor = dataBaseHelper.query(query,null);
+        int id = -1;
+        if(cursor.moveToFirst()) id = cursor.getInt(0);
+        return id;
+    }
     public List<Teacher> searchTeacherBySameNameOrPhoneOrAccount(String search) {
 
         String query = "SELECT * FROM " + DataBaseHelper.TABLE_GVCN +

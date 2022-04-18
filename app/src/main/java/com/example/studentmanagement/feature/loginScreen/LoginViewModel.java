@@ -14,7 +14,8 @@ public class LoginViewModel extends AndroidViewModel {
     final TeacherDao teacherDao;
     private String email;
     private String password;
-
+    private String phone;
+    private int idUserForgotPass ;
     public String getEmail() {
         return email;
     }
@@ -37,6 +38,22 @@ public class LoginViewModel extends AndroidViewModel {
         this.password = password;
     }
 
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public int getIdUserForgotPass() {
+        return idUserForgotPass;
+    }
+
+    public void setIdUserForgotPass(int idUserForgotPass) {
+        this.idUserForgotPass = idUserForgotPass;
+    }
+
     public void saveInformation(String email, String password){
         this.email = email;
         this.password = password;
@@ -57,5 +74,8 @@ public class LoginViewModel extends AndroidViewModel {
     }
     public boolean updateTeacher(Teacher teacher){
         return teacherDao.updateTeacher(teacher);
+    }
+    public int getTeacherIdByPhone(String phone){
+        return teacherDao.getIdTeacherByPhone(phone);
     }
 }
