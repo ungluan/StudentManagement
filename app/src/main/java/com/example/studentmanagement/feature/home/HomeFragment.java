@@ -36,7 +36,7 @@ public class HomeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         homeViewModel = new ViewModelProvider(requireActivity()).get(HomeViewModel.class);
         teacher = homeViewModel.getTeacherById(AppUtils.getTeacherId(requireActivity()));
-        binding.txtName.setText(getString(R.string.str_teacher_name,AppUtils.getLastName(teacher.getTeacherName())));
+//        binding.txtName.setText(getString(R.string.str_teacher_name,AppUtils.getLastName(teacher.getTeacherName())));
         if(!teacher.getImageUrl().equals(""))
         Picasso.get().load(teacher.getImageUrl()).into(binding.imageAvatar);
 

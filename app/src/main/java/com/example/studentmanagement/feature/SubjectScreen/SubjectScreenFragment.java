@@ -174,7 +174,7 @@ public class SubjectScreenFragment extends Fragment {
 
 
 
-            Subject subject = new Subject(/*id, name, factor*/);
+            Subject subject = new Subject(id, name, factor);
             if(!AppUtils.getImageString(CODE).equals("")){ // have image
                 subject.setImage(AppUtils.getImageString(CODE));
                 AppUtils.deleteCode(CODE);
@@ -185,7 +185,7 @@ public class SubjectScreenFragment extends Fragment {
 
 
 
-            boolean success = subjectViewModel.insertSubject(subject);
+            boolean success = subjectViewModel.insertSubject2(subject);
             if (success) {
                 AppUtils.showSuccessDialog(context
                         , "Thêm thành công");

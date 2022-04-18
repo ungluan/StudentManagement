@@ -31,6 +31,10 @@ public class SubjectDao {
         return dataBaseHelper.insert2(DataBaseHelper.TABLE_MON_HOC, values(subject));
     }
 
+    public Boolean insertSubject2(Subject subject) {
+        return dataBaseHelper.insert2(DataBaseHelper.TABLE_MON_HOC, values2(subject));
+    }
+
     public Boolean updateSubject(Subject subject) {
         return dataBaseHelper.update(DataBaseHelper.TABLE_MON_HOC,
                 DataBaseHelper.COLUMN_MA_MON_HOC + "=?" ,
@@ -126,6 +130,16 @@ public class SubjectDao {
         values.put(DataBaseHelper.COLUMN_HE_SO, subject.getCoefficient());
         values.put(DataBaseHelper.COLUMN_HINH_ANH, subject.getImage());
         values.put(DataBaseHelper.COLUMN_KHOI, subject.getGradeSchool());
+        return values;
+    }
+
+
+    public ContentValues values2(Subject subject) {
+        ContentValues values = new ContentValues();
+        values.put(DataBaseHelper.COLUMN_MA_MON_HOC, subject.getId());
+        values.put(DataBaseHelper.COLUMN_TEN_MON_HOC, subject.getSubjectName());
+        values.put(DataBaseHelper.COLUMN_HE_SO, subject.getCoefficient());
+        values.put(DataBaseHelper.COLUMN_HINH_ANH, subject.getImage());
         return values;
     }
 
