@@ -265,6 +265,7 @@ public class GradeListAdapter extends ListAdapter<Grade, GradeListAdapter.GradeV
                                 getContext(), "Thông báo", "Xóa lớp thất bại!", null);
                     }
                 } else {
+                    dialog.dismiss();
                     AppUtils.showNotificationDialog(
                             getContext(), "Thông báo", "Lớp có học sinh không thể xóa!", null);
                 }

@@ -42,7 +42,6 @@ import io.reactivex.rxjava3.core.Observable;
 
 public class StudentListAdapter extends ListAdapter<Student, StudentListAdapter.StudentViewHolder> {
     private StudentViewModel studentViewModel;
-    private List<Subject> allSubject;
 
     protected StudentListAdapter(StudentViewModel studentViewModel, @NonNull DiffUtil.ItemCallback<Student> diffCallback) {
         super(diffCallback);
@@ -55,7 +54,7 @@ public class StudentListAdapter extends ListAdapter<Student, StudentListAdapter.
         return new StudentViewHolder(
                 parent,
                 R.layout.student_item,
-                R.layout.item_swipe_student_menu,
+                R.layout.item_swipe_left_menu,
                 studentViewModel,
                 this
         );
@@ -74,14 +73,7 @@ public class StudentListAdapter extends ListAdapter<Student, StudentListAdapter.
         private TextView txtBirthdate;
         private TextView txtEdit;
         private TextView txtDel;
-        private TextView txtUpdateSubject;
         private Student student;
-        private ChipGroup chipGroupSubjects;
-        private List<Subject> listSubjects;
-        private List<Subject> listSelected = new ArrayList<>();
-        private List<Subject> saveList = new ArrayList<>();
-        private List<Subject> delList = new ArrayList<>();
-        private Map<String,Double> maps = new HashMap<>();
 
         public StudentViewHolder(ViewGroup parent, int contentRes, int swipeLeftMenuRes,
                                  StudentViewModel studentViewModel, StudentListAdapter studentListAdapter) {
@@ -91,7 +83,6 @@ public class StudentListAdapter extends ListAdapter<Student, StudentListAdapter.
             txtBirthdate = findViewById(R.id.txt_birth_day);
             txtEdit = findViewById(R.id.txtEdit);
             txtDel = findViewById(R.id.txtDel);
-            txtUpdateSubject = findViewById(R.id.txtUpdate);
             this.studentViewModel = studentViewModel;
             this.studentListAdapter = studentListAdapter;
         }
@@ -103,13 +94,6 @@ public class StudentListAdapter extends ListAdapter<Student, StudentListAdapter.
             this.student = student;
             txtEdit.setOnClickListener(this);
             txtDel.setOnClickListener(this);
-            txtUpdateSubject.setOnClickListener(this);
-
-            // Khoi tao
-            DataBaseHelper.databaseExecutor.execute(() -> {
-                listSubjects = studentViewModel.getSubjects();
-
-            });
         }
 
         @Override
@@ -118,8 +102,6 @@ public class StudentListAdapter extends ListAdapter<Student, StudentListAdapter.
                 showEditStudentDialog(getContext());
             } else if (v.getId() == txtDel.getId()) {
                 showDelStudentDialog(getContext());
-            } else if (v.getId() == txtUpdateSubject.getId()) {
-                showUpdateSubjectDialog(getContext());
             }
         }
 
@@ -213,6 +195,7 @@ public class StudentListAdapter extends ListAdapter<Student, StudentListAdapter.
                     List<Student> students = new ArrayList<>(studentListAdapter.getCurrentList());
                     students.remove(student);
                     studentListAdapter.submitList(students);
+                    notifyItemRemoved(getAdapterPosition());
                     dialog.dismiss();
                 } else {
                     AppUtils.showNotificationDialog(
@@ -221,79 +204,7 @@ public class StudentListAdapter extends ListAdapter<Student, StudentListAdapter.
             });
             dialog.show();
         }
-        private void showUpdateSubjectDialog(Context context) {
 
-
-            Dialog dialog = new Dialog(context, R.style.DialogStyle);
-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            DialogUpdateSubjectBinding binding = DialogUpdateSubjectBinding.inflate(
-                    LayoutInflater.from(context)
-            );
-            binding.linearLayoutCenter.setVisibility(View.VISIBLE);
-            dialog.setContentView(binding.getRoot());
-            dialog.getWindow().setBackgroundDrawableResource(R.drawable.bg_white_color);
-            binding.btnAdd.setText("Cập nhật");
-
-            chipGroupSubjects = binding.chipGroupSubject;
-
-            listSelected = studentViewModel.getSubjectSubjectId(student.getId());
-            maps = studentViewModel.getSubjectsSelectedByStudentId(student.getId());
-
-            // Load chip
-            for(int i=0 ; i<listSubjects.size() ; i++){
-                addChips(listSubjects.get(i));
-            }
-            binding.linearLayoutCenter.setVisibility(View.INVISIBLE);
-
-            dialog.setOnDismissListener(d -> {
-                saveList.clear();
-                delList.clear();
-                listSelected.clear();
-            });
-
-            binding.btnCancel.setOnClickListener(v -> dialog.dismiss());
-            binding.btnAdd.setOnClickListener(v -> {
-
-                if (listSelected.size() == 0) {
-                    binding.txtError.setVisibility(View.VISIBLE);
-                } else {
-                    binding.txtError.setVisibility(View.INVISIBLE);
-
-                    //viewModel.deleteAndInsertMark
-
-
-                }
-            });
-            dialog.show();
-        }
-
-        private void addChips(@NonNull Subject subject) {
-            Chip chip = (Chip) ((Activity) getContext()).getLayoutInflater()
-                    .inflate(R.layout.item_chip_subject, null, false);
-            chip.setText(subject.getSubjectName());
-            chip.setTag(subject.getId());
-
-            chipGroupSubjects.addView(chip);
-            // Nếu subject này có trong danh sách môn học đã chọn
-            double mark = maps.get(subject.getId())==null ? -1 : maps.get(subject.getId()) ;
-            if(mark != -1){
-                chip.setChecked(true);
-                if( mark != 0){
-                    chip.setEnabled(false);
-                }else{
-                    saveList.add(subject);
-                }
-            }
-            chip.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                if (isChecked){
-                    delList.add(subject);
-                    saveList.remove(subject);
-                }else{
-                    delList.remove(subject);
-                    saveList.add(subject);
-                }
-            });
-        }
 
         private void showToast(String message){
             Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
@@ -313,14 +224,3 @@ public class StudentListAdapter extends ListAdapter<Student, StudentListAdapter.
     }
 
 }
-/***
- *  Các Bug còn sai:
- *  1. Có môn học 0.0đ ở ds cũ -> Khi bỏ tích -> Cập nhật -> Môn vẫn chưa đc xóa
- *  dù đã đạt yêu cầu. -> Done
- *  2. Hiển thị thông báo môn học không thể hủy sai. -> Done
- *  3. Vẫn chưa check điều kiện xóa học sinh.
- *  4. Vẫn chưa check điều kiện xóa môn học, lớp học.
- *  5. Vận dụng ý tưởng của Dialog khi loading Chip -> Triển khai cho các màn hình còn lại
- *  6. Custom layout cho Dialog và Button , progressbar
- *  7. Vẫn chưa thực hiện thống kê
- * ***/

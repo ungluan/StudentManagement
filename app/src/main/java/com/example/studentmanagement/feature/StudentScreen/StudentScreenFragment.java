@@ -51,7 +51,6 @@ public class StudentScreenFragment extends Fragment {
     private List<String> dropdownItems = new ArrayList<>();
     private OmegaRecyclerView recyclerView;
     private StudentListAdapter studentListAdapter;
-    private TextView txtListEmpty;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -97,9 +96,6 @@ public class StudentScreenFragment extends Fragment {
 
     private void loadRecyclerViewStudent(String gradeId) {
         studentListAdapter.submitList(studentViewModel.getStudentsByGradeId(gradeId));
-        if (studentListAdapter.getCurrentList().size() != 0)
-            txtListEmpty.setVisibility(View.INVISIBLE);
-        else txtListEmpty.setVisibility(View.VISIBLE);
     }
 
     private void initialDropdown() {
@@ -162,8 +158,7 @@ public class StudentScreenFragment extends Fragment {
             Student student = new Student(firstName, lastName, gender, birthday, gradeId);
 
             if(dropdownItems.isEmpty()) {
-                AppUtils.showNotificationDialog(context,"Thông báo","Danh sách lớp " +
-                        "trống không thể thêm.",null);
+                AppUtils.showNotificationDialog(context,"Thông báo","Danh sách lớp trống không thể thêm.",null);
                 return;
             }
             if(studentViewModel.insertStudent(student)){
@@ -182,4 +177,6 @@ public class StudentScreenFragment extends Fragment {
     public void showToast(String message){
         Toast.makeText(this.requireContext(), message, Toast.LENGTH_SHORT).show();
     }
+
+
 }
