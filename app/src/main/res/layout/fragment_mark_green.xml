@@ -66,10 +66,10 @@
             </LinearLayout>
 
             <com.google.android.material.divider.MaterialDivider
+                android:layout_marginBottom="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_gravity="top"
-                android:layout_marginBottom="16dp"
                 android:background="@drawable/custom_divier"
                 android:elevation="12dp"
                 android:outlineSpotShadowColor="@color/color_secondary_blue_variant_lighter" />
@@ -77,7 +77,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_margin="16dp">
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp">
 
 
 
@@ -118,6 +119,20 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <androidx.appcompat.widget.SearchView
+                    android:padding="2dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/shape_bg_search"
+                    app:iconifiedByDefault="false"
+                    app:queryBackground="@null"
+                    android:id="@+id/search_view_mark_list"
+                    android:layout_width="match_parent"
+                    app:queryHint="@string/mark_screen_search_hint"
+                    android:layout_height="?attr/actionBarSize"
+
+                    ></androidx.appcompat.widget.SearchView>
+
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -126,7 +141,6 @@
                         android:id="@+id/recycler_view_student_mark_screen"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="24dp"
                         android:divider="@color/secondary_blue"
                         android:orientation="vertical"
                         app:dividerHeight="2dp"

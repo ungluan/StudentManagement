@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavDirections;
@@ -24,6 +25,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.example.studentmanagement.R;
 import com.example.studentmanagement.database.entity.Grade;
 import com.example.studentmanagement.database.entity.Mark;
+import com.example.studentmanagement.database.entity.MarkDTO;
 import com.example.studentmanagement.database.entity.Student;
 import com.example.studentmanagement.database.entity.Subject;
 import com.example.studentmanagement.database.entity.Teacher;
@@ -50,7 +52,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class MarkScreenFragment extends Fragment {
+public class MarkScreenFragment extends Fragment implements SearchView.OnQueryTextListener {
     private FragmentMarkGreenBinding binding;
     private MarkViewModel markViewModel;
     private AutoCompleteTextView editTextGradeName, editTextSubjectName;
@@ -59,11 +61,13 @@ public class MarkScreenFragment extends Fragment {
     private List<Grade> dropdownItemsGrade = new ArrayList<>();
     private List<Subject> dropdownItemsSubject = new ArrayList<>();
     private OmegaRecyclerView recyclerView;
-    private MarkListAdapter markListAdapter;
+    private MarkRecyclerAdapter markRecyclerAdapter;
     private TextView txtListEmpty;
     private ImageButton btnBack;
     private int indexGrade = -1;
     private int indexSubject = 0;
+    private String gradeId =""; // for search
+    private String subjectId = "";
 
     @Nullable
     @Override
@@ -80,6 +84,7 @@ public class MarkScreenFragment extends Fragment {
         initData();
         setControls();
         setEvents();
+        setUpSearchView();
         markViewModel = new ViewModelProvider(requireActivity())
                 .get(MarkViewModel.class);
 
@@ -88,10 +93,10 @@ public class MarkScreenFragment extends Fragment {
         btnBack = binding.btnBackMarkScreen;
 
 
-        markListAdapter = new MarkListAdapter(markViewModel, new MarkListAdapter.MarkDiff());
+        markRecyclerAdapter = new MarkRecyclerAdapter(markViewModel, new MarkRecyclerAdapter.MarkDtoDiff());
 
         recyclerView = binding.recyclerViewStudentMarkScreen;
-        recyclerView.setAdapter(markListAdapter);
+        recyclerView.setAdapter(markRecyclerAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
 
         txtListEmpty = binding.txtListEmptyMarkScreen;
@@ -130,6 +135,17 @@ public class MarkScreenFragment extends Fragment {
 
     }
 
+    private void setUpSearchView() {
+
+        if(dropdownItemsGrade.size()!=0 && dropdownItemsSubject.size()!=0){
+            gradeId = dropdownItemsGrade.get(indexGrade).getGradeId();
+            subjectId = dropdownItemsSubject.get(indexSubject).getSubjectId();
+        }
+
+
+        binding.searchViewMarkList.setOnQueryTextListener(this);
+
+    }
     private void setEvents() {
         binding.btnPdfMark.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -309,26 +325,15 @@ public class MarkScreenFragment extends Fragment {
 
     private void loadRecyclerViewStudent(String gradeId, String subjectId) {
 
-        List<Mark> marks = markViewModel.getMarks(gradeId, subjectId);
+        List<MarkDTO> marks = markViewModel.getMarkDTOByGradeIdAndSubjectId(gradeId, subjectId);
         if (marks.size() > 0) {
-            markListAdapter.submitList(marks);
+            markRecyclerAdapter.submitList(marks);
             txtListEmpty.setVisibility(View.INVISIBLE);
             recyclerView.setVisibility(View.VISIBLE);
         } else {
             txtListEmpty.setVisibility(View.VISIBLE);
             recyclerView.setVisibility(View.INVISIBLE);
         }
-//        markViewModel.getMarkByStudentAndSubject(gradeId, subjectId)
-//        .observeOn(AndroidSchedulers.mainThread())
-//        .subscribe(
-//                marks -> {
-//                    markListAdapter.submitList(marks);
-//                    if(marks.size()!=0) txtListEmpty.setVisibility(View.INVISIBLE);
-//                    else txtListEmpty.setVisibility(View.VISIBLE);
-//                },
-//                throwable -> Log.d("MarkFragment", throwable.getLocalizedMessage())
-//        );
-
     }
 
 
@@ -369,4 +374,43 @@ public class MarkScreenFragment extends Fragment {
     }
 
 
+    /**
+     * Called when the user submits the query. This could be due to a key press on the
+     * keyboard or due to pressing a submit button.
+     * The listener can override the standard behavior by returning true
+     * to indicate that it has handled the submit request. Otherwise return false to
+     * let the SearchView handle the submission by launching any associated intent.
+     *
+     * @param query the query text that is to be submitted
+     * @return true if the query has been handled by the listener, false to let the
+     * SearchView perform the default action.
+     */
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        if(dropdownItemsGrade.size()!=0 && dropdownItemsSubject.size()!=0){
+            gradeId = dropdownItemsGrade.get(indexGrade).getGradeId();
+            subjectId = dropdownItemsSubject.get(indexSubject).getSubjectId();
+        }
+
+        markRecyclerAdapter.submitList(markViewModel.searchMarkByStudentAndScore(query, gradeId, subjectId));
+        return false;
+    }
+
+    /**
+     * Called when the query text is changed by the user.
+     *
+     * @param newText the new content of the query text field.
+     * @return false if the SearchView should perform the default action of showing any
+     * suggestions if available, true if the action was handled by the listener.
+     */
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        if(dropdownItemsGrade.size()!=0 && dropdownItemsSubject.size()!=0){
+            gradeId = dropdownItemsGrade.get(indexGrade).getGradeId();
+            subjectId = dropdownItemsSubject.get(indexSubject).getSubjectId();
+        }
+        List<MarkDTO> marks = markViewModel.searchMarkByStudentAndScore(newText, gradeId, subjectId);
+        markRecyclerAdapter.submitList(marks);
+        return false;
+    }
 }

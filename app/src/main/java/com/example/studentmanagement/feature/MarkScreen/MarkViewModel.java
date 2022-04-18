@@ -7,6 +7,7 @@ import androidx.lifecycle.AndroidViewModel;
 
 import com.example.studentmanagement.database.entity.Grade;
 import com.example.studentmanagement.database.entity.Mark;
+import com.example.studentmanagement.database.entity.MarkDTO;
 import com.example.studentmanagement.database.entity.Student;
 import com.example.studentmanagement.database.entity.Subject;
 import com.example.studentmanagement.database.entity.Teacher;
@@ -33,6 +34,10 @@ public class MarkViewModel extends AndroidViewModel {
         this.subjectDao = new SubjectDao(application);
         this.studentDao = new StudentDao(application);
         this.teacherDao = new TeacherDao(application);
+    }
+
+    public List<MarkDTO> getMarkDTOByGradeIdAndSubjectId( String gradeId,String subjectId){
+        return markDao.getMarkDTOByGradeAndSubject( gradeId, subjectId);
     }
 
     public Student getStudent(int studentId){
@@ -69,6 +74,10 @@ public class MarkViewModel extends AndroidViewModel {
 
     public ArrayList<Mark> getListMarkOfStudent(int studentId) {
         return markDao.getListMarkOfStudent(studentId);
+    }
+
+    public List<MarkDTO> searchMarkByStudentAndScore(String query, String gradeId, String subjectId) {
+        return markDao.searchMarkByStudentAndScore(query, gradeId,  subjectId);
     }
 
 //    private MarkDaoSqlite markDaoSqlite;

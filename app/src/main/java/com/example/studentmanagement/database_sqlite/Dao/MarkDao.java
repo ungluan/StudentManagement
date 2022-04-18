@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.example.studentmanagement.database.entity.Mark;
 import com.example.studentmanagement.database.entity.Student;
+import com.example.studentmanagement.database.entity.MarkDTO;
 import com.example.studentmanagement.database.entity.Subject;
 import com.example.studentmanagement.database_sqlite.DataBaseHelper;
 
@@ -192,5 +193,75 @@ public class MarkDao {
         return countRank;
     }
 
+    public ArrayList<MarkDTO> getMarkDTOByGradeAndSubject(String gradeId, String subjectId) {
+        ArrayList<MarkDTO> list = new ArrayList<>();
+        Cursor cursor = dataBaseHelper.query("SELECT HS." + DataBaseHelper.COLUMN_MA_HOC_SINH +
+                ", " + DataBaseHelper.COLUMN_HO + ", " + DataBaseHelper.COLUMN_TEN +
+                ", " + DataBaseHelper.COLUMN_PHAI + ", "+ DataBaseHelper.COLUMN_NGAY_SINH+
+                ", HS."+ DataBaseHelper.COLUMN_HINH_ANH + ", " + DataBaseHelper.COLUMN_LOP +
+                ", " + DataBaseHelper.COLUMN_MA_MON_HOC + ", " + DataBaseHelper.COLUMN_DIEM +
+                 " FROM (SELECT *  FROM " + DataBaseHelper.TABLE_DIEM + " WHERE " + DataBaseHelper.COLUMN_MA_MON_HOC +
+                "='" + subjectId + "') as D," +
+                " (SELECT * FROM " + DataBaseHelper.TABLE_HOC_SINH + " WHERE " + DataBaseHelper.COLUMN_LOP
+                + "='" + gradeId + "') AS HS" +
+                " WHERE D." + DataBaseHelper.COLUMN_MA_HOC_SINH + " = HS." + DataBaseHelper.COLUMN_MA_HOC_SINH
 
+
+
+
+
+                , null);
+        while (cursor.moveToNext()) {
+            list.add(new MarkDTO(
+                    cursor.getInt(0),
+                    cursor.getString(1),
+                    cursor.getString(2),
+                    cursor.getString(3),
+                    cursor.getString(4),
+                    cursor.getString(5),
+                    cursor.getString(6),
+                    cursor.getString(7),
+                    cursor.getDouble(8)));
+        }
+        return list;
+    }
+
+
+    public List<MarkDTO> searchMarkByStudentAndScore(String query, String gradeId, String subjectId) {
+        ArrayList<MarkDTO> list = new ArrayList<>();
+        int studentId;
+        double score;
+        String searchLike = "%" + query + "%";
+        Cursor cursor = dataBaseHelper.query("SELECT HS." + DataBaseHelper.COLUMN_MA_HOC_SINH +
+                ", " + DataBaseHelper.COLUMN_HO + ", " + DataBaseHelper.COLUMN_TEN +
+                ", " + DataBaseHelper.COLUMN_PHAI + ", "+ DataBaseHelper.COLUMN_NGAY_SINH+
+                ", HS."+ DataBaseHelper.COLUMN_HINH_ANH + ", " + DataBaseHelper.COLUMN_LOP +
+                ", " + DataBaseHelper.COLUMN_MA_MON_HOC + ", " + DataBaseHelper.COLUMN_DIEM +
+                " FROM (SELECT *  FROM " + DataBaseHelper.TABLE_DIEM + " WHERE " + DataBaseHelper.COLUMN_MA_MON_HOC +
+                "='" + subjectId + "') as D," +
+                " (SELECT * FROM " + DataBaseHelper.TABLE_HOC_SINH + " WHERE " + DataBaseHelper.COLUMN_LOP
+                + "='" + gradeId + "') AS HS" +
+                " WHERE D." + DataBaseHelper.COLUMN_MA_HOC_SINH + " = HS." + DataBaseHelper.COLUMN_MA_HOC_SINH+
+                " AND (CAST(HS.MAHOCSINH AS TEXT) LIKE ? OR HO LIKE ? OR TEN LIKE ? OR NGAYSINH LIKE ? OR CAST(DIEM AS TEXT) LIKE ?)"
+//                        " AND (CAST(HS.MAHOCSINH AS TEXT) LIKE ? OR HO LIKE ? OR TEN LIKE ? 0R" +
+//                        " PHAI LIKE ? OR NGAYSINH LIKE ? OR CAST(DIEM AS TEXT) LIKE ?)"
+
+
+
+
+                , new String[]{searchLike,searchLike,searchLike,searchLike,searchLike});
+        while (cursor.moveToNext()) {
+            list.add(new MarkDTO(
+                    cursor.getInt(0),
+                    cursor.getString(1),
+                    cursor.getString(2),
+                    cursor.getString(3),
+                    cursor.getString(4),
+                    cursor.getString(5),
+                    cursor.getString(6),
+                    cursor.getString(7),
+                    cursor.getDouble(8)));
+        }
+        return list;
+    }
 }

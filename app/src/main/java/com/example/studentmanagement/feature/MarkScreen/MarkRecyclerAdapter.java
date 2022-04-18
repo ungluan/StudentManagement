@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.ListAdapter;
 
 import com.example.studentmanagement.R;
 import com.example.studentmanagement.database.entity.Mark;
+import com.example.studentmanagement.database.entity.MarkDTO;
 import com.example.studentmanagement.database.entity.Student;
 import com.example.studentmanagement.databinding.DialogEnterMarkBinding;
 import com.example.studentmanagement.utils.AppUtils;
@@ -25,16 +26,13 @@ import com.omega_r.libs.omegarecyclerview.swipe_menu.SwipeViewHolder;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 
-public class MarkListAdapter extends ListAdapter<Mark, MarkListAdapter.MarkViewHolder> {
+public class MarkRecyclerAdapter extends ListAdapter<MarkDTO, MarkRecyclerAdapter.MarkViewHolder> {
 
     private MarkViewModel markViewModel;
 
-
-    protected MarkListAdapter(MarkViewModel markViewModel, @NonNull DiffUtil.ItemCallback<Mark> diffCallback) {
+    protected MarkRecyclerAdapter(MarkViewModel markViewModel, @NonNull DiffUtil.ItemCallback<MarkDTO> diffCallback) {
         super(diffCallback);
-
         this.markViewModel = markViewModel;
-
     }
 
     @NonNull
@@ -56,20 +54,20 @@ public class MarkListAdapter extends ListAdapter<Mark, MarkListAdapter.MarkViewH
 
     static class MarkViewHolder extends SwipeViewHolder implements View.OnClickListener {
 
-        private MarkViewModel markViewModel;
+
         private TextView txtName;
         private TextView txtGenre;
         private TextView txtBirthdate;
         private TextView txtEdit;
         private TextView btnMark;
         private TextView txtMark;
-        private Mark mark;
-        private MarkListAdapter markListAdapter;
+        private MarkDTO markDTO;
+        private MarkViewModel markViewModel;
+        private MarkRecyclerAdapter adapter;
 
-        public MarkViewHolder(ViewGroup parent, int contentRes, int swipeLeftMenuRes
-                , MarkViewModel markViewModel, MarkListAdapter markListAdapter) {
+        public MarkViewHolder(ViewGroup parent, int contentRes, int swipeLeftMenuRes,
+                              MarkViewModel markViewModel, MarkRecyclerAdapter adapter) {
             super(parent, contentRes, swipeLeftMenuRes);
-            this.markListAdapter = markListAdapter;
             txtName = findViewById(R.id.txt_name_mark_item);
             txtGenre = findViewById(R.id.txt_genre_mark_item);
             txtBirthdate = findViewById(R.id.txt_birth_day_mark_item);
@@ -80,7 +78,10 @@ public class MarkListAdapter extends ListAdapter<Mark, MarkListAdapter.MarkViewH
             btnMark = findViewById(R.id.txtDel);
             btnMark.setText("Nhập điểm");
             btnMark.setOnClickListener(this);
+
+            this.markDTO = markDTO;
             this.markViewModel = markViewModel;
+            this.adapter = adapter;
         }
 
         public MarkViewHolder(@NonNull View itemView) {
@@ -91,52 +92,19 @@ public class MarkListAdapter extends ListAdapter<Mark, MarkListAdapter.MarkViewH
         public void onClick(View v) {
             if (v.getId() == R.id.txtDel) {
                 Toast.makeText(getContext(), "click nhap diem", Toast.LENGTH_SHORT).show();
-                showEditMarkOfStudentDialog(getContext()
-                        , markViewModel.getStudentByMark(mark.getStudentId(), mark.getSubjectId())
-                        , mark.getSubjectId(), mark.getScore());
+                showEditMarkOfStudentDialog(getContext());
             }
         }
 
-        public void bind(Mark mark) {
-            this.mark = mark;
-            Student student = markViewModel.getStudentByMark(mark.getStudentId(), mark.getSubjectId());
-            txtName.setText(student.getFirstName() + " " + student.getLastName());
-            txtGenre.setText(student.getGender());
-            txtBirthdate.setText(student.getBirthday());
-            txtMark.setText(Double.toString(mark.getScore()));
-//            }
-//            markViewModel.getStudentById(mark.getStudentId()).subscribe(
-//
-//            );
-//            markViewModel.getStudentById(mark.getStudentId())
-//                    .subscribe(student -> {
-//                        txtName.setText(student.getFirstName() + " " + student.getLastName());
-//                        txtGenre.setText(student.getGender());
-//                        txtBirthdate.setText(student.getBirthday());
-//                        txtMark.setText(Double.toString(mark.getScore()));
-//                        btnMark.setOnClickListener(v -> {
-//                            showEditMarkOfStudentDialog(getContext(), student
-//                                    , mark.getSubjectId(), mark.getScore());
-//                        });
-//                    },
-//                            throwable -> Log.d("bind student info by mark", throwable.getMessage()));
-//
-
-
-//            txtName.setText(student.getFirstName() + " " + student.getLastName());
-//                        txtGenre.setText(student.getGender());
-//                        txtBirthdate.setText(student.getBirthday());
-//                         txtMark.setText(Double.toString(mark.getMark()));
-//                        btnMark.setOnClickListener(v -> {
-//                            showEditMarkOfStudentDialog(getContext(), student
-//                                    , mark.getSubjectId(), mark.getMark());
-//                        });
-
-
+        public void bind(MarkDTO markDTO) {
+            this.markDTO = markDTO;
+            txtName.setText(markDTO.getFirstName() + " " + markDTO.getLastName());
+            txtGenre.setText(markDTO.getGender());
+            txtBirthdate.setText(markDTO.getBirthday());
+            txtMark.setText(Double.toString(markDTO.getMark()));
         }
 
-        private void showEditMarkOfStudentDialog(Context context, Student student
-                , String subjectId, Double mark) {
+        private void showEditMarkOfStudentDialog(Context context) {
             Dialog dialog = new Dialog(context, R.style.DialogStyle);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             DialogEnterMarkBinding binding = DialogEnterMarkBinding.inflate(
@@ -145,11 +113,11 @@ public class MarkListAdapter extends ListAdapter<Mark, MarkListAdapter.MarkViewH
             dialog.setContentView(binding.getRoot());
             dialog.getWindow().setBackgroundDrawableResource(R.drawable.bg_white_color);
 
-            binding.editTextStudentGradeMark.setText(student.getGradeId());
-            binding.editTextStudentNameMark.setText(student.getLastName() + " " + student.getFirstName());
-            binding.editTextStudentIdMark.setText(student.getId() + "");
-            binding.editTextSubjectIdMark.setText(subjectId);
-            binding.editTextStudentMarkMark.setText(mark + "");
+            binding.editTextStudentGradeMark.setText(markDTO.getGradeId());
+            binding.editTextStudentNameMark.setText(markDTO.getLastName() + " " + markDTO.getFirstName());
+            binding.editTextStudentIdMark.setText(markDTO.getStudentId() + "");
+            binding.editTextSubjectIdMark.setText(markDTO.getSubjectId());
+            binding.editTextStudentMarkMark.setText(markDTO.getMark() + "");
 
 
             Button btnEnterMark =  dialog.findViewById(R.id.btn_enter_mark);
@@ -158,34 +126,25 @@ public class MarkListAdapter extends ListAdapter<Mark, MarkListAdapter.MarkViewH
                 try{
                     score = Double.parseDouble(
                             binding.editTextStudentMarkMark.getText().toString());
-                    if(Double.compare(score, 0.0) <0 || Double.compare(score, 10.0) >0){
-                        System.out.println("score:" + score);
+                    if(score <0 || score>10){
                         binding.textInputMarkUpdateMark.setError("Điểm nẳm trong khoảng 0->10");
                         binding.textInputMarkUpdateMark.requestFocus();
                         return;
                     }else{
-                        System.out.println("score:" + score);
                         binding.textInputMarkUpdateMark.setErrorEnabled(false);
                     }
                 }catch (Exception e){
 
                     binding.textInputMarkUpdateMark.setError("Điểm phải là một số");
                     binding.textInputMarkUpdateMark.requestFocus();
-//                    AppUtils.showErrorDialog(
-//                            getContext()
-//                            , "ParseDouble Error"
-//                            , e.getMessage()
-//                    );
                     return;
                 }
-                this.mark.setScore(score);
-                System.out.println("score:" + score);
-                if(markViewModel.updateMark(this.mark)){
+                if(markViewModel.updateMark(new Mark(markDTO.getStudentId(),markDTO.getSubjectId(), score))){
                     AppUtils.showSuccessDialog(
                             context
-                            , "Update mark successfully!"
+                            , "Cập nhật điểm thành công!"
                     );
-                    markListAdapter.submitList(markViewModel.getMarks(student.getGradeId(), this.mark.getSubjectId()));
+                    adapter.submitList(markViewModel.getMarkDTOByGradeIdAndSubjectId(markDTO.getGradeId(),markDTO.getSubjectId()));
                 }
                 dialog.dismiss();
             });
@@ -196,19 +155,17 @@ public class MarkListAdapter extends ListAdapter<Mark, MarkListAdapter.MarkViewH
         }
     }
 
-    static class MarkDiff extends DiffUtil.ItemCallback<Mark> {
+    static class MarkDtoDiff extends DiffUtil.ItemCallback<MarkDTO> {
 
 
         @Override
-        public boolean areItemsTheSame(@NonNull Mark oldItem, @NonNull Mark newItem) {
-            return oldItem.getSubjectId() == newItem.getSubjectId()
-                    && oldItem.getStudentId() == newItem.getStudentId() ;
+        public boolean areItemsTheSame(@NonNull MarkDTO oldItem, @NonNull MarkDTO newItem) {
+            return oldItem.getStudentId()==newItem.getStudentId() &&
+                    oldItem.getSubjectId()==newItem.getSubjectId();
         }
-
-
         @Override
-        public boolean areContentsTheSame(@NonNull Mark oldItem, @NonNull Mark newItem) {
-            return Double.compare(oldItem.getScore(),newItem.getScore())!=0;
+        public boolean areContentsTheSame(@NonNull MarkDTO oldItem, @NonNull MarkDTO newItem) {
+            return oldItem.equals(newItem);
         }
     }
 

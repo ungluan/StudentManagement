@@ -41,4 +41,26 @@
     <string name="profile_title_01">Hồ sơ cá nhân</string>
 
 
+    <string name="subject_screen_title">Danh sách môn học</string>
+    <string name="mark_screen_title">Nhập điểm</string>
+    <string name="student_screen_title">Danh sách học sinh</string>
+    <string name="grade_screen_title">Danh sách lớp</string>
+    <string name="teacher_screen_title">Danh sách giáo viên</string>
+    <string name="report_screen_title">Thống kê</string>
+
+
+    <string name="subject_screen_search_hint">Tìm kiếm môn học</string>
+    <string name="grade_screen_search_hint">Tìm kiếm lớp</string>
+    <string name="teacher_screen_search_hint">Tìm kiếm giáo viên</string>
+    <string name="student_screen_search_hint">Tìm kiếm học sinh</string>
+    <string name="mark_screen_search_hint">Tìm kiếm học sinh</string>
+
+
+    <string name="chip_filter">Lọc</string>
+    <string name="chip_sort">Sắp xếp</string>
+
+
+
+
+
 </resources>
