@@ -81,7 +81,7 @@ public class TeacherScreenFragment extends Fragment {
         binding.btnBackTeacherScreen.setOnClickListener(v->{
             Navigation.findNavController(v).navigate(R.id.homeFragment);
         });
-
+        binding.btnAddTeacher.setVisibility(View.GONE);
 
     }
     // get data from search view & query api to get the results

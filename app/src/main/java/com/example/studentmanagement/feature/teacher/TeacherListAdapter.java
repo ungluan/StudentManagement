@@ -78,6 +78,8 @@ public class TeacherListAdapter extends ListAdapter<Teacher, TeacherListAdapter.
             txtDel = findViewById(R.id.txtDel);
             imgTeacher = findViewById(R.id.imageview_teacher_item);
 
+            txtEdit.setVisibility(View.GONE);
+            txtDel.setVisibility(View.GONE);
             txtEdit.setOnClickListener(this);
             txtDel.setOnClickListener(this);
 
