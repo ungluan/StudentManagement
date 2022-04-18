@@ -254,14 +254,15 @@ public class StudentListAdapter extends ListAdapter<Student, StudentListAdapter.
 
             binding.btnCancel.setOnClickListener(v -> dialog.dismiss());
             binding.btnAdd.setOnClickListener(v -> {
-
                 if (saveList.isEmpty() && delList.isEmpty() ) {
                     binding.txtError.setVisibility(View.VISIBLE);
                 } else {
                     binding.txtError.setVisibility(View.INVISIBLE);
                     List<Mark> lm = new ArrayList<>();
                     saveList.forEach(subject -> {
-                        lm.add(new Mark(student.getId(),subject.getId(),0.0));
+                        if(!maps.containsKey(subject.getId())){
+                            lm.add(new Mark(student.getId(),subject.getId(),0.0));
+                        }
                     });
                     List<String> lmm = delList.stream().map(subject -> subject.getId()).collect(Collectors.toList());
                     lm.size();

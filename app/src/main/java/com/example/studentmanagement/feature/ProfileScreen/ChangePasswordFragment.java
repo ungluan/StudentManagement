@@ -137,8 +137,8 @@ public class ChangePasswordFragment extends Fragment {
                 if (!isForgetPassword && !changePasswordViewModel.checkPassword(AppUtils.getTeacherId(requireActivity()), oldPassword))
                     binding.textInputLayoutOldPassword.setError("Mật khẩu không trùng khớp với mật khẩu hiện tại.");
                 else {
-                    int accountId = changePasswordViewModel.getAccountIdByTeacherId(
-                            AppUtils.getTeacherId(requireActivity()));
+                    int accountId = isForgetPassword ? changePasswordViewModel.getAccountIdByTeacherId(
+                            AppUtils.getTeacherId(requireActivity())) : loginViewModel.getIdUserForgotPass();
                     changePasswordViewModel.updatePassword(accountId, newPassword);
                     AppUtils.showNotificationDialog(requireContext(),
                             "Đổi mật khẩu thành công",

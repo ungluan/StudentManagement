@@ -72,7 +72,8 @@ public class OtpFragment extends Fragment {
         registerViewModel = new ViewModelProvider(requireActivity()).get(RegisterViewModel.class);
         loginViewModel = new ViewModelProvider(requireActivity()).get(LoginViewModel.class);
         mAuth = FirebaseAuth.getInstance();
-        String phoneNumber = "+84" + registerViewModel.getPhone().substring(1);
+        String phoneNumber = "+84" + (registerViewModel.isRegisterPage() ? registerViewModel.getPhone().substring(1)
+                : loginViewModel.getPhone().substring(1));
         setUpCountDownTimer();
         sendOtp(phoneNumber,view);
 
@@ -192,54 +193,58 @@ public class OtpFragment extends Fragment {
         });
     }
     private void sendOtp(String phoneNumber, View view){
-        PhoneAuthOptions options =
-                PhoneAuthOptions.newBuilder(mAuth)
-                        .setPhoneNumber(phoneNumber)       // Phone number to verify
-                        .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
-                        .setActivity(requireActivity())                 // Activity (for callback binding)
-                        .setCallbacks(new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-                            @Override
-                            public void onVerificationCompleted( PhoneAuthCredential phoneAuthCredential) {
-                                Log.d("OtpFragment","onVerificationCompleted");
-                                if(registerViewModel.isRegisterPage()) handleCreateAccount(view);
-                                else handleForgetPassword(view);
-                            }
+        try{
+            PhoneAuthOptions options =
+                    PhoneAuthOptions.newBuilder(mAuth)
+                            .setPhoneNumber(phoneNumber)       // Phone number to verify
+                            .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
+                            .setActivity(requireActivity())                 // Activity (for callback binding)
+                            .setCallbacks(new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+                                @Override
+                                public void onVerificationCompleted( PhoneAuthCredential phoneAuthCredential) {
+                                    Log.d("OtpFragment","onVerificationCompleted");
+                                    if(registerViewModel.isRegisterPage()) handleCreateAccount(view);
+                                    else handleForgetPassword(view);
+                                }
 
-                            @Override
-                            public void onVerificationFailed( FirebaseException e) {
-                                Log.d("OtpFragment","onVerificationFailed" +e.getMessage());
-                                System.out.println("'"+e.getMessage()+"'");
-                                if(e.getMessage().equals("We have blocked all requests from this device due to unusual activity. Try again later.")
-                                    ||e.getMessage().equals("This project's quota for this operation has been exceeded. [ Exceeded per phone number quota for sending verification codes. ]")) {
-                                    binding.textInputLayoutOTP.setError("Số điện thoại của bạn đã quá giới hạn nhận OTP vui lòng thử lại sau.");
-                                    binding.txtTime.setText("00:00");
+                                @Override
+                                public void onVerificationFailed( FirebaseException e) {
+                                    Log.d("OtpFragment","onVerificationFailed" +e.getMessage());
+                                    System.out.println("'"+e.getMessage()+"'");
+                                    if(e.getMessage().equals("We have blocked all requests from this device due to unusual activity. Try again later.")
+                                            ||e.getMessage().equals("This project's quota for this operation has been exceeded. [ Exceeded per phone number quota for sending verification codes. ]")) {
+                                        binding.textInputLayoutOTP.setError("Số điện thoại của bạn đã quá giới hạn nhận OTP vui lòng thử lại sau.");
+                                        binding.txtTime.setText("00:00");
+                                        binding.btnConfirm.setEnabled(false);
+                                        binding.txtResendOtp.setEnabled(true);
+                                        binding.txtResendOtp.setTextColor(getResources().getColor(R.color.purple_500));
+                                    }
+                                    else binding.textInputLayoutOTP.setError("Mã OTP không trùng khớp.");
+                                }
+
+                                @Override
+                                public void onCodeSent( String s,  PhoneAuthProvider.ForceResendingToken forceResendingToken) {
+                                    super.onCodeSent(s, forceResendingToken);
+                                    mTimer.start();
+                                    Log.d("OtpFragment","onCodeSent");
+                                    Snackbar.make(view,"Mã Otp đã được gửi về điện thoại của bạn.",
+                                            Snackbar.LENGTH_SHORT).show();
+                                    verificationCode = s;
+                                    binding.btnConfirm.setEnabled(true);
+                                    binding.txtResendOtp.setEnabled(false);
+                                    binding.txtResendOtp.setTextColor(0xFF808080);
+                                }
+                                @Override
+                                public void onCodeAutoRetrievalTimeOut( String s) {
+                                    super.onCodeAutoRetrievalTimeOut(s);
                                     binding.btnConfirm.setEnabled(false);
                                     binding.txtResendOtp.setEnabled(true);
-                                    binding.txtResendOtp.setTextColor(getResources().getColor(R.color.purple_500));
+                                    binding.txtResendOtp.setTextColor(0xFF6200EE);
                                 }
-                                else binding.textInputLayoutOTP.setError("Mã OTP không trùng khớp.");
-                            }
-
-                            @Override
-                            public void onCodeSent( String s,  PhoneAuthProvider.ForceResendingToken forceResendingToken) {
-                                super.onCodeSent(s, forceResendingToken);
-                                mTimer.start();
-                                Log.d("OtpFragment","onCodeSent");
-                                Snackbar.make(view,"Mã Otp đã được gửi về điện thoại của bạn.",
-                                        Snackbar.LENGTH_SHORT).show();
-                                verificationCode = s;
-                                binding.btnConfirm.setEnabled(true);
-                                binding.txtResendOtp.setEnabled(false);
-                                binding.txtResendOtp.setTextColor(0xFF808080);
-                            }
-                            @Override
-                            public void onCodeAutoRetrievalTimeOut( String s) {
-                                super.onCodeAutoRetrievalTimeOut(s);
-                                binding.btnConfirm.setEnabled(false);
-                                binding.txtResendOtp.setEnabled(true);
-                                binding.txtResendOtp.setTextColor(0xFF6200EE);
-                            }
-                        }).build();          // OnVerificationStateChangedCallbacks
-        PhoneAuthProvider.verifyPhoneNumber(options);
+                            }).build();          // OnVerificationStateChangedCallbacks
+            PhoneAuthProvider.verifyPhoneNumber(options);
+        }catch (Exception e){
+            Log.d("OTP",e.getMessage());
+        }
     }
 }

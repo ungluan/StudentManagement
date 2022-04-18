@@ -20,6 +20,7 @@ import com.example.studentmanagement.databinding.FragmentForgotPasswordBinding;
 import com.example.studentmanagement.databinding.FragmentOtpBinding;
 import com.example.studentmanagement.feature.ProfileScreen.ChangePasswordViewModel;
 import com.example.studentmanagement.feature.loginScreen.LoginViewModel;
+import com.example.studentmanagement.utils.AppUtils;
 
 public class ForgotPasswordFragment extends Fragment {
     private FragmentForgotPasswordBinding binding;
@@ -72,7 +73,9 @@ public class ForgotPasswordFragment extends Fragment {
             if(!binding.textInputLayoutPhone.isErrorEnabled()){
                 String phone = binding.editTextPhone.getText().toString();
                 String email = registerViewModel.getEmailByPhone(phone);
+                loginViewModel.setIdUserForgotPass(loginViewModel.getTeacherIdByPhone(phone));
                 loginViewModel.setEmail(email);
+                loginViewModel.setPhone(phone);
                 navigateToOtpPage(v);
             }
         });

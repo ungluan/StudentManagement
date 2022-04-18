@@ -3,6 +3,7 @@ package com.example.studentmanagement.database_sqlite.Dao;
 import android.app.Application;
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.util.Log;
 
 import com.example.studentmanagement.database.entity.Account;
 import com.example.studentmanagement.database_sqlite.DataBaseHelper;
@@ -22,11 +23,15 @@ public class AccountDao {
         return dataBaseHelper.insert(DataBaseHelper.TABLE_TAI_KHOAN, values(account,true));
     }
     public void updatePassword(int accountId, String newPassword) {
-        String query = "UPDATE " + DataBaseHelper.TABLE_TAI_KHOAN + " SET " +
-                DataBaseHelper.COLUMN_MAT_KHAU + " = '"+ newPassword +"'" + " WHERE "+
-                DataBaseHelper.COLUMN_MA_TAI_KHOAN + " = " + accountId;
+        try{
+            String query = "UPDATE " + DataBaseHelper.TABLE_TAI_KHOAN + " SET " +
+                    DataBaseHelper.COLUMN_MAT_KHAU + " = '"+ newPassword +"'" + " WHERE "+
+                    DataBaseHelper.COLUMN_MA_TAI_KHOAN + " = " + accountId;
 
-        dataBaseHelper.execSql(query);
+            dataBaseHelper.execSql(query);
+        }catch (Exception e){
+            Log.d("ForgotPassword",e.getMessage());
+        }
     }
 
     public Boolean checkPassword(int teacherId, String password){
