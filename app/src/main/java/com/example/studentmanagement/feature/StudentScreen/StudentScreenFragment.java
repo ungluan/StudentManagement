@@ -72,7 +72,6 @@ public class StudentScreenFragment extends Fragment {
         recyclerView = binding.recyclerViewStudent;
         recyclerView.setAdapter(studentListAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-        txtListEmpty = binding.txtListEmpty;
 
 
         initialStudentScreen();
@@ -162,6 +161,11 @@ public class StudentScreenFragment extends Fragment {
             }
             Student student = new Student(firstName, lastName, gender, birthday, gradeId);
 
+            if(dropdownItems.isEmpty()) {
+                AppUtils.showNotificationDialog(context,"Thông báo","Danh sách lớp " +
+                        "trống không thể thêm.",null);
+                return;
+            }
             if(studentViewModel.insertStudent(student)){
                 showToast("Thêm học sinh thành công");
                 List<Student> students = new ArrayList<>(studentListAdapter.getCurrentList());
@@ -178,6 +182,4 @@ public class StudentScreenFragment extends Fragment {
     public void showToast(String message){
         Toast.makeText(this.requireContext(), message, Toast.LENGTH_SHORT).show();
     }
-
-
 }

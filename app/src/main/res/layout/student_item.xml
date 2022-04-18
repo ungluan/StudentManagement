@@ -24,7 +24,7 @@
                 android:layout_width="128dp"
                 android:layout_height="128dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/art_class5"
+                android:src="@drawable/avatar_just_smile"
                 app:riv_corner_radius="16dp" />
 
             <LinearLayout

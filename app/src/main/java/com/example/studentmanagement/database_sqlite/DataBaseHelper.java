@@ -5,11 +5,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
-import androidx.core.database.sqlite.SQLiteDatabaseKt;
-
-import java.util.Vector;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -19,6 +15,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_LOP = "LOP";
     public static final String COLUMN_HO = "HO";
     public static final String COLUMN_HINH_ANH = "HINHANH";
+    public static final String COLUMN_KHOI = "KHOI";
 
 
     public static final String TABLE_MON_HOC = "MONHOC";
@@ -43,6 +40,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public static final String TABLE_TAI_KHOAN = "TAIKHOAN";
     public static final String COLUMN_EMAIL = "EMAIL";
     public static final String COLUMN_MAT_KHAU = "MATKHAU";
+    public static final String COLUMN_SO_DIEN_THOAI = "SODIENTHOAI";
 
 
     public static DataBaseHelper INSTANCE = null;
@@ -50,22 +48,17 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public static final ExecutorService databaseExecutor =
             Executors.newFixedThreadPool(NUMBER_OF_THREADS);
 
-    /***
-        - Login bằng giáo viên: Chỉ được nhập điểm môn học và lớp học mình dạy ->
-        Giáo viên có 1 GV có nhiều lớp và 1 lớp có nhiều giáo viên
-        - Nhập điểm: 1 GV có nhiều
-     ***/
 
     private static final String createGradeTableStatement = "CREATE TABLE " + TABLE_LOP + "(\n" +
             "\t    " + COLUMN_LOP + " TEXT NOT NULL PRIMARY KEY, \n" +
             "\t    " + COLUMN_MA_CHU_NHIEM + " INTEGER, \n" +
             "     " + COLUMN_HINH_ANH + " TEXT, \n" +
+            "\t    " + COLUMN_KHOI + " INTEGER, \n" +
             "        FOREIGN KEY (" + COLUMN_MA_CHU_NHIEM + ") REFERENCES " + TABLE_GVCN + "(" + COLUMN_MA_CHU_NHIEM + ")\n" +
             "        ON DELETE NO ACTION\n" +
             "        ON UPDATE CASCADE" +
             "    )";
 
-    public static final String COLUMN_SO_DIEN_THOAI = "SODIENTHOAI";
     private static final String createTeacherTableStatement = "CREATE TABLE " + TABLE_GVCN + "(\n" +
             "\t    " + COLUMN_MA_CHU_NHIEM + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,\n" +
             "\t    " + COLUMN_TEN_CHU_NHIEM + " TEXT, \n" +
@@ -87,8 +80,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             "\t    " + COLUMN_MA_MON_HOC + " TEXT NOT NULL PRIMARY KEY,\n" +
             "\t    " + COLUMN_TEN_MON_HOC + " TEXT,\n" +
             "\t    " + COLUMN_HE_SO + " INTEGER,\n" +
-            "     " + COLUMN_HINH_ANH + " TEXT " +
-
+            "     " + COLUMN_HINH_ANH + " TEXT, " +
+            "     " + COLUMN_KHOI + " INTEGER " +
             "    )";
 
     private static final String createStudentTableStatement = "CREATE TABLE " + TABLE_HOC_SINH + "(\n" +
@@ -120,7 +113,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
 
     private DataBaseHelper(Application application) {
-        super(application, "app_database_sqlite.db", null, 15);
+        super(application, "app_database_sqlite.db", null, 16);
 
     }
 
@@ -129,56 +122,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return INSTANCE;
     }
 
-
-    /*
-    CREATE TABLE LOP(
-	    LOP CHAR(4) NOT NULL PRIMARY KEY,
-	    MACHUNHIEM NVARCHAR(50)
-    )
-    CREATE TABLE MONHOC(
-	    MAMONHOC CHAR(10) NOT NULL PRIMARY KEY,
-	    TENMONHOC NVARCHAR(20),
-	    HESO INT
-    )
-    CREATE TABLE GVCN(
-        MAGVCN INT NOT NULL PRIMARY KEY,
-        TENGVCN CHAR(),
-        MATAIKHOAN
-    )
-    CREATE TABLE TAIKHOAN(
-        MATAIKHOAN,
-        EMAIL,
-        MATKHAU,
-    )
-    CREATE TABLE User(
-
-        MAMONHOC CHAR(10),
-        MAGIAOVIEN INT,
-        MALOP CHAR(10)
-    )
-    CREATE TABLE HOCSINH(
-        MAHOCSINH INT NOT NULL PRIMARY KEY,
-        HO NVARCHAR(50),
-        TEN NVARCHAR(10),
-        PHAI NVARCHAR(3),
-        NGAYSINH VARCHAR(20),
-        LOP CHAR(4) FOREIGN KEY REFERENCES LOP(LOP)
-    )
-    CREATE TABLE DIEM(
-        MAHOCSINH INT NOT NULL,
-        MAMONHOC CHAR(10) NOT NULL,
-        DIEM FLOAT,
-        PRIMARY KEY (MAHOCSINH, MAMONHOC),
-        FOREIGN KEY (contact_id)
-      REFERENCES contacts (contact_id)
-         ON DELETE CASCADE
-         ON UPDATE NO ACTION,
-   FOREIGN KEY (group_id)
-      REFERENCES groups (group_id)
-         ON DELETE CASCADE
-         ON UPDATE NO ACTION
-    )
-    */
     // This is called if the first time database is accessed.
     @Override
     public void onCreate(SQLiteDatabase db) {

@@ -19,24 +19,20 @@ public class Subject {
     String subjectName;
     @ColumnInfo(name = "HESO")
     int coefficient;
-
+    int gradeSchool;
     @ColumnInfo(name ="HINHANH")
     String image="";
 
     public Subject() {
     }
 
-    public Subject(String subjectId, String subjectName, int coefficient) {
-        this.subjectId = subjectId;
-        this.subjectName = subjectName;
-        this.coefficient = coefficient;
-    }
-
-    public Subject(@NonNull String subjectId, String subjectName, int coefficient, String image) {
+    public Subject(@NonNull String subjectId, String subjectName, int coefficient,
+                   String image, int gradeSchool) {
         this.subjectId = subjectId;
         this.subjectName = subjectName;
         this.coefficient = coefficient;
         this.image = image;
+        this.gradeSchool = gradeSchool;
     }
 
     @NonNull
@@ -76,6 +72,14 @@ public class Subject {
         this.coefficient = coefficient;
     }
 
+    public int getGradeSchool() {
+        return gradeSchool;
+    }
+
+    public void setGradeSchool(int gradeSchool) {
+        this.gradeSchool = gradeSchool;
+    }
+
     @Override
     public String toString() {
         return subjectId + "-" + subjectName;
@@ -101,7 +105,8 @@ public class Subject {
         return ((Subject) obj).subjectId.equals(this.subjectId)
                 && ((Subject) obj).subjectName.equals(this.subjectName)
                 && ((Subject) obj).coefficient == this.coefficient
-                &&  ((Subject) obj).image.equals(this.image) ;
+                &&  ((Subject) obj).image.equals(this.image)
+                && ((Subject) obj).gradeSchool == this.gradeSchool;
     }
 
 }
