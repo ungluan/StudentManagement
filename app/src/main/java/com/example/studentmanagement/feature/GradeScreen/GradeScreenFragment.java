@@ -201,17 +201,18 @@ public class GradeScreenFragment extends Fragment {
 
                 if(!gradeViewModel.checkGradeId(gradeId)){
                     if(gradeViewModel.insertGrade(grade)){
-                        showToast("Thêm lớp thành công");
+                        AppUtils.showSuccessDialog(context, "Thêm lớp thành công");
+//                        showToast("Thêm lớp thành công");
                         List<Grade> gradeList = new ArrayList<>(adapter.getCurrentList());
                         gradeList.add(grade);
                         adapter.submitList(gradeList);
                         adapter.notifyDataSetChanged();
                     }else{
-                        AppUtils.showNotificationDialog(context,"Thông báo","Thêm lớp thất bại!",null);
+                        AppUtils.showErrorDialog(context,"Thông báo","Thêm lớp thất bại!");
                     }
                     dialog.dismiss();
                 }else{
-                    AppUtils.showNotificationDialog(context,"Thông báo","Lớp "+gradeId+" đã tồn tại!",null);
+                    AppUtils.showErrorDialog(context,"Thông báo","Lớp "+gradeId+" đã tồn tại!");
                 }
             });
         }else{

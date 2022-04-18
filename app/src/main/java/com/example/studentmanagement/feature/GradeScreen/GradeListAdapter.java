@@ -197,14 +197,16 @@ public class GradeListAdapter extends ListAdapter<Grade, GradeListAdapter.GradeV
                 }
                 Grade gradeEdit = new Grade(gradeId, teacherId, grade.getImage(),gradeSchool );
                 if (gradeViewModel.updateGrade(gradeEdit)) {
-                    showToast("Cập nhật lớp thành công!");
+                    AppUtils.showSuccessDialog(context, "Cập nhật lớp thành công!");
+//                    showToast("Cập nhật lớp thành công!");
                     gradeListAdapter.submitList(updateGradeInList(gradeEdit));
                     gradeListAdapter.notifyItemChanged(getAdapterPosition());
                     dialog.dismiss();
                 } else {
-                    AppUtils.showNotificationDialog(
-                            getContext(), "Thông báo", "Cập nhật lớp thất bại!"
-                            , null);
+                    AppUtils.showErrorDialog(context, "Thông báo", "Cập nhật lóp thất bại");
+//                    AppUtils.showNotificationDialog(
+//                            getContext(), "Thông báo", "Cập nhật lớp thất bại!"
+//                            , null);
                 }
             });
             dialog.show();

@@ -120,9 +120,7 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <androidx.appcompat.widget.SearchView
-                    android:padding="2dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="10dp"
+                    android:layout_margin="10dp"
                     android:background="@drawable/shape_bg_search"
                     app:iconifiedByDefault="false"
                     app:queryBackground="@null"
