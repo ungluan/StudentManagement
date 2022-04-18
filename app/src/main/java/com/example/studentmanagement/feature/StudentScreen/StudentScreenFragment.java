@@ -21,7 +21,6 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.studentmanagement.R;
@@ -104,7 +103,7 @@ public class StudentScreenFragment extends Fragment {
             editTextGradeName.setText(dropdownItems.get(0));
             editTextGradeName.setAdapter(arrayAdapter);
             loadRecyclerViewStudent(dropdownItems.get(0));
-        }else editTextGradeName.setText("Danh sách lớp trống!");
+        }
     }
 
     private void initialStudentScreen() {
