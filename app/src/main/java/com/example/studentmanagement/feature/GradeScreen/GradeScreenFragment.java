@@ -188,12 +188,12 @@ public class GradeScreenFragment extends Fragment {
                 }
                 try {
                     gradeSchool = Integer.parseInt(binding.editTextGradeSchool.getText().toString());
-                    if(gradeSchool<1 && gradeSchool>12){
-                        binding.textInputLayoutGradeName.setError("Khối không hợp lệ. (1->12)");
+                    if(gradeSchool<1 || gradeSchool>12){
+                        binding.textInputLayoutGradeSchool.setError("Khối không hợp lệ. (1->12)");
                         return;
                     }
                 }catch (Exception e){
-                    binding.textInputLayoutGradeName.setError("Khối là một số nguyên.");
+                    binding.textInputLayoutGradeSchool.setError("Khối là một số nguyên.");
                     return;
                 }
 

@@ -90,7 +90,7 @@
             android:elevation="10dp"
             app:hintEnabled="true"
             app:endIconTint="@color/secondary_orange"
-            app:boxStrokeColor="@color/secondary_orange"
+            app:boxStrokeColor="@color/primary_color"
             app:boxStrokeWidth="1dp">
 
             <AutoCompleteTextView

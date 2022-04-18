@@ -166,7 +166,7 @@ public class LoginFragment extends Fragment {
                 "Tài khoản của bạn vừa mới đăng nhập trên thiết bị "+getDeviceName());
         mail.execute();
     }
-    public String getDeviceName() {
+    private String getDeviceName() {
         String manufacturer = Build.MANUFACTURER;
         String model = Build.MODEL;
         if (model.startsWith(manufacturer)) {

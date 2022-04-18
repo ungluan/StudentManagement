@@ -173,6 +173,7 @@ public class GradeListAdapter extends ListAdapter<Grade, GradeListAdapter.GradeV
             binding.editTextGradeName.setEnabled(false);
             // format??
             binding.editTextTeacherId.setText(teacher.getId() + " - " + teacher.getTeacherName());
+            binding.editTextGradeSchool.setText(String.valueOf(grade.getGradeSchool()));
             binding.btnAdd.setText("Sửa");
             binding.txtTitle.setText("Sửa lớp học");
 
@@ -186,12 +187,12 @@ public class GradeListAdapter extends ListAdapter<Grade, GradeListAdapter.GradeV
                 int gradeSchool ;
                 try {
                     gradeSchool = Integer.parseInt(binding.editTextGradeSchool.getText().toString());
-                    if(gradeSchool<1 && gradeSchool>12){
-                        binding.textInputLayoutGradeName.setError("Khối không hợp lệ. (1->12)");
+                    if(gradeSchool<1 || gradeSchool>12){
+                        binding.textInputLayoutGradeSchool.setError("Khối không hợp lệ. (1->12)");
                         return;
                     }
                 }catch (Exception e){
-                    binding.textInputLayoutGradeName.setError("Khối là một số nguyên.");
+                    binding.textInputLayoutGradeSchool.setError("Khối là một số nguyên.");
                     return;
                 }
                 Grade gradeEdit = new Grade(gradeId, teacherId, grade.getImage(),gradeSchool );
@@ -213,6 +214,7 @@ public class GradeListAdapter extends ListAdapter<Grade, GradeListAdapter.GradeV
             List<Grade> grades = new ArrayList(gradeListAdapter.getCurrentList());
             System.out.println(grades);
             grades.get(getAdapterPosition()).setTeacherId(grade.getTeacherId());
+            grades.get(getAdapterPosition()).setGradeSchool(grade.getGradeSchool());
             System.out.println(grades);
             return grades;
         }
@@ -228,7 +230,8 @@ public class GradeListAdapter extends ListAdapter<Grade, GradeListAdapter.GradeV
                     R.layout.dropdown_item, teacherItems);
             if (teacherItems.size() > 0) {
                 binding.editTextTeacherId.setAdapter(arrayAdapter);
-            } else binding.editTextTeacherId.setText("Danh sách giáo viên trống!");
+            }
+            binding.editTextTeacherId.setText(grade.getTeacherId() +" - "+teacher.getTeacherName());
         }
 
         private void showDelGradeDialog(Context context) {
