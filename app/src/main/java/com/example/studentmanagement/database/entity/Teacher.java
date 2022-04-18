@@ -74,7 +74,7 @@ public class Teacher {
     }
 
     public String getImageUrl() {
-        return imageUrl;
+        return imageUrl==null?"":imageUrl;
     }
 
     public void setImageUrl(String imageUrl) {
