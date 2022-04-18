@@ -8,15 +8,12 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
-
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.os.ParcelFileDescriptor;
-import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Patterns;
@@ -25,10 +22,8 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
-
 import android.widget.TextView;
 import android.widget.Toast;
-
 
 import androidx.fragment.app.FragmentActivity;
 
@@ -37,11 +32,8 @@ import com.example.studentmanagement.databinding.DialogDeleteBinding;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.normal.TedPermission;
 
-import org.w3c.dom.Document;
-
 import java.io.File;
 import java.io.FileDescriptor;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -51,7 +43,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-
 import java.util.concurrent.Callable;
 
 import gun0912.tedbottompicker.TedBottomPicker;
@@ -245,6 +236,7 @@ public class AppUtils {
     }
 
     public static String getLastName(String fullName){
+        if(fullName==null) return "";
         String[] tokens = fullName.split(" ");
         return tokens[tokens.length-1];
     }
