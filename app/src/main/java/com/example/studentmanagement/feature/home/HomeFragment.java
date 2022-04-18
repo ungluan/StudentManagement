@@ -55,6 +55,7 @@ public class HomeFragment extends Fragment {
         binding.txtNumberOfGrades.setText(getString(R.string.number_and_noun,homeViewModel.getNumberOfGrades(),"Lớp"));
         binding.txtNumberOfStudents.setText(getString(R.string.number_and_noun,homeViewModel.getNumberOfStudents(),"Học sinh"));
         binding.txtNumberOfSubjects.setText(getString(R.string.number_and_noun,homeViewModel.getNumberOfSubjects(),"Môn"));
+        binding.txtNumberOfTeacher.setText(getString(R.string.number_and_noun, homeViewModel.getNumberOfTeachers(), "Giáo viên"));
     }
 
     private void navigateToGradePage(View view){

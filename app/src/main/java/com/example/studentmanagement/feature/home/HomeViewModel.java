@@ -56,4 +56,8 @@ public class HomeViewModel extends AndroidViewModel {
         return studentDao.getNumberOfStudent();
     }
 
+    public int getNumberOfTeachers(){
+        return teacherDao.getNumberOfTeachers();
+    }
+
 }

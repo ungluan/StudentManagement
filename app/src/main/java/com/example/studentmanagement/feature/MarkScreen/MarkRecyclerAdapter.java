@@ -2,12 +2,15 @@ package com.example.studentmanagement.feature.MarkScreen;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +25,7 @@ import com.example.studentmanagement.database.entity.Student;
 import com.example.studentmanagement.databinding.DialogEnterMarkBinding;
 import com.example.studentmanagement.utils.AppUtils;
 import com.omega_r.libs.omegarecyclerview.swipe_menu.SwipeViewHolder;
+import com.squareup.picasso.Picasso;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
@@ -64,6 +68,7 @@ public class MarkRecyclerAdapter extends ListAdapter<MarkDTO, MarkRecyclerAdapte
         private MarkDTO markDTO;
         private MarkViewModel markViewModel;
         private MarkRecyclerAdapter adapter;
+        private ImageView imageView;
 
         public MarkViewHolder(ViewGroup parent, int contentRes, int swipeLeftMenuRes,
                               MarkViewModel markViewModel, MarkRecyclerAdapter adapter) {
@@ -78,6 +83,7 @@ public class MarkRecyclerAdapter extends ListAdapter<MarkDTO, MarkRecyclerAdapte
             btnMark = findViewById(R.id.txtDel);
             btnMark.setText("Nhập điểm");
             btnMark.setOnClickListener(this);
+            imageView = findViewById(R.id.image_mark_item);
 
             this.markDTO = markDTO;
             this.markViewModel = markViewModel;
@@ -102,6 +108,12 @@ public class MarkRecyclerAdapter extends ListAdapter<MarkDTO, MarkRecyclerAdapte
             txtGenre.setText(markDTO.getGender());
             txtBirthdate.setText(markDTO.getBirthday());
             txtMark.setText(Double.toString(markDTO.getMark()));
+            if(markDTO.getImage().equals("")){// no image
+                imageView.setImageResource(R.drawable.no_image);
+            }else{
+                Picasso.get().load(Uri.parse(markDTO.getImage()))
+                        .placeholder(R.drawable.no_image).into(imageView);
+            }
         }
 
         private void showEditMarkOfStudentDialog(Context context) {
