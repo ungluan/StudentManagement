@@ -35,6 +35,13 @@ public class Subject {
         this.gradeSchool = gradeSchool;
     }
 
+    public Subject(@NonNull String subjectId, String subjectName, int coefficient, String image) {
+        this.subjectId = subjectId;
+        this.subjectName = subjectName;
+        this.coefficient = coefficient;
+        this.image = image;
+    }
+
     public Subject(@NonNull String subjectId, String subjectName, int coefficient) {
         this.subjectId = subjectId;
         this.subjectName = subjectName;

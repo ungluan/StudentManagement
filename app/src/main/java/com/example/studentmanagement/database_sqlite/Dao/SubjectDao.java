@@ -186,4 +186,22 @@ public class SubjectDao {
         }
         return list;
     }
+
+    public List<Subject> sortSubjects(String state){
+        List<Subject> list = new ArrayList<>();
+        Cursor cursor = dataBaseHelper.query("SELECT * FROM "+DataBaseHelper.TABLE_MON_HOC + " ORDER BY "+ DataBaseHelper.COLUMN_TEN_MON_HOC +" " + state,null);
+        if(cursor.moveToFirst()){
+            do{
+                String subjectId = cursor.getString(0);
+                String subjectName = cursor.getString(1);
+                int coefficient = cursor.getInt(2);
+                String image = cursor.getString(3);
+                Subject subject = new Subject(subjectId,subjectName,coefficient, image);
+                list.add(subject);
+            }while (cursor.moveToNext());
+        }
+        cursor.close();
+        return list;
+    }
+
 }

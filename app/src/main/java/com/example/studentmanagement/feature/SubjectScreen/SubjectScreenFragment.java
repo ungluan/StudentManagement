@@ -35,6 +35,7 @@ public class SubjectScreenFragment extends Fragment {
     private  SubjectListAdapter adapter;
     private ImageView imageViewSubject;
     private int CODE=100;
+    private boolean state = false;
     public SubjectScreenFragment() {
 
     }
@@ -53,6 +54,7 @@ public class SubjectScreenFragment extends Fragment {
         System.out.println("Rank student:"+new Mark(1, "a", 7).rankStudent());
 
         setUpSearchView();
+        setUpFilter(view.getContext());
 
         subjectViewModel = new
                 ViewModelProvider(requireActivity()).get(com.example.studentmanagement.feature.SubjectScreen.SubjectViewModel.class);
@@ -87,6 +89,10 @@ public class SubjectScreenFragment extends Fragment {
             }
         });
 
+
+
+
+
         // add margin to recyccler view item
 
         recyclerView.addItemDecoration(new ItemMargin(
@@ -98,6 +104,25 @@ public class SubjectScreenFragment extends Fragment {
         binding.btnBackSubjectScreen.setOnClickListener(v->{
             NavDirections action = SubjectScreenFragmentDirections.actionSubjectScreenFragmentToHomeFragment();
             Navigation.findNavController(v).navigate(action);
+        });
+    }
+
+
+    //setup filter
+    //set Fillter
+    private void setUpFilter(Context context){
+        binding.chipSortSubject.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                state = !state;
+                if(state) {
+                    adapter.submitList(subjectViewModel.getAllSubjectSortName("ASC"));
+                }
+                else {
+                    adapter.submitList(subjectViewModel.getAllSubject());
+                }
+
+            }
         });
     }
 
