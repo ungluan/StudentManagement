@@ -45,4 +45,6 @@ public class SubjectViewModel extends AndroidViewModel {
         return subjectDao.searchSubjectBySameIdOrName(search);
 
     }
+    public List<Subject> getAllSubjectSortName(String state){return subjectDao.sortSubjects(state);}
+
 }
