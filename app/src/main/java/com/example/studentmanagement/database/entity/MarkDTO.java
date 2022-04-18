@@ -28,6 +28,14 @@ public class MarkDTO {
         this.mark = mark;
     }
 
+    public String getImage() {
+        return image==null?"":image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
     public int getStudentId() {
         return studentId;
     }
@@ -97,21 +105,22 @@ public class MarkDTO {
         if (this == o) return true;
         if (!(o instanceof MarkDTO)) return false;
         MarkDTO markDTO = (MarkDTO) o;
-        return getStudentId() == markDTO.getStudentId() &&
-                Objects.equals(getFirstName(), markDTO.getFirstName()) &&
-                Objects.equals(getLastName(), markDTO.getLastName()) &&
-                Objects.equals(getGender(), markDTO.getGender()) &&
-                Objects.equals(getBirthday(), markDTO.getBirthday()) &&
-                Objects.equals(image, markDTO.image) &&
-                Objects.equals(getGradeId(), markDTO.getGradeId()) &&
-                Objects.equals(getSubjectId(), markDTO.getSubjectId()) &&
-                Objects.equals(getMark(), markDTO.getMark());
+        return getStudentId() == markDTO.getStudentId()
+                && Objects.equals(getFirstName(), markDTO.getFirstName())
+                && Objects.equals(getLastName(), markDTO.getLastName())
+                && Objects.equals(getGender(), markDTO.getGender())
+                && Objects.equals(getBirthday(), markDTO.getBirthday())
+                && Objects.equals(getImage(), markDTO.getImage())
+                && Objects.equals(getGradeId(), markDTO.getGradeId())
+                && Objects.equals(getSubjectId(), markDTO.getSubjectId())
+                && Objects.equals(getMark(), markDTO.getMark());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getStudentId(), getFirstName(),
-                getLastName(), getGender(), getBirthday(),
-                image, getGradeId(), getSubjectId(), getMark());
+        return Objects.hash(getStudentId(),
+                getFirstName(), getLastName(),
+                getGender(), getBirthday(), getImage(),
+                getGradeId(), getSubjectId(), getMark());
     }
 }

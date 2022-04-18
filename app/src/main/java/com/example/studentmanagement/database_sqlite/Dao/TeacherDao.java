@@ -194,4 +194,13 @@ public class TeacherDao {
         values.put(DataBaseHelper.COLUMN_SO_DIEN_THOAI,teacher.getPhone());
         return values;
     }
+
+    public int getNumberOfTeachers() {
+        Cursor cursor = dataBaseHelper
+                .query("SELECT COUNT(*) FROM " + DataBaseHelper.TABLE_GVCN, null);
+        cursor.moveToFirst();
+        int result = cursor.getInt(0);
+        cursor.close();
+        return result;
+    }
 }
