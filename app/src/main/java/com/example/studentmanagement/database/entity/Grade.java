@@ -24,6 +24,10 @@ public class Grade {
         this.gradeSchool = gradeSchool;
     }
 
+    public static void getABC(){
+
+    }
+
     public String getGradeId() {
         return gradeId;
     }

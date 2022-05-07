@@ -109,7 +109,7 @@ public class MarkRecyclerAdapter extends ListAdapter<MarkDTO, MarkRecyclerAdapte
             txtBirthdate.setText(markDTO.getBirthday());
             txtMark.setText(Double.toString(markDTO.getMark()));
             if(markDTO.getImage().equals("")){// no image
-                imageView.setImageResource(R.drawable.no_image);
+                imageView.setImageResource(R.drawable.avatar_just_smile);
             }else{
                 Picasso.get().load(Uri.parse(markDTO.getImage()))
                         .placeholder(R.drawable.no_image).into(imageView);

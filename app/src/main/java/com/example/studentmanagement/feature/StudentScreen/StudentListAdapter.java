@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
 import java.util.stream.Collectors;
 
 import io.reactivex.rxjava3.core.Observable;
@@ -117,7 +118,8 @@ public class StudentListAdapter extends ListAdapter<Student, StudentListAdapter.
             if (v.getId() == txtEdit.getId()) {
                 showEditStudentDialog(getContext());
             } else if (v.getId() == txtDel.getId()) {
-                showDelStudentDialog(getContext());
+//                showDelStudentDialog(getContext());
+                showDelAlertDialog(getContext());
             } else if (v.getId() == txtUpdateSubject.getId()) {
                 showUpdateSubjectDialog(getContext());
             }
@@ -177,13 +179,13 @@ public class StudentListAdapter extends ListAdapter<Student, StudentListAdapter.
                 }
 
                 if(studentViewModel.updateStudent(newStudent)){
-                    showToast("Cập nhật học sinh thành công!");
+                    AppUtils.showSuccessDialog(context, "Cập nhật học sinh thất bại");
                     studentListAdapter.submitList(updateStudentInList(newStudent));
                     studentListAdapter.notifyItemChanged(getAdapterPosition());
                     dialog.dismiss();
                 }else{
-                    AppUtils.showNotificationDialog(
-                            getContext(), "Thông báo", "Cập nhật học sinh thất bại!",null);
+                    AppUtils.showErrorDialog(
+                            getContext(), "Thông báo", "Cập nhật học sinh thất bại!");
                 }
 
             });
@@ -221,6 +223,25 @@ public class StudentListAdapter extends ListAdapter<Student, StudentListAdapter.
                 }
             });
             dialog.show();
+        }
+
+        private void showDelAlertDialog(Context context){
+            AppUtils.showNotiDialog(context, "Bạn có chắc muốn xóa học sinh " + student.getId() + " ?", new Callable<Void>() {
+                @Override
+                public Void call() throws Exception {
+                    if (studentViewModel.deleteStudent(student.getId())) {
+                        AppUtils.showSuccessDialog(context, "Xóa học sinh thành công!");
+                        List<Student> students = new ArrayList<>(studentListAdapter.getCurrentList());
+                        students.remove(student);
+                        studentListAdapter.submitList(students);
+                        notifyItemRemoved(getAdapterPosition());
+                    } else {
+                        AppUtils.showErrorDialog(
+                                getContext(), "Thông báo", "Xóa học sinh thất bại!");
+                    }
+                    return null;
+                }
+            });
         }
         private void showUpdateSubjectDialog(Context context) {
 
@@ -268,10 +289,11 @@ public class StudentListAdapter extends ListAdapter<Student, StudentListAdapter.
                     lm.size();
                     lmm.size();
                     if(studentViewModel.deleteAndInsertMark(lm, lmm)){
+                        AppUtils.showSuccessDialog(context, "Cập nhật môn học cho học sinh thành công");
                         dialog.dismiss();
-                        showToast("Thanh cong");
+//                        showToast("Thanh cong");
                     }else {
-                        showToast("that bai");
+                        AppUtils.showSuccessDialog(context, "Cập nhật môn học cho học sinh thành công");
                     }
                 }
             });

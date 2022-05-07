@@ -120,13 +120,16 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <androidx.appcompat.widget.SearchView
-                    android:layout_margin="10dp"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="2dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
                     android:background="@drawable/shape_bg_search"
                     app:iconifiedByDefault="false"
                     app:queryBackground="@null"
                     android:id="@+id/search_view_mark_list"
                     android:layout_width="match_parent"
-                    app:queryHint="@string/mark_screen_search_hint"
+                    app:queryHint="Tìm kiếm sinh viên"
                     android:layout_height="?attr/actionBarSize"
 
                     ></androidx.appcompat.widget.SearchView>

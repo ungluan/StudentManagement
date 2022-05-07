@@ -147,7 +147,7 @@ public class MarkDao {
                 ", "+DataBaseHelper.COLUMN_HE_SO+
                 ", " + DataBaseHelper.COLUMN_DIEM+
                 ", " + DataBaseHelper.COLUMN_KHOI+
-                ", " + DataBaseHelper.COLUMN_HINH_ANH +
+                ", "+DataBaseHelper.TABLE_MON_HOC + "." + DataBaseHelper.COLUMN_HINH_ANH +
                 " FROM "+DataBaseHelper.TABLE_DIEM +", " + DataBaseHelper.TABLE_MON_HOC +
                 " WHERE "+ DataBaseHelper.TABLE_DIEM+"."+DataBaseHelper.COLUMN_MA_MON_HOC+
                 "="+DataBaseHelper.TABLE_MON_HOC+"." + DataBaseHelper.COLUMN_MA_MON_HOC+

@@ -15,7 +15,7 @@
     <string name="password">Mật khẩu</string>
     <string name="email_address">Email</string>
 
-<!--Teacher-->
+    <!--Teacher-->
     <string name="id_of_the_teacher">MGV: %d</string>
     <string name="name_of_the_teacher">Tên: %s</string>
     <string name="phone_of_the_teacher">SDT: %s</string>
@@ -58,9 +58,6 @@
 
     <string name="chip_filter">Lọc</string>
     <string name="chip_sort">Sắp xếp</string>
-
-
-
 
 
 </resources>

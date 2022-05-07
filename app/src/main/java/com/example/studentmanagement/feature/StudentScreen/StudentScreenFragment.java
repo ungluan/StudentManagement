@@ -161,13 +161,14 @@ public class StudentScreenFragment extends Fragment {
                 return;
             }
             if(studentViewModel.insertStudent(student)){
-                showToast("Thêm học sinh thành công");
+                AppUtils.showSuccessDialog(context, "Thêm học sinh thành công");
+//                showToast("Thêm học sinh thành công");
                 List<Student> students = new ArrayList<>(studentListAdapter.getCurrentList());
                 students.add(student);
                 studentListAdapter.submitList(students);
                 dialog.dismiss();
             }else{
-                AppUtils.showNotificationDialog(context,"Thông báo","Thêm học sinh thất bại!",null);
+                AppUtils.showErrorDialog(context,"Thông báo","Thêm học sinh thất bại!");
                 dialog.dismiss();
             }
         });

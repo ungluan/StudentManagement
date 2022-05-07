@@ -93,4 +93,6 @@ dependencies {
     // CountDown Timer
     implementation 'in.xiandan:count-down-timer:1.0.3'
 
+    // barchar
+    implementation 'com.github.AnyChart:AnyChart-Android:1.1.2'
 }

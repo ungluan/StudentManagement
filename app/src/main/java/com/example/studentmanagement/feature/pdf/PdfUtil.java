@@ -42,20 +42,20 @@ public class PdfUtil {
 
 
     public PdfUtil(){
-        bfBold12 = new Font(Font.FontFamily.TIMES_ROMAN, 20, Font.BOLD, new BaseColor(0, 0, 0));
-        bf12 = new Font(Font.FontFamily.TIMES_ROMAN, 18);
+
         colorAccent = new BaseColor(0, 153, 204, 255);
         fontSize = 20.0f;
         valueFontSize = 26.0f;
         try {
-            fontName = BaseFont.createFont("assets/font/brandon_medium.otf", "UTF-8", BaseFont.EMBEDDED);
+            fontName = BaseFont.createFont("assets/font/poppins_regular.ttf", "UTF-8", BaseFont.EMBEDDED);
         } catch (DocumentException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        titleFont = new Font(fontName, 36.0f, Font.NORMAL, BaseColor.BLACK);
-
+        titleFont = new Font(Font.FontFamily.TIMES_ROMAN, 36.0f, Font.NORMAL, BaseColor.BLACK);
+        bfBold12 = new Font(Font.FontFamily.TIMES_ROMAN, 20, Font.BOLD, new BaseColor(0, 0, 0));
+        bf12 = new Font(Font.FontFamily.TIMES_ROMAN, 18);
     }
 
     public Document createDocument(String path) {
